@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 
 import java.io.IOException;
@@ -97,12 +98,15 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(URL... urls) {
             URL searchURL = urls[0];
             String riotSearchResults = null;
+            Summoner summoner = null;
             try {
                 riotSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
-            } catch (IOException e) {
+
+                summoner = JsonUtils.getSimpleRiotAPIStringsFromJson(MainActivity.this, riotSearchResults);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            return riotSearchResults;
+            return summoner.toString();
         }
 
         @Override
