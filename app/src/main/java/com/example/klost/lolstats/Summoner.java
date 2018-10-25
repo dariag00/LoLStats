@@ -43,9 +43,7 @@ public class Summoner {
     }
 
     public void setRevisionDate(long revisionDate) {
-
-        Date date = new Date(revisionDate);
-        this.revisionDate = date;
+        this.revisionDate = new Date(revisionDate);
     }
 
     public int getSummonerLevel() {
