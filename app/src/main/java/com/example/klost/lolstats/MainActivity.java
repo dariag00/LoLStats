@@ -1,5 +1,6 @@
 package com.example.klost.lolstats;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar loadingIndicator;
 
+    private String summonerName;
+
 
 
     @Override
@@ -47,13 +50,18 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeRiotSearchQuery();
+                String searchQuery = searchBoxEditText.getText().toString();
+                makeRiotSearchQuery(searchQuery);
             }
         });
+
+
+        Intent previousIntent = getIntent();
+        summonerName = previousIntent.getStringExtra(InitialActivity.EXTRA_SUMMONER_NAME);
+        makeRiotSearchQuery(summonerName);
     }
 
-    private void makeRiotSearchQuery(){
-        String searchQuery = searchBoxEditText.getText().toString();
+    private void makeRiotSearchQuery(String searchQuery){
         URL riotSearchUrl = NetworkUtils.buildUrl(searchQuery);
         urlDisplayTextView.setText(riotSearchUrl.toString());
         new RiotQueryTask().execute(riotSearchUrl);
@@ -79,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemClicked = item.getItemId();
         if(itemClicked == R.id.action_refresh){
-            makeRiotSearchQuery();
+            makeRiotSearchQuery(summonerName);
             return true;
         }
 
