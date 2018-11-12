@@ -1,6 +1,7 @@
 package com.example.klost.lolstats.utilities;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.klost.lolstats.Summoner;
 
@@ -14,23 +15,46 @@ public class JsonUtils {
     public static Summoner getSimpleRiotAPIStringsFromJson(Context context, String requestJsonStr)
             throws JSONException {
 
-        String OWM_MESSAGE_CODE = "cod";
+        String RIOT_MESSAGE_CODE = "status_code";
 
 
         JSONObject requestJson = new JSONObject(requestJsonStr);
 
         /* Comprobación y busqueda de errores */
         //TODO poner esto acorde a la RIOT API
-        if (requestJson.has(OWM_MESSAGE_CODE)) {
-            int errorCode = requestJson.getInt(OWM_MESSAGE_CODE);
-
+        if (requestJson.has(RIOT_MESSAGE_CODE)) {
+            int errorCode = requestJson.getInt(RIOT_MESSAGE_CODE);
+            Log.v("ERRORCODE", String.valueOf(errorCode));
             switch (errorCode) {
                 case HttpURLConnection.HTTP_OK:
                     break;
+                case HttpURLConnection.HTTP_BAD_REQUEST:
+                    Log.e("JSONUTILS", "Error 404: BadRequest");
+                    return null;
+                case HttpURLConnection.HTTP_UNAUTHORIZED:
+                    Log.e("JSONUTILS", "Error 401: Unauthorized");
+                    return null;
+
+                case HttpURLConnection.HTTP_FORBIDDEN:
+                    Log.e("JSONUTILS", "Error 403: Forbidden");
+                    return null;
                 case HttpURLConnection.HTTP_NOT_FOUND:
+                    Log.e("JSONUTILS", "Error 404: Not Found");
+
+                case HttpURLConnection.HTTP_UNSUPPORTED_TYPE:
+                    Log.e("JSONUTILS", "Error 415: Unsupported Media Type");
+                    return null;
+                case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                    Log.e("JSONUTILS", "Error 500: Internal Server Error");
+                    return null;
+
+                case HttpURLConnection.HTTP_UNAVAILABLE:
+                    Log.e("JSONUTILS", "Error 503: Service Unavailable");
                     return null;
                 default:
+                    Log.e("JSONUTILS", "Error XXX: Unexpected error");
                     return null;
+
             }
         }
 

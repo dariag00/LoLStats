@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
             Summoner summoner = null;
             try {
                 riotSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
+                //TODO hacer aqui la comprobación de errores
+
 
                 summoner = JsonUtils.getSimpleRiotAPIStringsFromJson(MainActivity.this, riotSearchResults);
             } catch (Exception e) {

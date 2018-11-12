@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class InitialActivity extends AppCompatActivity {
 
 
@@ -55,7 +58,7 @@ public class InitialActivity extends AppCompatActivity {
             cancel = true;
         }
 
-        if(!isSummonerNameValid()){
+        if(!isSummonerNameValid(summonerName)){
             if (BuildConfig.DEBUG) {
                 Log.d("IA.summonerName", "Se ha introducido un summoner Name incorrecto " + summonerName);
             }
@@ -75,8 +78,11 @@ public class InitialActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isSummonerNameValid(){
+    private boolean isSummonerNameValid(String summonerName){
         //TODO ver si el nombre introducido es valido basandose en la politica de Riot Games
-        return true;
+        //TODO comprobar
+        Pattern pattern = Pattern.compile("^[0-9\\\\p{L} _\\\\.]+$");
+        Matcher matcher = pattern.matcher(summonerName);
+        return matcher.find();
     }
 }

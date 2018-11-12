@@ -24,6 +24,8 @@ public class NetworkUtils {
 
     final static String PARAM_KEY = "api_key";
 
+    //TODO cambiar el riotSearchQuery en funcion de la peticion
+
     public static URL buildUrl(String riotSearchQuery){
         Uri builtUri = Uri.parse(RIOT_BASE_URL).buildUpon()
                 .appendPath(riotSearchQuery)
