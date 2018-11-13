@@ -116,7 +116,11 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return summoner.toString();
+
+            if(summoner != null)
+                return summoner.toString();
+            else
+                return "Se ha producido un error";
         }
 
         @Override

@@ -56,9 +56,7 @@ public class InitialActivity extends AppCompatActivity {
             summonerNameView.setError(getString(R.string.error_empty_summoner_name));
             focusView=  summonerNameView;
             cancel = true;
-        }
-
-        if(!isSummonerNameValid(summonerName)){
+        } else if(!isSummonerNameValid(summonerName)){
             if (BuildConfig.DEBUG) {
                 Log.d("IA.summonerName", "Se ha introducido un summoner Name incorrecto " + summonerName);
             }
@@ -79,9 +77,7 @@ public class InitialActivity extends AppCompatActivity {
     }
 
     private boolean isSummonerNameValid(String summonerName){
-        //TODO ver si el nombre introducido es valido basandose en la politica de Riot Games
-        //TODO comprobar
-        Pattern pattern = Pattern.compile("^[0-9\\\\p{L} _\\\\.]+$");
+        Pattern pattern = Pattern.compile("^[\\p{L} 0-9_\\.]+$");
         Matcher matcher = pattern.matcher(summonerName);
         return matcher.find();
     }
