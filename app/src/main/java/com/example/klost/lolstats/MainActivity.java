@@ -62,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeRiotSearchQuery(String searchQuery){
-        URL riotSearchUrl = NetworkUtils.buildUrl(searchQuery);
-        urlDisplayTextView.setText(riotSearchUrl.toString());
+        URL riotSearchUrl = NetworkUtils.buildUrl(searchQuery, NetworkUtils.GET_SUMMONER);
+        URL prueba = NetworkUtils.buildUrl("123456", NetworkUtils.GET_MATCHLIST);
+        urlDisplayTextView.setText(prueba.toString()+ "\n" + riotSearchUrl);
         new RiotQueryTask().execute(riotSearchUrl);
     }
 

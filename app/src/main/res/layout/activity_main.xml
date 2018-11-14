@@ -63,7 +63,8 @@
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp">
 
-                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/iv_champion_icon"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
@@ -158,7 +159,7 @@
                                     android:id="@+id/tv_deaths"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textColor="@android:color/red"
+                                    android:textColor="@android:color/holo_red_light"
                                     android:text="D"
                                     android:textSize="13sp" />
                                 <TextView

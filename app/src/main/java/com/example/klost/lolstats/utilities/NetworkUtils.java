@@ -18,19 +18,62 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    final static String RIOT_API_KEY = "RGAPI-41b03014-1ccb-4338-b1c2-b2be1601031b";
+    final static String RIOT_API_KEY = "RGAPI-49b44ad8-7e21-4722-aa1f-ca7be5372b41";
 
     final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 
     final static String PARAM_KEY = "api_key";
 
-    //TODO cambiar el riotSearchQuery en funcion de la peticion
+    final static String RIOT_BASE = "https://euw1.api.riotgames.com";
 
-    public static URL buildUrl(String riotSearchQuery){
-        Uri builtUri = Uri.parse(RIOT_BASE_URL).buildUpon()
-                .appendPath(riotSearchQuery)
-                .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
-                .build();
+    final static String RIOT_GET_MATCHLIST = "/lol/match/v3/matchlists/by-account";
+
+    final static String RIOT_GET_MATCH = "/lol/match/v3/matches";
+
+    final static String RIOT_GET_SUMMONER = "/lol/summoner/v3/summoners/by-name";
+
+    public final static int GET_SUMMONER = 0;
+
+    public final static int GET_MATCHLIST = 1;
+
+    public final static int GET_MATCH = 2;
+
+    public final static int GET_MATCH_TIMELINE = 3;
+
+    //TODO cambiar el riotSearchQuery en funcion de la peticion
+    //TODO documentar los metodos
+    //TODO buscar si path = X + Y es realmente la solucion
+    public static URL buildUrl(String riotSearchQuery, int requestType){
+
+        Uri builtUri;
+        String path;
+        switch(requestType){
+            case GET_SUMMONER:
+                path = RIOT_BASE + RIOT_GET_SUMMONER;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
+                        .build();
+                break;
+            case GET_MATCHLIST:
+                path = RIOT_BASE + RIOT_GET_MATCHLIST;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
+                        .build();
+                break;
+            case GET_MATCH:
+                path = RIOT_BASE +RIOT_GET_MATCH;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
+                        .build();
+                break;
+            case GET_MATCH_TIMELINE:
+                return null;
+            default:
+                return null;
+        }
 
         URL url = null;
 
