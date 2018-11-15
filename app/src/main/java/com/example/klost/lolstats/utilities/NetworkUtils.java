@@ -18,7 +18,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    final static String RIOT_API_KEY = "RGAPI-49b44ad8-7e21-4722-aa1f-ca7be5372b41";
+    final static String RIOT_API_KEY = "RGAPI-efc09ede-554f-4de3-b863-ac3951d5125e";
 
     final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 
@@ -39,8 +39,7 @@ public class NetworkUtils {
     public final static int GET_MATCH = 2;
 
     public final static int GET_MATCH_TIMELINE = 3;
-
-    //TODO cambiar el riotSearchQuery en funcion de la peticion
+    
     //TODO documentar los metodos
     //TODO buscar si path = X + Y es realmente la solucion
     public static URL buildUrl(String riotSearchQuery, int requestType){

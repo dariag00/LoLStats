@@ -106,22 +106,27 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(URL... urls) {
             URL searchURL = urls[0];
-            String riotSearchResults = null;
+            String summonerSearchResults;
+            String matchlistSearchResults = null;
             Summoner summoner = null;
+            MatchList matchList = null;
             try {
-                riotSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
-                //TODO hacer aqui la comprobación de errores
+                summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
+                //TODO HTTP ERROR COMPROBATION y multiple async task
+                summoner = JsonUtils.getSummonerFromJSON(summonerSearchResults);
 
+                URL matchlistURL = NetworkUtils.buildUrl(String.valueOf(summoner.getAccountId()), NetworkUtils.GET_MATCHLIST);
+                matchlistSearchResults = NetworkUtils.getResponseFromHttpUrl(matchlistURL);
+                matchList = JsonUtils.getMatchListFromJSON(matchlistSearchResults);
 
-                summoner = JsonUtils.getSimpleRiotAPIStringsFromJson(MainActivity.this, riotSearchResults);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if(summoner != null)
-                return summoner.toString();
+                return summoner.toString()+ "\n" + matchList.toString();
             else
-                return "Se ha producido un error";
+                return "ERROR 101: Se ha producido un error";
         }
 
         @Override

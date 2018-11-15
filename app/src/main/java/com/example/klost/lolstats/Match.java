@@ -1,11 +1,13 @@
 package com.example.klost.lolstats;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Match {
 
     private String lane;
-    private int gameId;
+    private long gameId;
     private int championId;
     private String platformId;
     private Date date;
@@ -21,7 +23,7 @@ public class Match {
         return championId;
     }
 
-    public int getGameId() {
+    public long getGameId() {
         return gameId;
     }
 
@@ -33,7 +35,7 @@ public class Match {
         return season;
     }
 
-    public Date getTimestamp() {
+    public Date getDate() {
         return date;
     }
 
@@ -53,7 +55,7 @@ public class Match {
         this.championId = championId;
     }
 
-    public void setGameId(int gameId) {
+    public void setGameId(long gameId) {
         this.gameId = gameId;
     }
 
@@ -77,12 +79,42 @@ public class Match {
         this.season = season;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setDate(long timestamp) {
         this.date = new Date(timestamp);
     }
 
     public String toString(){
         StringBuilder builder = new StringBuilder();
+
+        builder.append("Match: ");
+        builder.append(this.gameId);
+        builder.append("\n");
+
+        builder.append("Queue: ");
+        builder.append(this.queue);
+        builder.append("\n");
+
+        //TODO Poner hace cuanto tiempo
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String date = formatter.format(this.date);
+
+        builder.append("Date: ");
+        builder.append(date);
+        builder.append("\n");
+
+        builder.append("Champion: ");
+        builder.append(this.championId);
+        builder.append("\n");
+
+        builder.append("Lane: ");
+        builder.append(this.lane);
+        builder.append(" and Role: ");
+        builder.append(this.role);
+        builder.append("\n");
+
+        builder.append("Season: ");
+        builder.append(this.season);
+        builder.append("\n");
 
         return builder.toString();
     }

@@ -8,34 +8,48 @@ import java.util.Date;
 
 public class Summoner {
 
-    int id;
-    int summonerId;
-    int summonerLevel;
+    long accountId;
+    long summonerId;
+    long summonerLevel;
     String summonerName;
     Date revisionDate;
+    int profileIconId;
+
 
     public Summoner(){
 
     }
 
-    public Summoner(int summonerId){
-        this.summonerId = summonerId;
+    public long getAccountId() {
+        return accountId;
     }
 
-    public int getId() {
-        return id;
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getSummonerId() {
+    public long getSummonerId() {
         return summonerId;
     }
 
-    public void setSummonerId(int summonerId) {
+    public void setSummonerId(long summonerId) {
         this.summonerId = summonerId;
+    }
+
+    public long getSummonerLevel() {
+        return summonerLevel;
+    }
+
+    public void setSummonerLevel(long summonerLevel) {
+        this.summonerLevel = summonerLevel;
+    }
+
+    public int getProfileIconId() {
+        return profileIconId;
+    }
+
+    public void setProfileIconId(int profileIconId) {
+        this.profileIconId = profileIconId;
     }
 
     public Date getRevisionDate() {
@@ -44,14 +58,6 @@ public class Summoner {
 
     public void setRevisionDate(long revisionDate) {
         this.revisionDate = new Date(revisionDate);
-    }
-
-    public int getSummonerLevel() {
-        return summonerLevel;
-    }
-
-    public void setSummonerLevel(int summonerLevel) {
-        this.summonerLevel = summonerLevel;
     }
 
     public String getSummonerName() {
@@ -64,6 +70,10 @@ public class Summoner {
 
     public String toString(){
         StringBuilder builder = new StringBuilder();
+
+        builder.append("Account ID: ");
+        builder.append(this.accountId);
+        builder.append("\n");
 
         builder.append("Summoner Name: ");
         builder.append(this.summonerName);
@@ -82,6 +92,10 @@ public class Summoner {
 
         builder.append("Revision Date: ");
         builder.append(date);
+        builder.append("\n");
+
+        builder.append("Icon Id: ");
+        builder.append(this.profileIconId);
         builder.append("\n");
 
         return builder.toString();
