@@ -20,56 +20,14 @@ public class JsonUtils {
     public static Summoner getSummonerFromJSON(String requestJsonStr)
             throws JSONException {
 
-        String RIOT_MESSAGE_CODE = "status_code";
+        JSONObject requestJSON = new JSONObject(requestJsonStr);
 
-
-        JSONObject requestJson = new JSONObject(requestJsonStr);
-
-        /* Comprobación y busqueda de errores */
-        //TODO poner esto acorde a la RIOT API
-        if (requestJson.has(RIOT_MESSAGE_CODE)) {
-            int errorCode = requestJson.getInt(RIOT_MESSAGE_CODE);
-            Log.v("ERRORCODE", String.valueOf(errorCode));
-            switch (errorCode) {
-                case HttpURLConnection.HTTP_OK:
-                    break;
-                case HttpURLConnection.HTTP_BAD_REQUEST:
-                    Log.e("JSONUTILS", "Error 404: BadRequest");
-                    return null;
-                case HttpURLConnection.HTTP_UNAUTHORIZED:
-                    Log.e("JSONUTILS", "Error 401: Unauthorized");
-                    return null;
-
-                case HttpURLConnection.HTTP_FORBIDDEN:
-                    Log.e("JSONUTILS", "Error 403: Forbidden");
-                    return null;
-                case HttpURLConnection.HTTP_NOT_FOUND:
-                    Log.e("JSONUTILS", "Error 404: Not Found");
-
-                case HttpURLConnection.HTTP_UNSUPPORTED_TYPE:
-                    Log.e("JSONUTILS", "Error 415: Unsupported Media Type");
-                    return null;
-                case HttpURLConnection.HTTP_INTERNAL_ERROR:
-                    Log.e("JSONUTILS", "Error 500: Internal Server Error");
-                    return null;
-
-                case HttpURLConnection.HTTP_UNAVAILABLE:
-                    Log.e("JSONUTILS", "Error 503: Service Unavailable");
-                    return null;
-                default:
-                    Log.e("JSONUTILS", "Error XXX: Unexpected error");
-                    return null;
-
-            }
-        }
-
-
-        String summonerName = requestJson.getString("name");
-        long level  = requestJson.getLong("summonerLevel");
-        long revisionDate = requestJson.getLong("revisionDate");
-        long summonerId = requestJson.getLong("id");
-        long accountId = requestJson.getLong("accountId");
-        int profileIconId = requestJson.getInt("profileIconId");
+        String summonerName = requestJSON.getString("name");
+        long level  = requestJSON.getLong("summonerLevel");
+        long revisionDate = requestJSON.getLong("revisionDate");
+        long summonerId = requestJSON.getLong("id");
+        long accountId = requestJSON.getLong("accountId");
+        int profileIconId = requestJSON.getInt("profileIconId");
 
         Summoner summoner = new Summoner();
         summoner.setAccountId(accountId);
@@ -84,54 +42,14 @@ public class JsonUtils {
 
     public static MatchList getMatchListFromJSON(String requestJsonStr) throws JSONException {
 
-        String RIOT_MESSAGE_CODE = "status_code";
 
+        JSONObject requestJSON  = new JSONObject(requestJsonStr);
 
-        JSONObject requestJson = new JSONObject(requestJsonStr);
+        JSONArray matchListJSON = requestJSON.getJSONArray("matches");
 
-        /* Comprobación y busqueda de errores */
-        //TODO metodo que compruebe si ha habido problemas?
-        if (requestJson.has(RIOT_MESSAGE_CODE)) {
-            int errorCode = requestJson.getInt(RIOT_MESSAGE_CODE);
-            Log.v("ERRORCODE", String.valueOf(errorCode));
-            switch (errorCode) {
-                case HttpURLConnection.HTTP_OK:
-                    break;
-                case HttpURLConnection.HTTP_BAD_REQUEST:
-                    Log.e("JSONUTILS", "Error 404: BadRequest");
-                    return null;
-                case HttpURLConnection.HTTP_UNAUTHORIZED:
-                    Log.e("JSONUTILS", "Error 401: Unauthorized");
-                    return null;
-
-                case HttpURLConnection.HTTP_FORBIDDEN:
-                    Log.e("JSONUTILS", "Error 403: Forbidden");
-                    return null;
-                case HttpURLConnection.HTTP_NOT_FOUND:
-                    Log.e("JSONUTILS", "Error 404: Not Found");
-
-                case HttpURLConnection.HTTP_UNSUPPORTED_TYPE:
-                    Log.e("JSONUTILS", "Error 415: Unsupported Media Type");
-                    return null;
-                case HttpURLConnection.HTTP_INTERNAL_ERROR:
-                    Log.e("JSONUTILS", "Error 500: Internal Server Error");
-                    return null;
-
-                case HttpURLConnection.HTTP_UNAVAILABLE:
-                    Log.e("JSONUTILS", "Error 503: Service Unavailable");
-                    return null;
-                default:
-                    Log.e("JSONUTILS", "Error XXX: Unexpected error");
-                    return null;
-
-            }
-        }
-
-        JSONArray matchListJSON = requestJson.getJSONArray("matches");
-
-        int startIndex = requestJson.getInt("startIndex");
-        int endIndex = requestJson.getInt("endIndex");
-        int totalGames = requestJson.getInt("totalGames");
+        int startIndex = requestJSON.getInt("startIndex");
+        int endIndex = requestJSON.getInt("endIndex");
+        int totalGames = requestJSON.getInt("totalGames");
 
 
         List<Match> matches = new ArrayList<>();

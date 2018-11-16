@@ -85,9 +85,60 @@ public class NetworkUtils {
         return url;
     }
 
+    //TODO procesar los limites de llamadas ubicados en el header
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
+
+            int responseCode = urlConnection.getResponseCode();
+            Log.d("NetworkUtils", "Response code: " + responseCode);
+
+            String responseCodeErrorString;
+
+            switch (responseCode) {
+                case HttpURLConnection.HTTP_OK:
+                    break;
+
+                case HttpURLConnection.HTTP_BAD_REQUEST:
+                    responseCodeErrorString = "Error 404: BadRequest";
+                    return responseCodeErrorString;
+
+                case HttpURLConnection.HTTP_UNAUTHORIZED:
+                    responseCodeErrorString = "Error 401: Unauthorized";
+                    return responseCodeErrorString;
+
+                case HttpURLConnection.HTTP_FORBIDDEN:
+                    responseCodeErrorString = "Error 403: Forbidden";
+                    return responseCodeErrorString;
+
+                case HttpURLConnection.HTTP_NOT_FOUND:
+                    responseCodeErrorString = "Error 404: Not Found";
+                    return responseCodeErrorString;
+
+                case HttpURLConnection.HTTP_UNSUPPORTED_TYPE:
+                    responseCodeErrorString = "Error 415: Unsupported Media Type";
+                    return responseCodeErrorString;
+
+                case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                    responseCodeErrorString = "Error 500: Internal Server Error";
+                    return responseCodeErrorString;
+
+                case HttpURLConnection.HTTP_UNAVAILABLE:
+                    responseCodeErrorString = "Error 503: Service Unavailable";
+                    return responseCodeErrorString;
+
+                default:
+                    responseCodeErrorString = "Error XXX: Unexpected error";
+                    return responseCodeErrorString;
+
+            }
+
+            String xMethodRateLimitCount = urlConnection.getHeaderField("X-Method-Rate-Limit-Count");
+            String xAppRateLimitCount = urlConnection.getHeaderField("X-App-Rate-Limit-Count");
+
+            Log.d("NetworkUtils", "Method Rate Limit: " + xMethodRateLimitCount + " para URL " + url.toString());
+            Log.d("NetworkUtils", "App Rate Limit: " +  xAppRateLimitCount);
+
             InputStream in = urlConnection.getInputStream();
 
             Scanner scanner = new Scanner(in);

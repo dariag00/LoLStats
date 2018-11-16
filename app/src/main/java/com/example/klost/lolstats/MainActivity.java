@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -112,7 +113,14 @@ public class MainActivity extends AppCompatActivity {
             MatchList matchList = null;
             try {
                 summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
-                //TODO HTTP ERROR COMPROBATION y multiple async task
+                Log.d("MainActivity", "summonerSearchResults: " + summonerSearchResults);
+
+                if(summonerSearchResults.charAt(0) != '{'){
+                    //Entonces significa que la respuesta no es un JSON y getResponseFromHttpUrl ha devuelto un Error.
+                    return summonerSearchResults;
+                }
+
+                //TODO Multiple async task
                 summoner = JsonUtils.getSummonerFromJSON(summonerSearchResults);
 
                 URL matchlistURL = NetworkUtils.buildUrl(String.valueOf(summoner.getAccountId()), NetworkUtils.GET_MATCHLIST);
