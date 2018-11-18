@@ -1,22 +1,31 @@
 package com.example.klost.lolstats;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Match {
 
-    private String lane;
-    private long gameId;
-    private int championId;
-    private String platformId;
-    private Date date;
-    private int queue;
-    private String role;
-    private int season;
+    //TODO añadir estadisticas del JSON de GET_MATCH
+    //TODO poner en private
+
+    String lane;
+    long gameId;
+    int championId;
+    String platformId;
+    Date date;
+    int queue;
+    String role;
+    int season;
+    Team blueTeam;
+    Team redTeam;
+    //Valor que indica si se ha realizado una consulta sobre ese game para sacar mas informacion
+    boolean isProcessed;
 
     public Match(){
-
+        isProcessed = false;
     }
 
     public int getChampionId() {
@@ -81,6 +90,50 @@ public class Match {
 
     public void setDate(long timestamp) {
         this.date = new Date(timestamp);
+    }
+
+    public boolean isProcessed(){
+        return isProcessed;
+    }
+
+    public void setAsProcessed(){
+        isProcessed = true;
+    }
+
+    public Team getBlueTeam() {
+        return blueTeam;
+    }
+
+    public void setBlueTeam(Team blueTeam) {
+        this.blueTeam = blueTeam;
+    }
+
+    public Team getRedTeam() {
+        return redTeam;
+    }
+
+    public void setRedTeam(Team redTeam) {
+        this.redTeam = redTeam;
+    }
+
+    public Team getTeamOfGivenSummoner(Summoner summoner){
+
+        if(blueTeam.containsSummoner(summoner)){
+            return blueTeam;
+        }else if(redTeam.containsSummoner(summoner)){
+            return redTeam;
+        }
+        //TODO caso que sea null
+        return null;
+    }
+
+    public boolean hasGivenSummonerWon(Summoner summoner){
+        return getTeamOfGivenSummoner(summoner).isWon();
+    }
+    //TODO revisar metodo
+    public Player getPlayer(Summoner summoner){
+        Team team = getTeamOfGivenSummoner(summoner);
+        return team.getPlayer(summoner);
     }
 
     public String toString(){

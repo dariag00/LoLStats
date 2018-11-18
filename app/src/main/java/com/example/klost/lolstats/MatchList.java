@@ -4,6 +4,8 @@ import java.util.List;
 
 public class MatchList {
 
+    //TODO comprobar que al asignar el match sigue estando en MatchList
+
     int totalGames;
     int startIndex;
     int endIndex;
@@ -39,6 +41,13 @@ public class MatchList {
         this.endIndex = endIndex;
     }
 
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
+    }
 
     public String toString(){
         StringBuilder builder = new StringBuilder();

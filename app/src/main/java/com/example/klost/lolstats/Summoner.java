@@ -14,10 +14,16 @@ public class Summoner {
     String summonerName;
     Date revisionDate;
     int profileIconId;
+    MatchList matchList;
 
 
     public Summoner(){
 
+    }
+
+    public Summoner(int accountId, int summonerId){
+        this.accountId = accountId;
+        this.summonerId = summonerId;
     }
 
     public long getAccountId() {
@@ -66,6 +72,14 @@ public class Summoner {
 
     public void setSummonerName(String summonerName) {
         this.summonerName = summonerName;
+    }
+
+    public MatchList getMatchList() {
+        return matchList;
+    }
+
+    public void setMatchList(MatchList matchList) {
+        this.matchList = matchList;
     }
 
     public String toString(){

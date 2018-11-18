@@ -54,11 +54,13 @@
                 <!--TODO: Cuadrar el texto con la linea superior y hacer diseños alternativos-->
 
                 <LinearLayout
+                    android:id="@+id/ly_match_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/ly_match"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -155,21 +157,33 @@
                                         android:id="@+id/tv_kills"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="K/"
+                                        android:text="K"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="13sp" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="/"
                                         android:textColor="@android:color/black"
                                         android:textSize="13sp" />
                                     <TextView
                                         android:id="@+id/tv_deaths"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textColor="@android:color/holo_red_light"
                                         android:text="D"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="13sp" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="/"
+                                        android:textColor="@android:color/black"
                                         android:textSize="13sp" />
                                     <TextView
                                         android:id="@+id/tv_assists"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="/A"
+                                        android:text="A"
                                         android:textColor="@android:color/black"
                                         android:textSize="13sp" />
 

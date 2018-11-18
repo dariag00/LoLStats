@@ -1,6 +1,7 @@
 package com.example.klost.lolstats;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.example.klost.lolstats.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
 
     private String summonerName;
 
+    private LinearLayout matchLayout;
+
+    private TextView killsTextView;
+    private TextView assistsTextView;
+    private TextView deathsTextView;
+
 
 
     @Override
@@ -45,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         errorMessageDisplay =  findViewById(R.id.tv_error_message);
         urlDisplayTextView =  findViewById(R.id.tv_url_display);
         loadingIndicator =  findViewById(R.id.pb_loading_indicator);
+
+        matchLayout = findViewById(R.id.ly_match);
+
+        killsTextView = findViewById(R.id.tv_kills);
+        deathsTextView = findViewById(R.id.tv_deaths);
+        assistsTextView = findViewById(R.id.tv_assists);
+
 
         Button searchButton =  findViewById(R.id.bt_search);
 
@@ -79,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
         searchResultsTextView.setVisibility(View.VISIBLE);
     }
 
+    private void showMatchData(Player player){
+        killsTextView.setText(player.getKills());
+        deathsTextView.setText(player.getDeaths());
+        assistsTextView.setText(player.getAssists());
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -96,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class RiotQueryTask extends AsyncTask<URL, Void, String> {
+    public class RiotQueryTask extends AsyncTask<URL, Void, Summoner> {
 
         @Override
         protected void onPreExecute() {
@@ -105,10 +127,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(URL... urls) {
+        protected Summoner doInBackground(URL... urls) {
             URL searchURL = urls[0];
             String summonerSearchResults;
             String matchlistSearchResults = null;
+            String matchSearchResults = null;
             Summoner summoner = null;
             MatchList matchList = null;
             try {
@@ -117,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(summonerSearchResults.charAt(0) != '{'){
                     //Entonces significa que la respuesta no es un JSON y getResponseFromHttpUrl ha devuelto un Error.
-                    return summonerSearchResults;
+                    return null;
                 }
 
                 //TODO Multiple async task
@@ -127,28 +150,66 @@ public class MainActivity extends AppCompatActivity {
                 matchlistSearchResults = NetworkUtils.getResponseFromHttpUrl(matchlistURL);
                 matchList = JsonUtils.getMatchListFromJSON(matchlistSearchResults);
 
+                summoner.setMatchList(matchList);
+
+
+                List<Match> matchListToProcess = matchList.getMatches();
+                Match match = matchListToProcess.get(0);
+                URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
+                matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL);
+                match = JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
+
+                //TODO sacar los datos del match del summoner concreto
+                //En funcion de si el summoner ha ganado la partida o no cambiamos el color de fondo para reflejarlo
+                boolean gameWon = match.hasGivenSummonerWon(summoner);
+                //TODO buena practica?
+                Player player = match.getPlayer(summoner);
+
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if(summoner != null)
-                return summoner.toString()+ "\n" + matchList.toString();
+                return summoner;
             else
-                return "ERROR 101: Se ha producido un error";
+                return null;
         }
 
         @Override
-        protected void onPostExecute(String riotSearchResults) {
+        protected void onPostExecute(Summoner summoner) {
 
             loadingIndicator.setVisibility(View.INVISIBLE);
-            if(riotSearchResults != null && !riotSearchResults.equals("")){
+            if(summoner != null){
                 showData();
-                searchResultsTextView.setText(riotSearchResults);
+                searchResultsTextView.setText(summoner.toString());
+                MatchList matchList = summoner.getMatchList();
+                List<Match> matches = matchList.getMatches();
+                Match match = matches.get(0);
+                if(match.isProcessed()){
+                    boolean gameWon = match.hasGivenSummonerWon(summoner);
+
+                    if(gameWon) {
+                        matchLayout.setBackgroundColor(Color.parseColor("#4286f4"));
+                    }else {
+                        matchLayout.setBackgroundColor(Color.parseColor("#f44d41"));
+                    }
+
+                    Player player = match.getPlayer(summoner);
+                    killsTextView.setText(String.valueOf(player.getKills()));
+                    deathsTextView.setText(String.valueOf(player.getDeaths()));
+                    assistsTextView.setText(String.valueOf(player.getAssists()));
+                }else{
+                    killsTextView.setText("ERROR");
+                }
             }else{
                 showErrorMessage();
             }
 
         }
+
+
     }
 
 }

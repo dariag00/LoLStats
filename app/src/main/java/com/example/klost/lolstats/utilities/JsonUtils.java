@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.example.klost.lolstats.Match;
 import com.example.klost.lolstats.MatchList;
+import com.example.klost.lolstats.Player;
 import com.example.klost.lolstats.Summoner;
+import com.example.klost.lolstats.Team;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +89,121 @@ public class JsonUtils {
         matchList.setTotalGames(totalGames);
 
         return matchList;
+    }
+
+    public static Match getMatchFromJSON(String requestJsonStr, Match match) throws JSONException {
+        //TODO revisar si es mejor no pasar match
+
+
+        JSONObject requestJSON = new JSONObject(requestJsonStr);
+
+        JSONArray participantIdentitiesJSON = requestJSON.getJSONArray("participantIdentities");
+
+        List<Player> playerList = new ArrayList<>();
+        //Procesado de los datos de las identidades de los jugadores
+        Log.d("JsonUtils", String.valueOf(participantIdentitiesJSON.length()));
+        for(int i = 0; i<participantIdentitiesJSON.length(); i++){
+
+            JSONObject participantIdentityJSON = participantIdentitiesJSON.getJSONObject(i);
+
+            int participantId = participantIdentityJSON.getInt("participantId");
+            JSONObject playerJSON = participantIdentityJSON.getJSONObject("player");
+            //TODO implementar Summoner info
+
+            int accountId = playerJSON.getInt("accountId");
+            int summonerId = playerJSON.getInt("summonerId");
+            Summoner summoner = new Summoner(accountId, summonerId);
+
+            Player player = new Player(participantId);
+            player.setSummoner(summoner);
+            playerList.add(player);
+            Log.d("JsonUtils", "Añado un player a la lista con acc id " + accountId);
+        }
+
+
+        JSONArray teamsJSON = requestJSON.getJSONArray("teams");
+
+        //Procesado de los datos del team
+        Team blueTeam = new Team();
+        blueTeam.setTeamId(100);
+        Team redTeam= new Team();
+        redTeam.setTeamId(200);
+        for(int i=0; i<teamsJSON.length(); i++){
+            //TODO procesar el resto de datos del Team
+            JSONObject teamJSON = teamsJSON.getJSONObject(i);
+
+            //Si el id es 100 el equipo jugó en el lado azul, si es 200, en el rojo
+            int teamId = teamJSON.getInt("teamId");
+            String win = teamJSON.getString("win");
+            Log.d("JSONUTILS", "Team: " + teamId + " game result: " + win);
+
+            if(teamId == 100){
+                blueTeam.setWin(win);
+            }else if(teamId == 200){
+                redTeam.setWin(win);
+            }
+        }
+
+        JSONArray participantsJSON = requestJSON.getJSONArray("participants");
+
+        for(int i=0; i<participantsJSON.length(); i++){
+            JSONObject participantJSON = participantsJSON.getJSONObject(i);
+            //TODO procesar el resto de datos del Participant
+            int spell1Id = participantJSON.getInt("spell1Id");
+            int spell2Id = participantJSON.getInt("spell2Id");
+            int teamId = participantJSON.getInt("teamId");
+            int championId = participantJSON.getInt("championId");
+            int participantId = participantJSON.getInt("participantId");
+
+            //Array que contiene las estadísticas de un jugador en la partida
+            JSONObject statsJSON = participantJSON.getJSONObject("stats");
+
+            long visionScore = statsJSON.getLong("visionScore");
+
+            int kills = statsJSON.getInt("kills");
+            int deaths = statsJSON.getInt("deaths");
+            int assists = statsJSON.getInt("assists");
+
+            long totalDamageDealtToChampions = statsJSON.getLong("totalDamageDealtToChampions");
+
+
+            for(Player player : playerList){
+                if(player.getParticipantId() == participantId){
+
+                    player.setSpell1Id(spell1Id);
+                    player.setSpell2Id(spell2Id);
+                    player.setChampionId(championId);
+                    player.setTeamId(teamId);
+
+                    player.setKills(kills);
+                    Log.d("JsonUtils", "PLayer kda: " + kills + " "+deaths+ " " + assists);
+                    player.setDeaths(deaths);
+                    player.setAssists(assists);
+
+                    //player.setVisionScore(visionScore);
+                    player.setTotalDamageDealtToChampions(totalDamageDealtToChampions);
+
+                    Log.d("JsonUtils", "ID DEL TEAM; " + String.valueOf(teamId));
+                    //Determinamos el equipo del jugador
+                    if(teamId == blueTeam.getTeamId()){
+                        Log.d("JsonUtils", "AÑADO UN PLAYER al equipo azul" + player.toString());
+                        blueTeam.addPlayer(player);
+                    }else if(teamId == redTeam.getTeamId()){
+                        Log.d("JsonUtils", "AÑADO UN PLAYER al equipo rojo" + player.toString());
+                        redTeam.addPlayer(player);
+                    }else{
+                        Log.d("JsonUtils", "EL objeto es nulo");
+                    }
+                }
+            }
+
+        }
+
+        match.setBlueTeam(blueTeam);
+        match.setRedTeam(redTeam);
+        match.setAsProcessed();
+
+        return match;
     }
 
 
