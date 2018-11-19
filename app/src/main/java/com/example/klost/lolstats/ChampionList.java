@@ -25,4 +25,13 @@ public class ChampionList {
         }
         return null;
     }
+
+    public Champion getChampionById(int id){
+        for(Champion ch : champions){
+            if(ch.getChampionId() == id){
+                return ch;
+            }
+        }
+        return null;
+    }
 }

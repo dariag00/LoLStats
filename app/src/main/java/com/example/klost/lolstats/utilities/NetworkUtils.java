@@ -18,7 +18,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-32fbdbda-15e0-4a1b-9a4b-00a8f5787577";
+    private final static String RIOT_API_KEY = "RGAPI-fffd173e-32cb-49f8-b7e0-7f1c6585950a";
 
     private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 
@@ -40,7 +40,7 @@ public class NetworkUtils {
 
     private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
 
-    private final static String DDRAGON_GET_DATA = "/data/en_Us/";
+    private final static String DDRAGON_GET_DATA = "/data/en_US/";
 
 
     public final static int GET_SUMMONER = 0;
@@ -106,7 +106,7 @@ public class NetworkUtils {
             case GET_DDRAGON_CHAMPION_IMAGE:
                 path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_CHAMPION_IMAGE;
                 builtUri = Uri.parse(path).buildUpon()
-                        .appendPath(riotSearchQuery + DDRAGON_IMAGE_FORMAT)
+                        .appendPath(riotSearchQuery)
                         .build();
                 break;
 

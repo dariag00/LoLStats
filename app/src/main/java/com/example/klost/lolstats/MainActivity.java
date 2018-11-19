@@ -17,10 +17,17 @@ import android.widget.TextView;
 
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView assistsTextView;
     private TextView deathsTextView;
 
+    private ChampionList championList;
+    private de.hdodenhof.circleimageview.CircleImageView championImageView;
+
 
 
     @Override
@@ -61,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
         deathsTextView = findViewById(R.id.tv_deaths);
         assistsTextView = findViewById(R.id.tv_assists);
 
+        championImageView = findViewById(R.id.iv_champion_icon);
+
+        URL championUrl = NetworkUtils.buildUrl("champion",NetworkUtils.GET_DDRAGON_DATA);
+        Log.d("MainActivity", "URL: " + championUrl.toString());
+
+        new ReadTextTask().execute(championUrl);
+
 
         Button searchButton =  findViewById(R.id.bt_search);
 
@@ -76,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         Intent previousIntent = getIntent();
         summonerName = previousIntent.getStringExtra(InitialActivity.EXTRA_SUMMONER_NAME);
         makeRiotSearchQuery(summonerName);
+
     }
 
     private void makeRiotSearchQuery(String searchQuery){
@@ -197,9 +215,15 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     Player player = match.getPlayer(summoner);
+                    int championId = player.getChampionId();
+                    //TODO hacer para que no halla problemas con la asyncronia
+                    Champion champion = championList.getChampionById(championId);
                     killsTextView.setText(String.valueOf(player.getKills()));
                     deathsTextView.setText(String.valueOf(player.getDeaths()));
                     assistsTextView.setText(String.valueOf(player.getAssists()));
+
+                    URL url = NetworkUtils.buildUrl(champion.getImageFileName(), NetworkUtils.GET_DDRAGON_CHAMPION_IMAGE);
+                    Picasso.get().load(url.toString()).into(championImageView);
                 }else{
                     killsTextView.setText("ERROR");
                 }
@@ -210,6 +234,36 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+
+    private class ReadTextTask extends AsyncTask<URL, Void, String> {
+        @Override
+        protected String doInBackground(URL... urls) {
+            String str = null;
+            try {
+                // Read all the text returned by the server
+                BufferedReader in = new BufferedReader(new InputStreamReader(urls[0].openStream()));
+                str = in.readLine();
+                in.close();
+            }
+            catch (IOException e) {
+                // ** do something here **
+            }
+            return str;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            Log.d("ReadTextTask", "resultado" + result);
+
+            try {
+                 championList = JsonUtils.getChampionListFromJSON(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

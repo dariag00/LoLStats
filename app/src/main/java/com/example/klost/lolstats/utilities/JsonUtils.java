@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class JsonUtils {
@@ -208,7 +209,7 @@ public class JsonUtils {
         return match;
     }
 
-    public ChampionList getChampionFromJSON(String requestJsonStr) throws JSONException {
+    public static ChampionList getChampionListFromJSON(String requestJsonStr) throws JSONException {
 
         ChampionList championList = new ChampionList();
 
@@ -216,7 +217,16 @@ public class JsonUtils {
 
         JSONObject data = requestJSON.getJSONObject("data");
         //Transformo el Json object data en un json array
-        JSONArray dataArray = new JSONArray(data.toString());
+        //JSONArray dataArray = new JSONArray(data.toString());
+
+        Iterator x = data.keys();
+        JSONArray dataArray = new JSONArray();
+
+        while (x.hasNext()){
+            String key = (String) x.next();
+            dataArray.put(data.get(key));
+        }
+
 
         for(int i=0; i<dataArray.length(); i++){
             JSONObject championJSON = dataArray.getJSONObject(i);
@@ -234,7 +244,7 @@ public class JsonUtils {
             //TODO parsear tags, estadisticas y el resto de información
 
             championList.addChampion(champion);
-
+            Log.d("JsonUtils", "Añado: " + champion.toString());
         }
 
         return championList;
