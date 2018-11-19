@@ -155,7 +155,7 @@ public class Match {
         builder.append(date);
         builder.append("\n");
 
-        builder.append("Champion: ");
+        builder.append("com.example.klost.lolstats.Champion: ");
         builder.append(this.championId);
         builder.append("\n");
 

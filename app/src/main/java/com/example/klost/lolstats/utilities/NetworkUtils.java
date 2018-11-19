@@ -18,19 +18,30 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    final static String RIOT_API_KEY = "RGAPI-32fbdbda-15e0-4a1b-9a4b-00a8f5787577";
+    private final static String RIOT_API_KEY = "RGAPI-32fbdbda-15e0-4a1b-9a4b-00a8f5787577";
 
-    final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
+    private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 
-    final static String PARAM_KEY = "api_key";
+    private final static String PARAM_KEY = "api_key";
 
-    final static String RIOT_BASE = "https://euw1.api.riotgames.com";
+    private final static String RIOT_BASE = "https://euw1.api.riotgames.com";
 
-    final static String RIOT_GET_MATCHLIST = "/lol/match/v3/matchlists/by-account";
+    private final static String RIOT_GET_MATCHLIST = "/lol/match/v3/matchlists/by-account";
 
-    final static String RIOT_GET_MATCH = "/lol/match/v3/matches";
+    private final static String RIOT_GET_MATCH = "/lol/match/v3/matches";
 
-    final static String RIOT_GET_SUMMONER = "/lol/summoner/v3/summoners/by-name";
+    private final static String RIOT_GET_SUMMONER = "/lol/summoner/v3/summoners/by-name";
+
+    private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
+
+    private final static String DDRAGON_VERSION = "6.24.1";
+
+    private final static String DDRAGON_IMAGE_FORMAT = ".png";
+
+    private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
+
+    private final static String DDRAGON_GET_DATA = "/data/en_Us/";
+
 
     public final static int GET_SUMMONER = 0;
 
@@ -39,7 +50,17 @@ public class NetworkUtils {
     public final static int GET_MATCH = 2;
 
     public final static int GET_MATCH_TIMELINE = 3;
-    
+
+    public final static int GET_DDRAGON_CHAMPION_IMAGE = 4;
+
+    public final static int GET_DDRAGON_ITEM = 5;
+
+    public final static int GET_DDRAGON_PROFILE_ICON = 6;
+
+    public final static int GET_DDRAGON_SUMMONER_SPELL_ICON = 7;
+
+    public final static int GET_DDRAGON_DATA = 8;
+
     //TODO documentar los metodos
     //TODO buscar si path = X + Y es realmente la solucion
     public static URL buildUrl(String riotSearchQuery, int requestType){
@@ -54,6 +75,7 @@ public class NetworkUtils {
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
                         .build();
                 break;
+
             case GET_MATCHLIST:
                 path = RIOT_BASE + RIOT_GET_MATCHLIST;
                 builtUri = Uri.parse(path).buildUpon()
@@ -61,6 +83,7 @@ public class NetworkUtils {
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
                         .build();
                 break;
+
             case GET_MATCH:
                 path = RIOT_BASE +RIOT_GET_MATCH;
                 builtUri = Uri.parse(path).buildUpon()
@@ -68,10 +91,41 @@ public class NetworkUtils {
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
                         .build();
                 break;
+
             case GET_MATCH_TIMELINE:
+                //Not supported yet
                 return null;
+
+            case GET_DDRAGON_DATA:
+                path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_DATA;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery + ".json")
+                        .build();
+                break;
+
+            case GET_DDRAGON_CHAMPION_IMAGE:
+                path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_CHAMPION_IMAGE;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery + DDRAGON_IMAGE_FORMAT)
+                        .build();
+                break;
+
+            case GET_DDRAGON_ITEM:
+                //Not supported yet
+                return null;
+
+            case GET_DDRAGON_PROFILE_ICON:
+                //Not supported yet
+                return null;
+
+            case GET_DDRAGON_SUMMONER_SPELL_ICON:
+                //Not supported yet
+                return null;
+
             default:
+                //Not supported yet
                 return null;
+
         }
 
         URL url = null;

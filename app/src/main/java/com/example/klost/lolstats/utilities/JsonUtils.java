@@ -3,6 +3,8 @@ package com.example.klost.lolstats.utilities;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.klost.lolstats.Champion;
+import com.example.klost.lolstats.ChampionList;
 import com.example.klost.lolstats.Match;
 import com.example.klost.lolstats.MatchList;
 import com.example.klost.lolstats.Player;
@@ -205,6 +207,39 @@ public class JsonUtils {
 
         return match;
     }
+
+    public ChampionList getChampionFromJSON(String requestJsonStr) throws JSONException {
+
+        ChampionList championList = new ChampionList();
+
+        JSONObject requestJSON = new JSONObject(requestJsonStr);
+
+        JSONObject data = requestJSON.getJSONObject("data");
+        //Transformo el Json object data en un json array
+        JSONArray dataArray = new JSONArray(data.toString());
+
+        for(int i=0; i<dataArray.length(); i++){
+            JSONObject championJSON = dataArray.getJSONObject(i);
+            String id = championJSON.getString("id");
+            int key = championJSON.getInt("key"); //Nombre del Campeón
+            String title = championJSON.getString("title");
+
+            JSONObject imageJSON = championJSON.getJSONObject("image");
+            String imageFileName = imageJSON.getString("full");
+
+            Champion champion = new Champion(key, id);
+            champion.setTitle(title);
+            champion.setImageFileName(imageFileName);
+
+            //TODO parsear tags, estadisticas y el resto de información
+
+            championList.addChampion(champion);
+
+        }
+
+        return championList;
+    }
+
 
 
 
