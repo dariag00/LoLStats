@@ -5,8 +5,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.example.klost.lolstats.utilities.NetworkUtils;
+import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -70,12 +72,12 @@ public class Champion {
         this.image = image;
     }
 
-    /*//TODO añadir todo lo que salga de internet en un hilo nuevo
-    public void loadImageFromDDragon() {
+    //TODO añadir todo lo que salga de internet en un hilo nuevo
+    public void loadImageFromDDragon(ImageView imageView) {
         URL url = NetworkUtils.buildUrl(this.imageFileName, NetworkUtils.GET_DDRAGON_CHAMPION_IMAGE);
         Log.d("Champion", "URL: " + url.toString());
-        new DownloadImageTask().execute(url);
-    }*/
+        Picasso.get().load(url.toString()).into(imageView);
+    }
 
     public String toString(){
 

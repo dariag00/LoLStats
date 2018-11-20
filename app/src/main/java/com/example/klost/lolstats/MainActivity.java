@@ -17,19 +17,21 @@ import android.widget.TextView;
 
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
 
-import static java.security.AccessController.getContext;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = "MainActivity";
 
     private EditText searchBoxEditText;
 
@@ -39,20 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView urlDisplayTextView;
 
-    private ProgressBar loadingIndicator;
-
     private String summonerName;
 
-    private LinearLayout matchLayout;
-
-    private TextView killsTextView;
-    private TextView assistsTextView;
-    private TextView deathsTextView;
-
-    private ChampionList championList;
-    private de.hdodenhof.circleimageview.CircleImageView championImageView;
-
-
+    private static ChampionList championList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,18 +51,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         searchBoxEditText =  findViewById(R.id.et_search_box);
-        searchResultsTextView =  findViewById(R.id.tv_riot_search_resutls_json);
-        errorMessageDisplay =  findViewById(R.id.tv_error_message);
         urlDisplayTextView =  findViewById(R.id.tv_url_display);
-        loadingIndicator =  findViewById(R.id.pb_loading_indicator);
-
-        matchLayout = findViewById(R.id.ly_match);
-
-        killsTextView = findViewById(R.id.tv_kills);
-        deathsTextView = findViewById(R.id.tv_deaths);
-        assistsTextView = findViewById(R.id.tv_assists);
-
-        championImageView = findViewById(R.id.iv_champion_icon);
+        errorMessageDisplay = findViewById(R.id.tv_error_message);
+        searchResultsTextView = findViewById(R.id.tv_riot_search_resutls_json);
 
         URL championUrl = NetworkUtils.buildUrl("champion",NetworkUtils.GET_DDRAGON_DATA);
         Log.d("MainActivity", "URL: " + championUrl.toString());
@@ -100,24 +82,9 @@ public class MainActivity extends AppCompatActivity {
         URL riotSearchUrl = NetworkUtils.buildUrl(searchQuery, NetworkUtils.GET_SUMMONER);
         URL prueba = NetworkUtils.buildUrl("123456", NetworkUtils.GET_MATCHLIST);
         urlDisplayTextView.setText(prueba.toString()+ "\n" + riotSearchUrl);
-        new RiotQueryTask().execute(riotSearchUrl);
+        new RiotQueryTask(this).execute(riotSearchUrl);
     }
 
-    private void showErrorMessage(){
-        searchResultsTextView.setVisibility(View.INVISIBLE);
-        errorMessageDisplay.setVisibility(View.VISIBLE);
-    }
-
-    private void showData(){
-        errorMessageDisplay.setVisibility(View.INVISIBLE);
-        searchResultsTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void showMatchData(Player player){
-        killsTextView.setText(player.getKills());
-        deathsTextView.setText(player.getDeaths());
-        assistsTextView.setText(player.getAssists());
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,53 +103,65 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class RiotQueryTask extends AsyncTask<URL, Void, Summoner> {
+    public static class RiotQueryTask extends AsyncTask<URL, Void, Summoner> {
+
+        private WeakReference<MainActivity> activityReference;
+
+        RiotQueryTask(MainActivity context){
+            //TODO estudiar el impacto que tiene esto en la memoria y si no usar SoftReference
+            activityReference = new WeakReference<>(context);
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            MainActivity activity = activityReference.get();
+            ProgressBar loadingIndicator = activity.findViewById(R.id.pb_loading_indicator);
             loadingIndicator.setVisibility(View.VISIBLE);
+            TextView searchResultsTextView =  activity.findViewById(R.id.tv_riot_search_resutls_json);
         }
 
         @Override
         protected Summoner doInBackground(URL... urls) {
             URL searchURL = urls[0];
             String summonerSearchResults;
-            String matchlistSearchResults = null;
-            String matchSearchResults = null;
+            String matchListSearchResults;
+            String matchSearchResults;
             Summoner summoner = null;
-            MatchList matchList = null;
+            MatchList matchList;
             try {
                 summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
                 Log.d("MainActivity", "summonerSearchResults: " + summonerSearchResults);
 
                 if(summonerSearchResults.charAt(0) != '{'){
                     //Entonces significa que la respuesta no es un JSON y getResponseFromHttpUrl ha devuelto un Error.
+                    Log.e(LOG_TAG, "Error: La respuesta no es un JSON y getResponseFromHttpUrl ha devuelto un Error");
+                    //TODO conseguir diferenciar los errores
                     return null;
                 }
 
                 //TODO Multiple async task
                 summoner = JsonUtils.getSummonerFromJSON(summonerSearchResults);
 
-                URL matchlistURL = NetworkUtils.buildUrl(String.valueOf(summoner.getAccountId()), NetworkUtils.GET_MATCHLIST);
-                matchlistSearchResults = NetworkUtils.getResponseFromHttpUrl(matchlistURL);
-                matchList = JsonUtils.getMatchListFromJSON(matchlistSearchResults);
+                URL matchListURL = NetworkUtils.buildUrl(String.valueOf(summoner.getAccountId()), NetworkUtils.GET_MATCHLIST);
+                if(matchListURL != null){
+                    matchListSearchResults = NetworkUtils.getResponseFromHttpUrl(matchListURL);
+                    matchList = JsonUtils.getMatchListFromJSON(matchListSearchResults);
+                    summoner.setMatchList(matchList);
 
-                summoner.setMatchList(matchList);
+                    List<Match> matchListToProcess = matchList.getMatches();
+                    Match match = matchListToProcess.get(0);
+                    URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
+                    if(getMatchURL != null){
+                        matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL);
+                        JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
+                    }else{
+                        return null;
+                    }
 
-
-                List<Match> matchListToProcess = matchList.getMatches();
-                Match match = matchListToProcess.get(0);
-                URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
-                matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL);
-                match = JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
-
-                //TODO sacar los datos del match del summoner concreto
-                //En funcion de si el summoner ha ganado la partida o no cambiamos el color de fondo para reflejarlo
-                boolean gameWon = match.hasGivenSummonerWon(summoner);
-                //TODO buena practica?
-                Player player = match.getPlayer(summoner);
-
+                }else{
+                    return null;
+                }
 
 
             } catch (Exception e) {
@@ -198,9 +177,24 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Summoner summoner) {
 
+            MainActivity activity = activityReference.get();
+
+            if(activity == null || activity.isFinishing())
+                return;
+            ProgressBar loadingIndicator = activity.findViewById(R.id.pb_loading_indicator);
             loadingIndicator.setVisibility(View.INVISIBLE);
             if(summoner != null){
-                showData();
+                showData(activity);
+
+                TextView searchResultsTextView = activity.findViewById(R.id.tv_riot_search_resutls_json);
+                LinearLayout matchLayout = activity.findViewById(R.id.ly_match);
+
+                TextView killsTextView = activity.findViewById(R.id.tv_kills);
+                TextView deathsTextView = activity.findViewById(R.id.tv_deaths);
+                TextView assistsTextView = activity.findViewById(R.id.tv_assists);
+
+                CircleImageView championImageView = activity.findViewById(R.id.iv_champion_icon);
+
                 searchResultsTextView.setText(summoner.toString());
                 MatchList matchList = summoner.getMatchList();
                 List<Match> matches = matchList.getMatches();
@@ -218,19 +212,33 @@ public class MainActivity extends AppCompatActivity {
                     int championId = player.getChampionId();
                     //TODO hacer para que no halla problemas con la asyncronia
                     Champion champion = championList.getChampionById(championId);
+                    champion.loadImageFromDDragon(championImageView);
                     killsTextView.setText(String.valueOf(player.getKills()));
                     deathsTextView.setText(String.valueOf(player.getDeaths()));
                     assistsTextView.setText(String.valueOf(player.getAssists()));
-
-                    URL url = NetworkUtils.buildUrl(champion.getImageFileName(), NetworkUtils.GET_DDRAGON_CHAMPION_IMAGE);
-                    Picasso.get().load(url.toString()).into(championImageView);
                 }else{
                     killsTextView.setText("ERROR");
                 }
             }else{
-                showErrorMessage();
+                showErrorMessage(activity);
             }
 
+        }
+
+        private void showData(MainActivity activity){
+            TextView errorMessageDisplay = activity.findViewById(R.id.tv_error_message);
+            TextView searchResultsTextView = activity.findViewById(R.id.tv_riot_search_resutls_json);
+
+            errorMessageDisplay.setVisibility(View.INVISIBLE);
+            searchResultsTextView.setVisibility(View.VISIBLE);
+        }
+
+        private void showErrorMessage(MainActivity activity){
+            TextView errorMessageDisplay = activity.findViewById(R.id.tv_error_message);
+            TextView searchResultsTextView = activity.findViewById(R.id.tv_riot_search_resutls_json);
+
+            searchResultsTextView.setVisibility(View.INVISIBLE);
+            errorMessageDisplay.setVisibility(View.VISIBLE);
         }
 
 
