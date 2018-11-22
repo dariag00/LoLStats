@@ -72,7 +72,14 @@ public class Champion {
         this.image = image;
     }
 
-    //TODO añadir todo lo que salga de internet en un hilo nuevo
+    @Override
+    public boolean equals(Object obj) {
+        Champion champion = (Champion) obj;
+        return champion.getChampionId() == this.getChampionId();
+    }
+
+
+    //TODO comprobar que picasso utilice un hilo nuevo
     public void loadImageFromDDragon(ImageView imageView) {
         URL url = NetworkUtils.buildUrl(this.imageFileName, NetworkUtils.GET_DDRAGON_CHAMPION_IMAGE);
         Log.d("Champion", "URL: " + url.toString());
@@ -85,7 +92,7 @@ public class Champion {
 
         builder.append("Id: ");
         builder.append(this.championId);
-        builder.append("\n");
+        builder.append(" + ");
 
         builder.append("Name: ");
         builder.append(this.name);
@@ -93,28 +100,4 @@ public class Champion {
 
         return builder.toString();
     }
-
-
-    /*private class DownloadImageTask extends AsyncTask<URL, Void, Bitmap> {
-
-        protected Bitmap doInBackground(URL... urls) {
-            URL url = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                //TODO fix this
-                InputStream in = new java.net.URL(url.toString()).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error Champion", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            Log.d("Champion", result.toString());
-            setImage(result);
-        }
-    }*/
-
 }

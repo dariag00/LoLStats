@@ -19,7 +19,7 @@ public class ChampionList {
 
     public Champion getChampion(Champion champion){
         for(Champion ch : champions){
-            if(ch.getChampionId() == champion.getChampionId()){
+            if(champion.equals(ch)){
                 return ch;
             }
         }

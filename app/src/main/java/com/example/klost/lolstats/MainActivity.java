@@ -11,10 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.klost.lolstats.Runes.Rune;
+import com.example.klost.lolstats.Runes.RuneList;
+import com.example.klost.lolstats.Runes.RunePath;
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 
@@ -29,21 +33,22 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
+
+    //TODO comprobar conexión a internet
+    //TODO crear clase que ejecute todas las requests de datos estaticos
 
     private static final String LOG_TAG = "MainActivity";
 
     private EditText searchBoxEditText;
-
-    private TextView searchResultsTextView;
-
-    private TextView errorMessageDisplay;
 
     private TextView urlDisplayTextView;
 
     private String summonerName;
 
     private static ChampionList championList;
+    private static SummonerSpellList summonerSpellList;
+    private static RuneList runeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +57,24 @@ public class MainActivity extends AppCompatActivity {
 
         searchBoxEditText =  findViewById(R.id.et_search_box);
         urlDisplayTextView =  findViewById(R.id.tv_url_display);
-        errorMessageDisplay = findViewById(R.id.tv_error_message);
-        searchResultsTextView = findViewById(R.id.tv_riot_search_resutls_json);
 
-        URL championUrl = NetworkUtils.buildUrl("champion",NetworkUtils.GET_DDRAGON_DATA);
-        Log.d("MainActivity", "URL: " + championUrl.toString());
+        URL championsUrl = NetworkUtils.buildUrl("champion",NetworkUtils.GET_DDRAGON_DATA);
+        Log.d(LOG_TAG, "URL: " + championsUrl.toString());
 
-        new ReadTextTask().execute(championUrl);
+        ReadTextTask championsTextTask = new ReadTextTask(this);
+        championsTextTask.execute(championsUrl);
+
+        URL summonerSpellsUrl = NetworkUtils.buildUrl("summoner", NetworkUtils.GET_DDRAGON_DATA);
+        Log.d(LOG_TAG, "URL: " + summonerSpellsUrl.toString());
+
+        ReadTextTask spellsTextTask = new ReadTextTask(this);
+        spellsTextTask.execute(summonerSpellsUrl);
+
+        URL runesUrl = NetworkUtils.buildUrl("runesReforged", NetworkUtils.GET_DDRAGON_DATA);
+        Log.d(LOG_TAG, "URL: " + runesUrl.toString());
+
+        ReadTextTask runesTextTask = new ReadTextTask(this);
+        runesTextTask.execute(runesUrl);
 
 
         Button searchButton =  findViewById(R.id.bt_search);
@@ -76,6 +92,33 @@ public class MainActivity extends AppCompatActivity {
         summonerName = previousIntent.getStringExtra(InitialActivity.EXTRA_SUMMONER_NAME);
         makeRiotSearchQuery(summonerName);
 
+    }
+
+    @Override
+    public void onTaskCompleted(String result, String dataType) {
+
+        Log.d(LOG_TAG, "DATA TYPE: " + dataType);
+
+        try {
+            if(dataType != null) {
+                switch (dataType) {
+                    case "summoner":
+                        summonerSpellList = JsonUtils.getSpellListFromJSON(result);
+                        break;
+                    case "champion":
+                        championList = JsonUtils.getChampionListFromJSON(result);
+                        break;
+                    //TODO problema con las runes
+                }
+            }else{
+                //TODO fix this
+                Log.d(LOG_TAG, "dataType es null");
+                runeList = JsonUtils.getRuneListFromJSON(result);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void makeRiotSearchQuery(String searchQuery){
@@ -118,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
             MainActivity activity = activityReference.get();
             ProgressBar loadingIndicator = activity.findViewById(R.id.pb_loading_indicator);
             loadingIndicator.setVisibility(View.VISIBLE);
-            TextView searchResultsTextView =  activity.findViewById(R.id.tv_riot_search_resutls_json);
         }
 
         @Override
@@ -131,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             MatchList matchList;
             try {
                 summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
-                Log.d("MainActivity", "summonerSearchResults: " + summonerSearchResults);
+                Log.d(LOG_TAG, "summonerSearchResults: " + summonerSearchResults);
 
                 if(summonerSearchResults.charAt(0) != '{'){
                     //Entonces significa que la respuesta no es un JSON y getResponseFromHttpUrl ha devuelto un Error.
@@ -195,11 +237,19 @@ public class MainActivity extends AppCompatActivity {
 
                 CircleImageView championImageView = activity.findViewById(R.id.iv_champion_icon);
 
+                ImageView firstSummonerSpellIconView = activity.findViewById(R.id.iv_first_summoner);
+                ImageView secondSummonerSpellIconView = activity.findViewById(R.id.iv_second_summoner);
+
+                ImageView mainRuneView = activity.findViewById(R.id.iv_main_rune);
+                ImageView secondaryRuneView = activity.findViewById(R.id.iv_secondary_rune);
+
                 searchResultsTextView.setText(summoner.toString());
                 MatchList matchList = summoner.getMatchList();
                 List<Match> matches = matchList.getMatches();
                 Match match = matches.get(0);
+
                 if(match.isProcessed()){
+                    //Comprobamos que el game ha sido analizado y mostramos en la UI la información extraida
                     boolean gameWon = match.hasGivenSummonerWon(summoner);
 
                     if(gameWon) {
@@ -210,12 +260,28 @@ public class MainActivity extends AppCompatActivity {
 
                     Player player = match.getPlayer(summoner);
                     int championId = player.getChampionId();
-                    //TODO hacer para que no halla problemas con la asyncronia
+
+                    //TODO revisar posibles problemas con asyncronia(Firebase?)
                     Champion champion = championList.getChampionById(championId);
                     champion.loadImageFromDDragon(championImageView);
+
+                    SummonerSpell firstSummonerSpell = summonerSpellList.getSpellById(player.getSpell1Id());
+                    firstSummonerSpell.loadImageFromDDragon(firstSummonerSpellIconView);
+
+                    SummonerSpell secondSummonerSpell = summonerSpellList.getSpellById(player.getSpell2Id());
+                    secondSummonerSpell.loadImageFromDDragon(secondSummonerSpellIconView);
+
+                    Rune mainRune = runeList.getRuneById(player.getRune1());
+                    mainRune.loadImageFromDDragon(mainRuneView);
+
+                    RunePath secondaryRune = runeList.getRunePathById(player.getRuneSecondaryStyle());
+                    Log.d(LOG_TAG, "H:" + player.getRuneSecondaryStyle());
+                    secondaryRune.loadImageFromDDragon(secondaryRuneView);
+
                     killsTextView.setText(String.valueOf(player.getKills()));
                     deathsTextView.setText(String.valueOf(player.getDeaths()));
                     assistsTextView.setText(String.valueOf(player.getAssists()));
+
                 }else{
                     killsTextView.setText("ERROR");
                 }
@@ -245,7 +311,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class ReadTextTask extends AsyncTask<URL, Void, String> {
+    private static class ReadTextTask extends AsyncTask<URL, Void, String> {
+
+        OnTaskCompleted listener;
+
+        public ReadTextTask(OnTaskCompleted listener){
+            this.listener=listener;
+        }
+
         @Override
         protected String doInBackground(URL... urls) {
             String str = null;
@@ -266,12 +339,18 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("ReadTextTask", "resultado" + result);
 
+            String dataType = null;
+
             try {
-                 championList = JsonUtils.getChampionListFromJSON(result);
+                dataType = JsonUtils.getDataTypeFromJSON(result);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            listener.onTaskCompleted(result, dataType);
+
         }
+
     }
 
 }

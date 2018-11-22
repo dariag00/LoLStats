@@ -18,6 +18,18 @@ public class Player {
     int kills;
     long totalDamageDealtToChampions;
 
+    //TEMPORAL
+    int runePrimaryStyle;
+    int runeSecondaryStyle;
+
+    int rune0;
+    int rune1;
+    int rune2;
+    int rune3;
+
+    int rune4;
+    int rune5;
+
     public Player(){
 
     }
@@ -136,6 +148,71 @@ public class Player {
 
     public void setTotalDamageDealtToChampions(long totalDamageDealtToChampions) {
         this.totalDamageDealtToChampions = totalDamageDealtToChampions;
+    }
+
+    //TEMPORAL
+    public int getRunePrimaryStyle() {
+        return runePrimaryStyle;
+    }
+
+    public void setRunePrimaryStyle(int runePrimaryStyle) {
+        this.runePrimaryStyle = runePrimaryStyle;
+    }
+
+    public int getRuneSecondaryStyle() {
+        return runeSecondaryStyle;
+    }
+
+    public void setRuneSecondaryStyle(int runeSecondaryStyle) {
+        this.runeSecondaryStyle = runeSecondaryStyle;
+    }
+
+    public int getRune0() {
+        return rune0;
+    }
+
+    public void setRune0(int rune0) {
+        this.rune0 = rune0;
+    }
+
+    public int getRune1() {
+        return rune1;
+    }
+
+    public void setRune1(int rune1) {
+        this.rune1 = rune1;
+    }
+
+    public int getRune2() {
+        return rune2;
+    }
+
+    public void setRune2(int rune2) {
+        this.rune2 = rune2;
+    }
+
+    public int getRune3() {
+        return rune3;
+    }
+
+    public void setRune3(int rune3) {
+        this.rune3 = rune3;
+    }
+
+    public int getRune4() {
+        return rune4;
+    }
+
+    public void setRune4(int rune4) {
+        this.rune4 = rune4;
+    }
+
+    public int getRune5() {
+        return rune5;
+    }
+
+    public void setRune5(int rune5) {
+        this.rune5 = rune5;
     }
 
     public String toString(){

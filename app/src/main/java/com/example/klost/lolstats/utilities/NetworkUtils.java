@@ -18,7 +18,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-fffd173e-32cb-49f8-b7e0-7f1c6585950a";
+    private final static String RIOT_API_KEY = "RGAPI-a0b6a418-1051-48b2-bbd1-7cd880043ae4";
 
     private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 
@@ -34,11 +34,14 @@ public class NetworkUtils {
 
     private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
 
-    private final static String DDRAGON_VERSION = "6.24.1";
-
-    private final static String DDRAGON_IMAGE_FORMAT = ".png";
+    //TODO sacarlo de la url: https://ddragon.leagueoflegends.com/api/versions.json
+    private final static String DDRAGON_VERSION = "8.23.1";
 
     private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
+
+    private final static String DDRAGON_GET_SPELL_IMAGE = "/img/spell/";
+
+    private final static String DDRAGON_GET_RUNE_IMAGE = "img/";
 
     private final static String DDRAGON_GET_DATA = "/data/en_US/";
 
@@ -60,6 +63,8 @@ public class NetworkUtils {
     public final static int GET_DDRAGON_SUMMONER_SPELL_ICON = 7;
 
     public final static int GET_DDRAGON_DATA = 8;
+
+    public final static int GET_DDRAGON_RUNE_IMAGE = 9;
 
     //TODO documentar los metodos
     //TODO buscar si path = X + Y es realmente la solucion
@@ -119,8 +124,16 @@ public class NetworkUtils {
                 return null;
 
             case GET_DDRAGON_SUMMONER_SPELL_ICON:
-                //Not supported yet
-                return null;
+                path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_SPELL_IMAGE;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .build();
+                break;
+
+            case GET_DDRAGON_RUNE_IMAGE:
+                path = DDRAGON_BASE_URL + DDRAGON_GET_RUNE_IMAGE + riotSearchQuery;
+                builtUri = Uri.parse(path).buildUpon().build();
+                break;
 
             default:
                 //Not supported yet
