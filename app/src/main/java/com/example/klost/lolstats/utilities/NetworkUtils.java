@@ -18,7 +18,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-a0b6a418-1051-48b2-bbd1-7cd880043ae4";
+    private final static String RIOT_API_KEY = "RGAPI-b617b2da-ed17-4d77-bb9f-ea5aa6d2bff2";
 
     private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 
@@ -45,6 +45,8 @@ public class NetworkUtils {
 
     private final static String DDRAGON_GET_DATA = "/data/en_US/";
 
+    private final static String DDRAGON_GET_ITEM_IMAGE = "/img/item/";
+
 
     public final static int GET_SUMMONER = 0;
 
@@ -56,8 +58,6 @@ public class NetworkUtils {
 
     public final static int GET_DDRAGON_CHAMPION_IMAGE = 4;
 
-    public final static int GET_DDRAGON_ITEM = 5;
-
     public final static int GET_DDRAGON_PROFILE_ICON = 6;
 
     public final static int GET_DDRAGON_SUMMONER_SPELL_ICON = 7;
@@ -65,6 +65,8 @@ public class NetworkUtils {
     public final static int GET_DDRAGON_DATA = 8;
 
     public final static int GET_DDRAGON_RUNE_IMAGE = 9;
+
+    public final static int GET_DDRAGON_ITEM_IMAGE = 10;
 
     //TODO documentar los metodos
     //TODO buscar si path = X + Y es realmente la solucion
@@ -115,9 +117,12 @@ public class NetworkUtils {
                         .build();
                 break;
 
-            case GET_DDRAGON_ITEM:
-                //Not supported yet
-                return null;
+            case GET_DDRAGON_ITEM_IMAGE:
+                path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_ITEM_IMAGE;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .build();
+                break;
 
             case GET_DDRAGON_PROFILE_ICON:
                 //Not supported yet

@@ -20,6 +20,7 @@ import com.example.klost.lolstats.Runes.Rune;
 import com.example.klost.lolstats.Runes.RuneList;
 import com.example.klost.lolstats.Runes.RunePath;
 import com.example.klost.lolstats.utilities.JsonUtils;
+import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 
 import org.json.JSONException;
@@ -30,6 +31,7 @@ import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
     private static ChampionList championList;
     private static SummonerSpellList summonerSpellList;
     private static RuneList runeList;
+    private static ItemList itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,23 +61,33 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
         searchBoxEditText =  findViewById(R.id.et_search_box);
         urlDisplayTextView =  findViewById(R.id.tv_url_display);
 
+        //Obtencion de los datos estaticos de campeones
         URL championsUrl = NetworkUtils.buildUrl("champion",NetworkUtils.GET_DDRAGON_DATA);
         Log.d(LOG_TAG, "URL: " + championsUrl.toString());
 
         ReadTextTask championsTextTask = new ReadTextTask(this);
         championsTextTask.execute(championsUrl);
 
+        //Obtencion de los datos estaticos de hechizos de invocador
         URL summonerSpellsUrl = NetworkUtils.buildUrl("summoner", NetworkUtils.GET_DDRAGON_DATA);
         Log.d(LOG_TAG, "URL: " + summonerSpellsUrl.toString());
 
         ReadTextTask spellsTextTask = new ReadTextTask(this);
         spellsTextTask.execute(summonerSpellsUrl);
 
+        //Obtencion de los datos estaticos de las runas
         URL runesUrl = NetworkUtils.buildUrl("runesReforged", NetworkUtils.GET_DDRAGON_DATA);
         Log.d(LOG_TAG, "URL: " + runesUrl.toString());
 
         ReadTextTask runesTextTask = new ReadTextTask(this);
         runesTextTask.execute(runesUrl);
+
+        //Obtencion de los datos estaticos de los items
+        URL itemsUrl = NetworkUtils.buildUrl("item", NetworkUtils.GET_DDRAGON_DATA);
+        Log.d(LOG_TAG, "URL: " + itemsUrl.toString());
+
+        ReadTextTask itemsTextTask = new ReadTextTask(this);
+        itemsTextTask.execute(itemsUrl);
 
 
         Button searchButton =  findViewById(R.id.bt_search);
@@ -100,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
         Log.d(LOG_TAG, "DATA TYPE: " + dataType);
 
         try {
+            //TODO problema con las runes
             if(dataType != null) {
                 switch (dataType) {
                     case "summoner":
@@ -108,7 +122,9 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                     case "champion":
                         championList = JsonUtils.getChampionListFromJSON(result);
                         break;
-                    //TODO problema con las runes
+                    case "item":
+                        itemList = JsonUtils.getItemListFromJSON(result);
+                        break;
                 }
             }else{
                 //TODO fix this
@@ -234,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 TextView killsTextView = activity.findViewById(R.id.tv_kills);
                 TextView deathsTextView = activity.findViewById(R.id.tv_deaths);
                 TextView assistsTextView = activity.findViewById(R.id.tv_assists);
+                TextView kdaTextView = activity.findViewById(R.id.tv_kda);
 
                 CircleImageView championImageView = activity.findViewById(R.id.iv_champion_icon);
 
@@ -242,6 +259,18 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
                 ImageView mainRuneView = activity.findViewById(R.id.iv_main_rune);
                 ImageView secondaryRuneView = activity.findViewById(R.id.iv_secondary_rune);
+
+                ImageView firstItemView = activity.findViewById(R.id.iv_item1);
+                ImageView secondItemView = activity.findViewById(R.id.iv_item2);
+                ImageView thirdItemView = activity.findViewById(R.id.iv_item3);
+                ImageView fourthItemView = activity.findViewById(R.id.iv_item4);
+                ImageView fifthItemView = activity.findViewById(R.id.iv_item5);
+                ImageView sixthItemView = activity.findViewById(R.id.iv_item6);
+                ImageView seventhItemView = activity.findViewById(R.id.iv_item7);
+
+                TextView gameDateView = activity.findViewById(R.id.tv_date);
+                TextView queueTypeView = activity.findViewById(R.id.tv_game_type);
+                TextView gameDurationTextView = activity.findViewById(R.id.tv_game_duration);
 
                 searchResultsTextView.setText(summoner.toString());
                 MatchList matchList = summoner.getMatchList();
@@ -262,27 +291,60 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                     int championId = player.getChampionId();
 
                     //TODO revisar posibles problemas con asyncronia(Firebase?)
+                    //Seteo de la imagen del campeon jugado
                     Champion champion = championList.getChampionById(championId);
                     champion.loadImageFromDDragon(championImageView);
 
+                    //Seteo de los hechizos de invocador jugados
                     SummonerSpell firstSummonerSpell = summonerSpellList.getSpellById(player.getSpell1Id());
                     firstSummonerSpell.loadImageFromDDragon(firstSummonerSpellIconView);
 
                     SummonerSpell secondSummonerSpell = summonerSpellList.getSpellById(player.getSpell2Id());
                     secondSummonerSpell.loadImageFromDDragon(secondSummonerSpellIconView);
 
-                    Rune mainRune = runeList.getRuneById(player.getRune1());
+                    //Seteo de la keystone y de la rama de runas secundaria jugadas
+                    Rune mainRune = runeList.getRuneById(player.getRune0());
                     mainRune.loadImageFromDDragon(mainRuneView);
 
                     RunePath secondaryRune = runeList.getRunePathById(player.getRuneSecondaryStyle());
-                    Log.d(LOG_TAG, "H:" + player.getRuneSecondaryStyle());
+                    Log.d(LOG_TAG, "Secondary Runepath:" + player.getRuneSecondaryStyle());
                     secondaryRune.loadImageFromDDragon(secondaryRuneView);
 
+                    //Seteo del resultado del jugador
                     killsTextView.setText(String.valueOf(player.getKills()));
                     deathsTextView.setText(String.valueOf(player.getDeaths()));
                     assistsTextView.setText(String.valueOf(player.getAssists()));
 
+                    double kda = LoLStatsUtils.calculateKDA(player.getKills(), player.getAssists(), player.getDeaths());
+                    kdaTextView.setText(String.format(Locale.ENGLISH, "KDA: %.2f", kda));
+
+                    //Seteo de los items jugados
+                    Item firstItem = itemList.getItemById(player.getItem0());
+                    Item secondItem = itemList.getItemById(player.getItem1());
+                    Item thirdItem = itemList.getItemById(player.getItem2());
+                    Item fourthItem = itemList.getItemById(player.getItem3());
+                    Item fifthItem = itemList.getItemById(player.getItem4());
+                    Item sixthItem = itemList.getItemById(player.getItem5());
+                    Item seventhItem = itemList.getItemById(player.getItem6());
+
+                    Log.d(LOG_TAG, "item" + firstItem.toString());
+
+                    firstItem.loadImageFromDDragon(firstItemView);
+                    secondItem.loadImageFromDDragon(secondItemView);
+                    thirdItem.loadImageFromDDragon(thirdItemView);
+                    fourthItem.loadImageFromDDragon(fourthItemView);
+                    fifthItem.loadImageFromDDragon(fifthItemView);
+                    sixthItem.loadImageFromDDragon(sixthItemView);
+                    seventhItem.loadImageFromDDragon(seventhItemView);
+
+                    //Seteo del resto de datos
+                    gameDurationTextView.setText(match.getGameDurationInMinutesAndSeconds());
+                    gameDateView.setText(LoLStatsUtils.getDaysAgo(match.getGameCreation()));
+                    queueTypeView.setText(LoLStatsUtils.getQueueName(match.getQueue()));
+
+
                 }else{
+                    //TODO make alternative layout for error
                     killsTextView.setText("ERROR");
                 }
             }else{

@@ -5,6 +5,7 @@ import android.util.Log;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Match {
 
@@ -15,7 +16,6 @@ public class Match {
     long gameId;
     int championId;
     String platformId;
-    Date date;
     int queue;
     String role;
     int season;
@@ -23,6 +23,11 @@ public class Match {
     Team redTeam;
     //Valor que indica si se ha realizado una consulta sobre ese game para sacar mas informacion
     boolean isProcessed;
+
+    long gameDuration;
+    Date gameCreation;
+    String gameType;
+
 
     public Match(){
         isProcessed = false;
@@ -42,10 +47,6 @@ public class Match {
 
     public int getSeason() {
         return season;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public String getLane() {
@@ -88,9 +89,6 @@ public class Match {
         this.season = season;
     }
 
-    public void setDate(long timestamp) {
-        this.date = new Date(timestamp);
-    }
 
     public boolean isProcessed(){
         return isProcessed;
@@ -116,6 +114,35 @@ public class Match {
         this.redTeam = redTeam;
     }
 
+    public void setProcessed(boolean processed) {
+        isProcessed = processed;
+    }
+
+    public long getGameDuration() {
+        return gameDuration;
+    }
+
+    public void setGameDuration(long gameDuration) {
+        this.gameDuration = gameDuration;
+    }
+
+    public Date getGameCreation() {
+        return gameCreation;
+    }
+
+    public void setGameCreation(long gameCreation) {
+        Date date = new Date(gameCreation);
+        this.gameCreation = date;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
+    }
+
     public Team getTeamOfGivenSummoner(Summoner summoner){
 
         if(blueTeam.containsSummoner(summoner)){
@@ -136,6 +163,19 @@ public class Match {
         return team.getPlayer(summoner);
     }
 
+    public String getGameDurationInMinutesAndSeconds(){
+
+        long uptime = this.gameDuration;
+
+        Log.d("MATCH", "upTime " + String.valueOf(uptime));
+        long minutes = TimeUnit.SECONDS
+                .toMinutes(uptime);
+        uptime -= TimeUnit.MINUTES.toSeconds(minutes);
+        Log.d("MATCH", "upTime " + String.valueOf(uptime) + " " + " mins " + String.valueOf(minutes));
+
+        return String.valueOf(minutes) + "m " + String.valueOf(uptime) + "s";
+    }
+
     public String toString(){
         StringBuilder builder = new StringBuilder();
 
@@ -148,12 +188,12 @@ public class Match {
         builder.append("\n");
 
         //TODO Poner hace cuanto tiempo
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+       /* DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String date = formatter.format(this.date);
 
         builder.append("Date: ");
         builder.append(date);
-        builder.append("\n");
+        builder.append("\n");*/
 
         builder.append("com.example.klost.lolstats.Champion: ");
         builder.append(this.championId);

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.example.klost.lolstats.Champion;
 import com.example.klost.lolstats.ChampionList;
+import com.example.klost.lolstats.Item;
+import com.example.klost.lolstats.ItemList;
 import com.example.klost.lolstats.Match;
 import com.example.klost.lolstats.MatchList;
 import com.example.klost.lolstats.Player;
@@ -52,7 +54,7 @@ public class JsonUtils {
 
     public static MatchList getMatchListFromJSON(String requestJsonStr) throws JSONException {
 
-
+        //TODO incluir fecha
         JSONObject requestJSON  = new JSONObject(requestJsonStr);
 
         JSONArray matchListJSON = requestJSON.getJSONArray("matches");
@@ -74,7 +76,6 @@ public class JsonUtils {
             long gameId = matchJSON.getLong("gameId");
             int champion = matchJSON.getInt("champion");
             String platformId = matchJSON.getString("platformId");
-            long timestamp = matchJSON.getLong("timestamp");
             int queue = matchJSON.getInt("queue");
             String role = matchJSON.getString("role");
             int season = matchJSON.getInt("season");
@@ -83,7 +84,6 @@ public class JsonUtils {
             match.setGameId(gameId);
             match.setChampionId(champion);
             match.setPlatformId(platformId);
-            match.setDate(timestamp);
             match.setQueue(queue);
             match.setRole(role);
             match.setSeason(season);
@@ -104,6 +104,17 @@ public class JsonUtils {
 
 
         JSONObject requestJSON = new JSONObject(requestJsonStr);
+
+        String gameType = requestJSON.getString("gameType");
+        long gameDuration = requestJSON.getLong("gameDuration");
+        long gameCreationDate = requestJSON.getLong("gameCreation");
+
+        Log.d(LOG_TAG, "Game Duration" + String.valueOf(gameDuration));
+
+        match.setGameType(gameType);
+        match.setGameDuration(gameDuration);
+        match.setGameCreation(gameCreationDate);
+
 
         JSONArray participantIdentitiesJSON = requestJSON.getJSONArray("participantIdentities");
 
@@ -186,6 +197,13 @@ public class JsonUtils {
             int rune4 = statsJSON.getInt("perk4");
             int rune5 = statsJSON.getInt("perk5");
 
+            int item0 = statsJSON.getInt("item0");
+            int item1 = statsJSON.getInt("item1");
+            int item2 = statsJSON.getInt("item2");
+            int item3 = statsJSON.getInt("item3");
+            int item4 = statsJSON.getInt("item4");
+            int item5 = statsJSON.getInt("item5");
+            int item6 = statsJSON.getInt("item6");
 
             for(Player player : playerList){
                 if(player.getParticipantId() == participantId){
@@ -200,6 +218,7 @@ public class JsonUtils {
                     player.setDeaths(deaths);
                     player.setAssists(assists);
 
+                    //TODO modificar para que haya una lista de runas e items en cada player
                     //player.setVisionScore(visionScore);
                     player.setTotalDamageDealtToChampions(totalDamageDealtToChampions);
 
@@ -212,6 +231,15 @@ public class JsonUtils {
 
                     player.setRunePrimaryStyle(runePrimaryStyle);
                     player.setRuneSecondaryStyle(runeSecondaryStyle);
+
+                    player.setItem0(item0);
+                    Log.d("ERRORR", "Seteo " + item0);
+                    player.setItem1(item1);
+                    player.setItem2(item2);
+                    player.setItem3(item3);
+                    player.setItem4(item4);
+                    player.setItem5(item5);
+                    player.setItem6(item6);
 
 
                     Log.d(LOG_TAG, "ID DEL TEAM; " + String.valueOf(teamId));
@@ -238,10 +266,13 @@ public class JsonUtils {
     }
 
     public static String getDataTypeFromJSON(String requestJsonStr) throws JSONException {
-
+        //TODO yype mismatch con rune
         JSONObject requestJSON = new JSONObject(requestJsonStr);
 
-        return requestJSON.getString("type");
+        if(requestJSON.has("type"))
+            return requestJSON.getString("type");
+        else
+            return null;
     }
 
     public static ChampionList getChampionListFromJSON(String requestJsonStr) throws JSONException {
@@ -389,6 +420,57 @@ public class JsonUtils {
 
         return runeList;
 
+    }
+
+    public static ItemList getItemListFromJSON(String requestJsonStr) throws JSONException {
+
+        ItemList itemList = new ItemList();
+
+        JSONObject requestJSON = new JSONObject(requestJsonStr);
+
+        JSONObject dataJSON = requestJSON.getJSONObject("data");
+
+        int firstItem = 1001;
+        int lastItem = 4403;
+
+        //AL riot no proporcionar el id del item dentro del objeto tenemos que revisar el rango de items completo y mirar si existe ese item para procesarlo
+        for(int i=firstItem; i<lastItem+1; i++){
+
+            if(dataJSON.has(String.valueOf(i))){
+                //Hemos encontrado un item valido
+                JSONObject itemJSON =  dataJSON.getJSONObject(String.valueOf(i));
+
+                String itemName = itemJSON.getString("name");
+                String itemShortDesc = itemJSON.getString("plaintext");
+                String itemDescription = itemJSON.getString("description");
+
+                JSONObject goldJSON = itemJSON.getJSONObject("gold");
+
+                int itemBaseCost = goldJSON.getInt("base");
+                int itemTotalCost = goldJSON.getInt("total");
+                int itemSellCost = goldJSON.getInt("sell");
+                boolean isItemPurchasable = goldJSON.getBoolean("purchasable");
+
+                JSONObject imageJSON = itemJSON.getJSONObject("image");
+
+                String itemImagePath = imageJSON.getString("full");
+
+                Item item = new Item(i);
+                item.setName(itemName);
+                item.setPlainText(itemShortDesc);
+                item.setDescription(itemDescription);
+                item.setBaseCost(itemBaseCost);
+                item.setTotalCost(itemTotalCost);
+                item.setSellCost(itemSellCost);
+                item.setPurchasable(isItemPurchasable);
+                item.setImagePath(itemImagePath);
+
+                itemList.addItem(item);
+                Log.d(LOG_TAG, "Añado el item: " + item.toString() + " con id " + i);
+            }
+        }
+
+        return itemList;
     }
 
 

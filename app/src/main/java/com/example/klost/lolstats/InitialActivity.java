@@ -19,6 +19,7 @@ public class InitialActivity extends AppCompatActivity {
 
     private EditText summonerNameView;
     private Button searchButton;
+    private Button testButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,20 @@ public class InitialActivity extends AppCompatActivity {
             }
         });
 
+        testButton = findViewById(R.id.bt_test);
+
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toTest();
+            }
+        });
+
+    }
+
+    private void toTest(){
+        Intent intent = new Intent(this, TestActivity.class);
+        startActivity(intent);
     }
 
     private void attemptSearch(){

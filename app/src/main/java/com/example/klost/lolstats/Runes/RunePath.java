@@ -113,6 +113,8 @@ public class RunePath {
 
     }
 
+    //TODO implementar equals
+
     public boolean contains(Rune rune){
 
         for(Rune r: allRunesList){
