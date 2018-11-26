@@ -1,9 +1,9 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.models;
+
+import com.example.klost.lolstats.models.matches.MatchList;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Summoner {

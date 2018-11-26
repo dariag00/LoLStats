@@ -1,6 +1,8 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.models.matches;
 
 import android.util.Log;
+
+import com.example.klost.lolstats.models.Summoner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +152,7 @@ public class Team {
     public Player getPlayer(Summoner summoner){
 
         for(Player player:players){
-            if(player.getSummoner().getSummonerId() == summoner.summonerId)
+            if(player.getSummoner().getSummonerId() == summoner.getSummonerId())
                 return player;
         }
         //TODO cambiar cuadno sea null

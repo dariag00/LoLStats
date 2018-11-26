@@ -1,4 +1,4 @@
-package com.example.klost.lolstats.Runes;
+package com.example.klost.lolstats.models.runes;
 
 import android.util.Log;
 import android.widget.ImageView;

@@ -1,4 +1,6 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.models.matches;
+
+import com.example.klost.lolstats.models.Summoner;
 
 public class Player {
 

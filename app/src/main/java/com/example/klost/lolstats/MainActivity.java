@@ -3,8 +3,8 @@ package com.example.klost.lolstats;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +16,23 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.klost.lolstats.Runes.Rune;
-import com.example.klost.lolstats.Runes.RuneList;
-import com.example.klost.lolstats.Runes.RunePath;
+import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.champions.Champion;
+import com.example.klost.lolstats.models.champions.ChampionList;
+import com.example.klost.lolstats.models.items.Item;
+import com.example.klost.lolstats.models.items.ItemList;
+import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.matches.MatchList;
+import com.example.klost.lolstats.models.matches.Player;
+import com.example.klost.lolstats.models.runes.Rune;
+import com.example.klost.lolstats.models.runes.RuneList;
+import com.example.klost.lolstats.models.runes.RunePath;
+import com.example.klost.lolstats.models.summoners.SummonerSpell;
+import com.example.klost.lolstats.models.summoners.SummonerSpellList;
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
+import com.google.common.util.concurrent.RateLimiter;
 
 import org.json.JSONException;
 
@@ -165,10 +176,14 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
     public static class RiotQueryTask extends AsyncTask<URL, Void, Summoner> {
 
         private WeakReference<MainActivity> activityReference;
+        private RateLimiter throttler;
+        private RateLimiter throttler2;
 
         RiotQueryTask(MainActivity context){
             //TODO estudiar el impacto que tiene esto en la memoria y si no usar SoftReference
             activityReference = new WeakReference<>(context);
+            throttler = throttler.create(1);
+            throttler2 = throttler2.create(0.1);
         }
 
         @Override
@@ -188,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
             Summoner summoner = null;
             MatchList matchList;
             try {
-                summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL);
+                summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL, throttler);
                 Log.d(LOG_TAG, "summonerSearchResults: " + summonerSearchResults);
 
                 if(summonerSearchResults.charAt(0) != '{'){
@@ -203,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
                 URL matchListURL = NetworkUtils.buildUrl(String.valueOf(summoner.getAccountId()), NetworkUtils.GET_MATCHLIST);
                 if(matchListURL != null){
-                    matchListSearchResults = NetworkUtils.getResponseFromHttpUrl(matchListURL);
+                    matchListSearchResults = NetworkUtils.getResponseFromHttpUrl(matchListURL, throttler2);
                     matchList = JsonUtils.getMatchListFromJSON(matchListSearchResults);
                     summoner.setMatchList(matchList);
 
@@ -211,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                     Match match = matchListToProcess.get(0);
                     URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
                     if(getMatchURL != null){
-                        matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL);
+                        matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL, throttler2);
                         JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
                     }else{
                         return null;

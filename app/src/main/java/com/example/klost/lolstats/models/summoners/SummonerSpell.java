@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.models.summoners;
 
 import android.util.Log;
 import android.widget.ImageView;

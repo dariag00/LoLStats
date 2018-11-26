@@ -1,16 +1,12 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.models.champions;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 import java.net.URL;
 
 public class Champion {

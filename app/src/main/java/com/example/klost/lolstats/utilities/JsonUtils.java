@@ -2,20 +2,20 @@ package com.example.klost.lolstats.utilities;
 
 import android.util.Log;
 
-import com.example.klost.lolstats.Champion;
-import com.example.klost.lolstats.ChampionList;
-import com.example.klost.lolstats.Item;
-import com.example.klost.lolstats.ItemList;
-import com.example.klost.lolstats.Match;
-import com.example.klost.lolstats.MatchList;
-import com.example.klost.lolstats.Player;
-import com.example.klost.lolstats.Runes.Rune;
-import com.example.klost.lolstats.Runes.RuneList;
-import com.example.klost.lolstats.Runes.RunePath;
-import com.example.klost.lolstats.SummonerSpell;
-import com.example.klost.lolstats.SummonerSpellList;
-import com.example.klost.lolstats.Summoner;
-import com.example.klost.lolstats.Team;
+import com.example.klost.lolstats.models.champions.Champion;
+import com.example.klost.lolstats.models.champions.ChampionList;
+import com.example.klost.lolstats.models.items.Item;
+import com.example.klost.lolstats.models.items.ItemList;
+import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.matches.MatchList;
+import com.example.klost.lolstats.models.matches.Player;
+import com.example.klost.lolstats.models.runes.Rune;
+import com.example.klost.lolstats.models.runes.RuneList;
+import com.example.klost.lolstats.models.runes.RunePath;
+import com.example.klost.lolstats.models.summoners.SummonerSpell;
+import com.example.klost.lolstats.models.summoners.SummonerSpellList;
+import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.matches.Team;
 
 import org.json.JSONArray;
 import org.json.JSONException;

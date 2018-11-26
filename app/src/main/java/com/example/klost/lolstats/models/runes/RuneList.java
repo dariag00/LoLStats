@@ -1,4 +1,4 @@
-package com.example.klost.lolstats.Runes;
+package com.example.klost.lolstats.models.runes;
 
 import java.util.ArrayList;
 import java.util.List;

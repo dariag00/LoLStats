@@ -3,11 +3,14 @@ package com.example.klost.lolstats.utilities;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.common.util.concurrent.RateLimiter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Scanner;
 
 public class NetworkUtils {
@@ -18,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-b617b2da-ed17-4d77-bb9f-ea5aa6d2bff2";
+    private final static String RIOT_API_KEY = "RGAPI-43efc8e7-5eea-4f5c-87aa-340c246e3f4f";
 
     private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 
@@ -158,8 +161,13 @@ public class NetworkUtils {
     }
 
     //TODO procesar los limites de llamadas ubicados en el header
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static String getResponseFromHttpUrl(URL url, RateLimiter throttle) throws IOException {
+
+        throttle.acquire();
+        Log.d("RateLimiter", "Mensaje enviado a las: " + new Date() + " " + url.toString());
+
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
         try {
 
             int responseCode = urlConnection.getResponseCode();
@@ -207,9 +215,13 @@ public class NetworkUtils {
 
             String xMethodRateLimitCount = urlConnection.getHeaderField("X-Method-Rate-Limit-Count");
             String xAppRateLimitCount = urlConnection.getHeaderField("X-App-Rate-Limit-Count");
+            String xAppRateLimit = urlConnection.getHeaderField("X-App-Rate-Limit");
+            String xMethodRateLimit = urlConnection.getHeaderField("X-Method-Rate-Limit");
+            String date = urlConnection.getHeaderField("Date");
 
-            Log.d("NetworkUtils", "Method Rate Limit: " + xMethodRateLimitCount + " para URL " + url.toString());
-            Log.d("NetworkUtils", "App Rate Limit: " +  xAppRateLimitCount);
+            Log.d("RateLimiter", "Riots date: " + date);
+            Log.d("RateLimiter", "Method Rate Limit Count: " + xMethodRateLimitCount + " para URL " + url.toString() + " y siendo el limite: " + xMethodRateLimit);
+            Log.d("RateLimiter", "App Rate Limit Count: " +  xAppRateLimitCount + " y siendo el limite: " + xAppRateLimit);
 
             InputStream in = urlConnection.getInputStream();
 

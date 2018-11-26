@@ -1,9 +1,9 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.models.matches;
 
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import com.example.klost.lolstats.models.Summoner;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -195,7 +195,7 @@ public class Match {
         builder.append(date);
         builder.append("\n");*/
 
-        builder.append("com.example.klost.lolstats.Champion: ");
+        builder.append("com.example.klost.lolstats.models.champions.Champion: ");
         builder.append(this.championId);
         builder.append("\n");
 
