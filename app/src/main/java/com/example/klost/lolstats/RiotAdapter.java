@@ -79,11 +79,11 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
 
             championImageView = view.findViewById(R.id.iv_champion_image);
 
-            firstSummonerSpellIconView = view.findViewById(R.id.iv_first_summoner);
-            secondSummonerSpellIconView = view.findViewById(R.id.iv_second_summoner);
+            firstSummonerSpellIconView = view.findViewById(R.id.iv_first_summoner_spell);
+            secondSummonerSpellIconView = view.findViewById(R.id.iv_second_summoner_spell);
 
             mainRuneView = view.findViewById(R.id.iv_rune_keystone);
-            secondaryRuneView = view.findViewById(R.id.iv_secondary_rune);
+            secondaryRuneView = view.findViewById(R.id.iv_secondary_rune_path);
 
             killsTextView = view.findViewById(R.id.tv_kills);
             deathsTextView = view.findViewById(R.id.tv_deaths);
@@ -98,7 +98,7 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
             sixthItemView = view.findViewById(R.id.iv_item5);
             trinketItemView = view.findViewById(R.id.iv_trinket);
 
-            gameDateView = view.findViewById(R.id.tv_date);
+            gameDateView = view.findViewById(R.id.tv_game_time_ago);
             queueTypeView = view.findViewById(R.id.tv_game_type);
             gameDurationTextView = view.findViewById(R.id.tv_game_duration);
 
@@ -195,14 +195,22 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
         Item fifthItem = itemList.getItemById(player.getItem4());
         Item sixthItem = itemList.getItemById(player.getItem5());
         Item seventhItem = itemList.getItemById(player.getItem6());
-
-        firstItem.loadImageFromDDragon(riotAdapterViewHolder.firstItemView);
-        secondItem.loadImageFromDDragon(riotAdapterViewHolder.secondItemView);
-        thirdItem.loadImageFromDDragon(riotAdapterViewHolder.thirdItemView);
-        fourthItem.loadImageFromDDragon(riotAdapterViewHolder.fourthItemView);
-        fifthItem.loadImageFromDDragon(riotAdapterViewHolder.fifthItemView);
-        sixthItem.loadImageFromDDragon(riotAdapterViewHolder.sixthItemView);
-        seventhItem.loadImageFromDDragon(riotAdapterViewHolder.trinketItemView);
+        //TODO creat item vacio
+        if(firstItem != null)
+            firstItem.loadImageFromDDragon(riotAdapterViewHolder.firstItemView);
+        if(secondItem != null)
+            secondItem.loadImageFromDDragon(riotAdapterViewHolder.secondItemView);
+        if(thirdItem != null)
+            thirdItem.loadImageFromDDragon(riotAdapterViewHolder.thirdItemView);
+        if(fourthItem != null)
+            fourthItem.loadImageFromDDragon(riotAdapterViewHolder.fourthItemView);
+        if(fifthItem != null)
+            fifthItem.loadImageFromDDragon(riotAdapterViewHolder.fifthItemView);
+        if(sixthItem != null)
+            sixthItem.loadImageFromDDragon(riotAdapterViewHolder.sixthItemView);
+        //TODO mirar trinket en aram
+        if(seventhItem != null)
+            seventhItem.loadImageFromDDragon(riotAdapterViewHolder.trinketItemView);
 
         //Seteo del resto de datos
         riotAdapterViewHolder.gameDurationTextView.setText(match.getGameDurationInMinutesAndSeconds());

@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
             //TODO estudiar el impacto que tiene esto en la memoria y si no usar SoftReference
             activityReference = new WeakReference<>(context);
             //Seteamos la cantidad de requests que pueden salir por segundo.
-            throttler = throttler.create(1);
+            throttler = throttler.create(0.7);
             //throttler2 = throttler2.create(0.1);
         }
 
@@ -241,14 +241,18 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                     summoner.setMatchList(matchList);
 
                     List<Match> matchListToProcess = matchList.getMatches();
-                    Match match = matchListToProcess.get(0);
-                    URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
-                    if(getMatchURL != null){
-                        matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL, throttler);
-                        JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
-                    }else{
-                        return null;
+                    Log.d(LOG_TAG, " MatchList Total Games: " + matchList.getMatches().size());
+                    for(int i = 0;i<matchList.getMatches().size(); i++){
+                        Match match = matchListToProcess.get(i);
+                        URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
+                        if(getMatchURL != null){
+                            matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL, throttler);
+                            JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
+                        }else{
+                            return null;
+                        }
                     }
+
 
                 }else{
                     return null;
@@ -277,23 +281,24 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
             if(summoner != null){
                 showData(activity);
 
-                TextView searchResultsTextView = activity.findViewById(R.id.tv_riot_search_resutls_json);
-
-                searchResultsTextView.setText(summoner.toString());
                 MatchList matchList = summoner.getMatchList();
                 List<Match> matches = matchList.getMatches();
                 int contador = 0;
-                Match[] processedMatches = new Match[20];
+                Match[] processedMatches = new Match[matchList.getMatches().size()];
 
                 for(Match m : matches){
                     if(m.isProcessed()){
                         processedMatches[contador] = m;
                         contador++;
                     }
-                    if(contador>=4){
+                    if(contador>=matchList.getMatches().size()){
                         break;
                     }
+
+                    Log.d(LOG_TAG, "Meto un match: " + contador);
                 }
+
+                Log.d(LOG_TAG, "Contador: " + contador);
 
                 //TODO procesar N matches
 
