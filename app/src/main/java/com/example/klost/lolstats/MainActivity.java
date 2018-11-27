@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
     private static RuneList runeList;
     private static ItemList itemList;
 
+    private static RecyclerView recyclerView;
+    private static RiotAdapter riotAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
         searchBoxEditText =  findViewById(R.id.et_search_box);
         urlDisplayTextView =  findViewById(R.id.tv_url_display);
+        recyclerView = findViewById(R.id.recyclerview_matches);
 
         //Obtencion de los datos estaticos de campeones
         URL championsUrl = NetworkUtils.buildUrl("champion",NetworkUtils.GET_DDRAGON_DATA);
@@ -115,6 +121,17 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
         Intent previousIntent = getIntent();
         summonerName = previousIntent.getStringExtra(InitialActivity.EXTRA_SUMMONER_NAME);
         makeRiotSearchQuery(summonerName);
+
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayout.VERTICAL);
+        ((LinearLayoutManager) layoutManager).setReverseLayout(false);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        riotAdapter = new RiotAdapter();
+        recyclerView.setAdapter(riotAdapter);
 
     }
 
@@ -182,8 +199,9 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
         RiotQueryTask(MainActivity context){
             //TODO estudiar el impacto que tiene esto en la memoria y si no usar SoftReference
             activityReference = new WeakReference<>(context);
+            //Seteamos la cantidad de requests que pueden salir por segundo.
             throttler = throttler.create(1);
-            throttler2 = throttler2.create(0.1);
+            //throttler2 = throttler2.create(0.1);
         }
 
         @Override
@@ -218,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
                 URL matchListURL = NetworkUtils.buildUrl(String.valueOf(summoner.getAccountId()), NetworkUtils.GET_MATCHLIST);
                 if(matchListURL != null){
-                    matchListSearchResults = NetworkUtils.getResponseFromHttpUrl(matchListURL, throttler2);
+                    matchListSearchResults = NetworkUtils.getResponseFromHttpUrl(matchListURL, throttler);
                     matchList = JsonUtils.getMatchListFromJSON(matchListSearchResults);
                     summoner.setMatchList(matchList);
 
@@ -226,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                     Match match = matchListToProcess.get(0);
                     URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
                     if(getMatchURL != null){
-                        matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL, throttler2);
+                        matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL, throttler);
                         JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
                     }else{
                         return null;
@@ -260,108 +278,28 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 showData(activity);
 
                 TextView searchResultsTextView = activity.findViewById(R.id.tv_riot_search_resutls_json);
-                LinearLayout matchLayout = activity.findViewById(R.id.ly_match);
-
-                TextView killsTextView = activity.findViewById(R.id.tv_kills);
-                TextView deathsTextView = activity.findViewById(R.id.tv_deaths);
-                TextView assistsTextView = activity.findViewById(R.id.tv_assists);
-                TextView kdaTextView = activity.findViewById(R.id.tv_kda);
-
-                CircleImageView championImageView = activity.findViewById(R.id.iv_champion_icon);
-
-                ImageView firstSummonerSpellIconView = activity.findViewById(R.id.iv_first_summoner);
-                ImageView secondSummonerSpellIconView = activity.findViewById(R.id.iv_second_summoner);
-
-                ImageView mainRuneView = activity.findViewById(R.id.iv_main_rune);
-                ImageView secondaryRuneView = activity.findViewById(R.id.iv_secondary_rune);
-
-                ImageView firstItemView = activity.findViewById(R.id.iv_item1);
-                ImageView secondItemView = activity.findViewById(R.id.iv_item2);
-                ImageView thirdItemView = activity.findViewById(R.id.iv_item3);
-                ImageView fourthItemView = activity.findViewById(R.id.iv_item4);
-                ImageView fifthItemView = activity.findViewById(R.id.iv_item5);
-                ImageView sixthItemView = activity.findViewById(R.id.iv_item6);
-                ImageView seventhItemView = activity.findViewById(R.id.iv_item7);
-
-                TextView gameDateView = activity.findViewById(R.id.tv_date);
-                TextView queueTypeView = activity.findViewById(R.id.tv_game_type);
-                TextView gameDurationTextView = activity.findViewById(R.id.tv_game_duration);
 
                 searchResultsTextView.setText(summoner.toString());
                 MatchList matchList = summoner.getMatchList();
                 List<Match> matches = matchList.getMatches();
-                Match match = matches.get(0);
+                int contador = 0;
+                Match[] processedMatches = new Match[20];
 
-                if(match.isProcessed()){
-                    //Comprobamos que el game ha sido analizado y mostramos en la UI la información extraida
-                    boolean gameWon = match.hasGivenSummonerWon(summoner);
-
-                    if(gameWon) {
-                        matchLayout.setBackgroundColor(Color.parseColor("#4286f4"));
-                    }else {
-                        matchLayout.setBackgroundColor(Color.parseColor("#f44d41"));
+                for(Match m : matches){
+                    if(m.isProcessed()){
+                        processedMatches[contador] = m;
+                        contador++;
                     }
-
-                    Player player = match.getPlayer(summoner);
-                    int championId = player.getChampionId();
-
-                    //TODO revisar posibles problemas con asyncronia(Firebase?)
-                    //Seteo de la imagen del campeon jugado
-                    Champion champion = championList.getChampionById(championId);
-                    champion.loadImageFromDDragon(championImageView);
-
-                    //Seteo de los hechizos de invocador jugados
-                    SummonerSpell firstSummonerSpell = summonerSpellList.getSpellById(player.getSpell1Id());
-                    firstSummonerSpell.loadImageFromDDragon(firstSummonerSpellIconView);
-
-                    SummonerSpell secondSummonerSpell = summonerSpellList.getSpellById(player.getSpell2Id());
-                    secondSummonerSpell.loadImageFromDDragon(secondSummonerSpellIconView);
-
-                    //Seteo de la keystone y de la rama de runas secundaria jugadas
-                    Rune mainRune = runeList.getRuneById(player.getRune0());
-                    mainRune.loadImageFromDDragon(mainRuneView);
-
-                    RunePath secondaryRune = runeList.getRunePathById(player.getRuneSecondaryStyle());
-                    Log.d(LOG_TAG, "Secondary Runepath:" + player.getRuneSecondaryStyle());
-                    secondaryRune.loadImageFromDDragon(secondaryRuneView);
-
-                    //Seteo del resultado del jugador
-                    killsTextView.setText(String.valueOf(player.getKills()));
-                    deathsTextView.setText(String.valueOf(player.getDeaths()));
-                    assistsTextView.setText(String.valueOf(player.getAssists()));
-
-                    double kda = LoLStatsUtils.calculateKDA(player.getKills(), player.getAssists(), player.getDeaths());
-                    kdaTextView.setText(String.format(Locale.ENGLISH, "KDA: %.2f", kda));
-
-                    //Seteo de los items jugados
-                    Item firstItem = itemList.getItemById(player.getItem0());
-                    Item secondItem = itemList.getItemById(player.getItem1());
-                    Item thirdItem = itemList.getItemById(player.getItem2());
-                    Item fourthItem = itemList.getItemById(player.getItem3());
-                    Item fifthItem = itemList.getItemById(player.getItem4());
-                    Item sixthItem = itemList.getItemById(player.getItem5());
-                    Item seventhItem = itemList.getItemById(player.getItem6());
-
-                    Log.d(LOG_TAG, "item" + firstItem.toString());
-
-                    firstItem.loadImageFromDDragon(firstItemView);
-                    secondItem.loadImageFromDDragon(secondItemView);
-                    thirdItem.loadImageFromDDragon(thirdItemView);
-                    fourthItem.loadImageFromDDragon(fourthItemView);
-                    fifthItem.loadImageFromDDragon(fifthItemView);
-                    sixthItem.loadImageFromDDragon(sixthItemView);
-                    seventhItem.loadImageFromDDragon(seventhItemView);
-
-                    //Seteo del resto de datos
-                    gameDurationTextView.setText(match.getGameDurationInMinutesAndSeconds());
-                    gameDateView.setText(LoLStatsUtils.getDaysAgo(match.getGameCreation()));
-                    queueTypeView.setText(LoLStatsUtils.getQueueName(match.getQueue()));
-
-
-                }else{
-                    //TODO make alternative layout for error
-                    killsTextView.setText("ERROR");
+                    if(contador>=4){
+                        break;
+                    }
                 }
+
+                //TODO procesar N matches
+
+                riotAdapter.setData(processedMatches, summoner, championList, runeList, summonerSpellList, itemList);
+
+
             }else{
                 showErrorMessage(activity);
             }
@@ -370,17 +308,16 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
         private void showData(MainActivity activity){
             TextView errorMessageDisplay = activity.findViewById(R.id.tv_error_message);
-            TextView searchResultsTextView = activity.findViewById(R.id.tv_riot_search_resutls_json);
+
 
             errorMessageDisplay.setVisibility(View.INVISIBLE);
-            searchResultsTextView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
 
         private void showErrorMessage(MainActivity activity){
             TextView errorMessageDisplay = activity.findViewById(R.id.tv_error_message);
-            TextView searchResultsTextView = activity.findViewById(R.id.tv_riot_search_resutls_json);
 
-            searchResultsTextView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
             errorMessageDisplay.setVisibility(View.VISIBLE);
         }
 
