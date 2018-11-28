@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-43efc8e7-5eea-4f5c-87aa-340c246e3f4f";
+    private final static String RIOT_API_KEY = "RGAPI-d9c64ef7-b192-43c9-a734-0c2bc8bdb512";
 
     private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
 

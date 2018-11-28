@@ -55,10 +55,6 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
     private static final String LOG_TAG = "MainActivity";
 
-    private EditText searchBoxEditText;
-
-    private TextView urlDisplayTextView;
-
     private String summonerName;
 
     private static ChampionList championList;
@@ -73,9 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        searchBoxEditText =  findViewById(R.id.et_search_box);
-        urlDisplayTextView =  findViewById(R.id.tv_url_display);
         recyclerView = findViewById(R.id.recyclerview_matches);
 
         //Obtencion de los datos estaticos de campeones
@@ -105,17 +98,6 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
         ReadTextTask itemsTextTask = new ReadTextTask(this);
         itemsTextTask.execute(itemsUrl);
-
-
-        Button searchButton =  findViewById(R.id.bt_search);
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchQuery = searchBoxEditText.getText().toString();
-                makeRiotSearchQuery(searchQuery);
-            }
-        });
 
 
         Intent previousIntent = getIntent();
@@ -167,8 +149,6 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
     private void makeRiotSearchQuery(String searchQuery){
         URL riotSearchUrl = NetworkUtils.buildUrl(searchQuery, NetworkUtils.GET_SUMMONER);
-        URL prueba = NetworkUtils.buildUrl("123456", NetworkUtils.GET_MATCHLIST);
-        urlDisplayTextView.setText(prueba.toString()+ "\n" + riotSearchUrl);
         new RiotQueryTask(this).execute(riotSearchUrl);
     }
 
@@ -195,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
         private WeakReference<MainActivity> activityReference;
         private RateLimiter throttler;
         private RateLimiter throttler2;
+        private final static int MATCHLIST_SIZE = 20;
 
         RiotQueryTask(MainActivity context){
             //TODO estudiar el impacto que tiene esto en la memoria y si no usar SoftReference
@@ -242,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
                     List<Match> matchListToProcess = matchList.getMatches();
                     Log.d(LOG_TAG, " MatchList Total Games: " + matchList.getMatches().size());
-                    for(int i = 0;i<matchList.getMatches().size(); i++){
+                    for(int i = 0;i<MATCHLIST_SIZE; i++){
                         Match match = matchListToProcess.get(i);
                         URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
                         if(getMatchURL != null){
@@ -284,14 +265,14 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 MatchList matchList = summoner.getMatchList();
                 List<Match> matches = matchList.getMatches();
                 int contador = 0;
-                Match[] processedMatches = new Match[matchList.getMatches().size()];
+                Match[] processedMatches = new Match[MATCHLIST_SIZE];
 
                 for(Match m : matches){
                     if(m.isProcessed()){
                         processedMatches[contador] = m;
                         contador++;
                     }
-                    if(contador>=matchList.getMatches().size()){
+                    if(contador>=MATCHLIST_SIZE){
                         break;
                     }
 
