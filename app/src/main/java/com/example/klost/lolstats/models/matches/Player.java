@@ -19,6 +19,8 @@ public class Player {
     int deaths;
     int kills;
     long totalDamageDealtToChampions;
+    int totalMinionsKilled;
+    int neutralMinionsKilled;
 
     //TEMPORAL
     int runePrimaryStyle;
@@ -280,6 +282,22 @@ public class Player {
 
     public void setItem6(int item6) {
         this.item6 = item6;
+    }
+
+    public int getTotalMinionsKilled() {
+        return totalMinionsKilled;
+    }
+
+    public void setTotalMinionsKilled(int totalMinionsKilled) {
+        this.totalMinionsKilled = totalMinionsKilled;
+    }
+
+    public int getNeutralMinionsKilled() {
+        return neutralMinionsKilled;
+    }
+
+    public void setNeutralMinionsKilled(int neutralMinionsKilled) {
+        this.neutralMinionsKilled = neutralMinionsKilled;
     }
 
     public String toString(){

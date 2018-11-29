@@ -6,6 +6,8 @@ import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;
 import com.example.klost.lolstats.models.items.Item;
 import com.example.klost.lolstats.models.items.ItemList;
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.models.matches.Player;
@@ -205,6 +207,9 @@ public class JsonUtils {
             int item5 = statsJSON.getInt("item5");
             int item6 = statsJSON.getInt("item6");
 
+            int totalMinionsKilled = statsJSON.getInt("totalMinionsKilled");
+            int neutralMinionsKilled = statsJSON.getInt("neutralMinionsKilled");
+
             for(Player player : playerList){
                 if(player.getParticipantId() == participantId){
 
@@ -240,6 +245,9 @@ public class JsonUtils {
                     player.setItem4(item4);
                     player.setItem5(item5);
                     player.setItem6(item6);
+
+                    player.setTotalMinionsKilled(totalMinionsKilled);
+                    player.setNeutralMinionsKilled(neutralMinionsKilled);
 
 
                     Log.d(LOG_TAG, "ID DEL TEAM; " + String.valueOf(teamId));
@@ -471,6 +479,40 @@ public class JsonUtils {
         }
 
         return itemList;
+    }
+
+    public static LeaguePositionList getLeaguePositionListFromJSON(String requestStrJson) throws JSONException {
+
+        JSONArray jsonArray = new JSONArray(requestStrJson);
+        LeaguePositionList list = new LeaguePositionList();
+
+        for(int i=0; i<jsonArray.length(); i++){
+
+            JSONObject positionJSON = jsonArray.getJSONObject(i);
+
+            String queueType = positionJSON.getString("queueType");
+            int wins = positionJSON.getInt("wins");
+            int losses = positionJSON.getInt("losses");
+            String rank = positionJSON.getString("rank");
+            String tier = positionJSON.getString("tier");
+            int leaguePoints = positionJSON.getInt("leaguePoints");
+            boolean hotStreak = positionJSON.getBoolean("hotStreak");
+
+            LeaguePosition position = new LeaguePosition();
+
+            position.setLeaguePoints(leaguePoints);
+            position.setTier(tier);
+            position.setWins(wins);
+            position.setLosses(losses);
+            position.setRank(rank);
+            position.setQueueType(queueType);
+            position.setHotstreak(hotStreak);
+
+            list.addLeaguePosition(position);
+        }
+
+        return list;
+
     }
 
 

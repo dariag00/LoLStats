@@ -71,6 +71,9 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
 
         public final View gameResultIndicatorView;
 
+        public final TextView csPerMinView;
+        public final TextView dmgPerMinView;
+
 
 
         public RiotAdapterViewHolder(View view){
@@ -104,6 +107,8 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
 
             gameResultIndicatorView = view.findViewById(R.id.view_match_result_indicator);
 
+            csPerMinView = view.findViewById(R.id.tv_match_primary_stat);
+            dmgPerMinView = view.findViewById(R.id.tv_match_secondary_stat);
         }
 
     }
@@ -150,7 +155,7 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
         Match match = matchesData[position];
 
         boolean gameWon = match.hasGivenSummonerWon(summoner);
-
+        //TODO codificar en funcion de colors.xml
         if(gameWon) {
             riotAdapterViewHolder.gameResultIndicatorView.setBackgroundColor(Color.parseColor("#4286f4"));
         }else {
@@ -184,8 +189,21 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
         riotAdapterViewHolder.deathsTextView.setText(String.valueOf(player.getDeaths()));
         riotAdapterViewHolder.assistsTextView.setText(String.valueOf(player.getAssists()));
 
+        //Seteo de las estadisticas
+        int totalCs = player.getTotalMinionsKilled();
+        long totalDamageToChampions = player.getTotalDamageDealtToChampions();
+
+        long gameDuration = match.getGameDuration();
+        long gameDurationInMinutes = gameDuration/60;
+
+        double totalDamagePerMin = (double) totalDamageToChampions / (double) gameDurationInMinutes;
+        double totalCsPerMin = (double) totalCs / (double) gameDurationInMinutes;
+
+        riotAdapterViewHolder.csPerMinView.setText(String.format(Locale.ENGLISH, "%.2f", totalCsPerMin));
+        riotAdapterViewHolder.dmgPerMinView.setText(String.format(Locale.ENGLISH, "%.2f", totalDamagePerMin));
+
         double kda = LoLStatsUtils.calculateKDA(player.getKills(), player.getAssists(), player.getDeaths());
-        riotAdapterViewHolder.kdaTextView.setText(String.format(Locale.ENGLISH, "KDA: %.2f", kda));
+        LoLStatsUtils.setKdaAndTextColorInView(riotAdapterViewHolder.kdaTextView, kda);
 
         //Seteo de los items jugados
         Item firstItem = itemList.getItemById(player.getItem0());

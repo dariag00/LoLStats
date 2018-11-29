@@ -1,18 +1,37 @@
 package com.example.klost.lolstats.utilities;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.matches.Team;
+
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class LoLStatsUtils {
 
     private static final String LOG_TAG = "LoLStatsUtils";
 
-    public static void setKdaAndTextColorInView(TextView textView, int kda){
-        //TODO implementar
+    public static void setKdaAndTextColorInView(TextView textView, double kda){
+
+        String kdaString = String.format(Locale.ENGLISH, "%.2f", kda);
+        textView.setText(kdaString);
+        //TODO introducir en colors
+        if(kda>=3.0 && kda<5.0){
+            textView.setTextColor(Color.parseColor("#65bc94"));
+        }else if(kda>=5.0 && kda<7.0){
+            textView.setTextColor(Color.parseColor("#599aa3"));
+        }else if(kda>=7.0){
+            textView.setTextColor(Color.parseColor("#f4c542"));
+        }
+
+
     }
 
     public static String getDaysAgo(Date date){
@@ -144,6 +163,27 @@ public class LoLStatsUtils {
         Log.d(LOG_TAG, "Kills: " + kills + " ass " + assists + " deaths " + deaths+ " resultado: " + kda);
 
         return kda;
+    }
+
+    public static int getWinsOfLast20Games(List<Match> listOfGames, Summoner summoner){
+
+        int contadorDeVictorias = 0;
+
+        for(int i=0; i<20; i++){
+
+            Match match = listOfGames.get(i);
+            //Primero revisamos que se ha procesado el match para evitar posibles errores
+            if(match.isProcessed()){
+                Team currentPlayerTeam = match.getTeamOfGivenSummoner(summoner);
+                if(currentPlayerTeam.isWon())
+                    contadorDeVictorias++;
+            }
+        }
+
+        Log.d(LOG_TAG, "Resultado total: " + contadorDeVictorias);
+
+        return contadorDeVictorias;
+
     }
 
 

@@ -21,19 +21,20 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-d9c64ef7-b192-43c9-a734-0c2bc8bdb512";
-
-    private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name";
+    private final static String RIOT_API_KEY = "RGAPI-1d655923-c7d7-4788-a0ca-3083929263da";
 
     private final static String PARAM_KEY = "api_key";
 
-    private final static String RIOT_BASE = "https://euw1.api.riotgames.com";
+    private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com";
 
     private final static String RIOT_GET_MATCHLIST = "/lol/match/v3/matchlists/by-account";
 
     private final static String RIOT_GET_MATCH = "/lol/match/v3/matches";
 
     private final static String RIOT_GET_SUMMONER = "/lol/summoner/v3/summoners/by-name";
+
+    private final static String RIOT_GET_LEAGUES_POSITIONS = "/lol/league/v3/positions/by-summoner";
+
 
     private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
 
@@ -50,6 +51,8 @@ public class NetworkUtils {
 
     private final static String DDRAGON_GET_ITEM_IMAGE = "/img/item/";
 
+    private final static String DDRAGON_GET_PROFILE_ICON = "/img/profileicon/";
+
 
     public final static int GET_SUMMONER = 0;
 
@@ -59,7 +62,9 @@ public class NetworkUtils {
 
     public final static int GET_MATCH_TIMELINE = 3;
 
-    public final static int GET_DDRAGON_CHAMPION_IMAGE = 4;
+    public final static int GET_LEAGUES_POSITIONS = 4;
+
+    public final static int GET_DDRAGON_CHAMPION_IMAGE = 5;
 
     public final static int GET_DDRAGON_PROFILE_ICON = 6;
 
@@ -79,7 +84,7 @@ public class NetworkUtils {
         String path;
         switch(requestType){
             case GET_SUMMONER:
-                path = RIOT_BASE + RIOT_GET_SUMMONER;
+                path = RIOT_BASE_URL + RIOT_GET_SUMMONER;
                 builtUri = Uri.parse(path).buildUpon()
                         .appendPath(riotSearchQuery)
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
@@ -87,7 +92,7 @@ public class NetworkUtils {
                 break;
 
             case GET_MATCHLIST:
-                path = RIOT_BASE + RIOT_GET_MATCHLIST;
+                path = RIOT_BASE_URL + RIOT_GET_MATCHLIST;
                 builtUri = Uri.parse(path).buildUpon()
                         .appendPath(riotSearchQuery)
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
@@ -95,7 +100,7 @@ public class NetworkUtils {
                 break;
 
             case GET_MATCH:
-                path = RIOT_BASE +RIOT_GET_MATCH;
+                path = RIOT_BASE_URL +RIOT_GET_MATCH;
                 builtUri = Uri.parse(path).buildUpon()
                         .appendPath(riotSearchQuery)
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
@@ -105,6 +110,14 @@ public class NetworkUtils {
             case GET_MATCH_TIMELINE:
                 //Not supported yet
                 return null;
+
+            case GET_LEAGUES_POSITIONS:
+                path = RIOT_BASE_URL + RIOT_GET_LEAGUES_POSITIONS;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
+                        .build();
+                break;
 
             case GET_DDRAGON_DATA:
                 path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_DATA;
@@ -128,8 +141,12 @@ public class NetworkUtils {
                 break;
 
             case GET_DDRAGON_PROFILE_ICON:
-                //Not supported yet
-                return null;
+                path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_PROFILE_ICON;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery + ".png")
+                        .build();
+
+                break;
 
             case GET_DDRAGON_SUMMONER_SPELL_ICON:
                 path = DDRAGON_BASE_URL + DDRAGON_VERSION + DDRAGON_GET_SPELL_IMAGE;

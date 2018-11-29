@@ -5,13 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="16dp"
+    android:paddingTop="8dp"
+    android:background="#f9c7c7"
     android:paddingBottom="16dp"
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/border_with_color"
         android:orientation="vertical">
 
 
@@ -19,21 +24,22 @@
             android:id="@+id/ly_profile_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_profile_icon"
                 android:layout_width="105dp"
                 android:layout_height="105dp"
-                android:src="@drawable/flash"/>
+                android:src="@drawable/picture"/>
 
             <LinearLayout
                 android:id="@+id/ly_division_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -54,20 +60,13 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
-                        android:src="@drawable/ignite"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
+                        android:src="@drawable/picture"/>
 
                         <TextView
                             android:id="@+id/tv_summoner_rank_solo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12dp"
+                            android:textSize="10dp"
                             android:text="Rank"/>
 
                         <TextView
@@ -75,10 +74,8 @@
                             android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10dp"
+                            android:textSize="8dp"
                             android:text="LPs"/>
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -88,6 +85,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_solo_wins"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="10dp"
@@ -100,12 +98,14 @@
                             android:text="/"/>
 
                         <TextView
+                            android:id="@+id/tv_solo_losses"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="10dp"
                             android:text="loses"/>
 
                         <TextView
+                            android:id="@+id/tv_wr_soloq"
                             android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -134,20 +134,14 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
-                        android:src="@drawable/ignite"/>
+                        android:src="@drawable/picture"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/tv_summoner_rank_flex"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12dp"
+                            android:textSize="10dp"
                             android:text="Rank"/>
 
                         <TextView
@@ -155,10 +149,9 @@
                             android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10dp"
+                            android:textSize="8dp"
                             android:text="LPs"/>
 
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -168,6 +161,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_flex_wins"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="10dp"
@@ -180,12 +174,14 @@
                             android:text="/"/>
 
                         <TextView
+                            android:id="@+id/tv_flex_losses"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="10dp"
                             android:text="loses"/>
 
                         <TextView
+                            android:id="@+id/tv_wr_flexq"
                             android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -213,20 +209,13 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
-                        android:src="@drawable/ignite"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
+                        android:src="@drawable/picture"/>
 
                         <TextView
                             android:id="@+id/tv_summoner_rank_3v3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12dp"
+                            android:textSize="10dp"
                             android:text="Rank"/>
 
                         <TextView
@@ -234,10 +223,9 @@
                             android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10dp"
+                            android:textSize="8dp"
                             android:text="LPs"/>
 
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -247,6 +235,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_3v3_wins"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="10dp"
@@ -259,12 +248,14 @@
                             android:text="/"/>
 
                         <TextView
+                            android:id="@+id/tv_3v3_losses"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="10dp"
                             android:text="loses"/>
 
                         <TextView
+                            android:id="@+id/tv_wr_3v3"
                             android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -285,32 +276,28 @@
             android:id="@+id/ly_last_games_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="LAST 20 GAMES STATS"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
@@ -318,11 +305,10 @@
                             android:layout_height="wrap_content"
                             android:text="GLOBAL STATS"/>
 
-                        <TextView
-                            android:layout_marginTop="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mostrar gráfico con los datos"/>
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pie_chart"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
 
                     </LinearLayout>
 
@@ -497,6 +483,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
@@ -504,11 +491,10 @@
                             android:layout_height="wrap_content"
                             android:text="Role Stats"/>
 
-                        <TextView
-                            android:layout_marginTop="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Gráfico con el wrate de cada rol"/>
+                        <com.github.mikephil.charting.charts.HorizontalBarChart
+                            android:id="@+id/chart1"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
 
                     </LinearLayout>
 

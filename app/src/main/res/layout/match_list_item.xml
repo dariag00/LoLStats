@@ -14,7 +14,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:background="@drawable/border"
+        android:background="@drawable/border_with_color"
         android:orientation="horizontal">
 
         <View
@@ -40,6 +40,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:src="@drawable/mock_champion"
+                android:layout_marginLeft="3dp"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="2dp" />
 
@@ -83,7 +84,7 @@
                         android:id="@+id/iv_first_summoner_spell"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginLeft="1dp"
+                        android:layout_marginLeft="2dp"
                         android:layout_marginBottom="5dp"
                         android:src="@drawable/ignite" />
 
@@ -91,7 +92,7 @@
                         android:id="@+id/iv_second_summoner_spell"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginLeft="1dp"
+                        android:layout_marginLeft="2dp"
                         android:src="@drawable/flash" />
 
                 </LinearLayout>
@@ -158,21 +159,33 @@
 
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/tv_kda"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:textSize="10dp"
-                            android:text="KDA: 1,57"/>
+                            android:orientation="horizontal">
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="10dp"
+                                android:text="KDA: "/>
+                            <TextView
+                                android:id="@+id/tv_kda"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:layout_marginBottom="2dp"
+                                android:textSize="10dp"
+                                android:text="1,57"/>
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
+                        android:gravity="center"
                         android:orientation="vertical">
 
 
@@ -190,9 +203,9 @@
                             <TextView
                                 android:id="@+id/tv_match_primary_stat"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="10dp"
-                                android:text="17.2"/>
+                                android:layout_height="match_parent"
+                                android:text="17.2"
+                                android:textSize="10dp" />
 
                         </LinearLayout>
 
@@ -204,14 +217,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="10dp"
+                                android:textSize="8dp"
                                 android:text="DMG/MIN: "/>
 
                             <TextView
                                 android:id="@+id/tv_match_secondary_stat"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="10dp"
+                                android:textSize="8dp"
                                 android:text="1705"/>
 
                         </LinearLayout>

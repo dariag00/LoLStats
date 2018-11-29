@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#f44d41</color>
+    <color name="colorPrimaryDark">#a32828</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="defeatColor">#f44d41</color>
+    <color name="victoryColor">#4286f4</color>
 </resources>

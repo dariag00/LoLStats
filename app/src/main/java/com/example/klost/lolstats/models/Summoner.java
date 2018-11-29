@@ -1,7 +1,15 @@
 package com.example.klost.lolstats.models;
 
-import com.example.klost.lolstats.models.matches.MatchList;
+import android.util.Log;
+import android.widget.ImageView;
 
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
+import com.example.klost.lolstats.models.matches.MatchList;
+import com.example.klost.lolstats.utilities.NetworkUtils;
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +22,10 @@ public class Summoner {
     String summonerName;
     Date revisionDate;
     int profileIconId;
+
     MatchList matchList;
+
+    LeaguePositionList positionList;
 
 
     public Summoner(){
@@ -81,6 +92,22 @@ public class Summoner {
     public void setMatchList(MatchList matchList) {
         this.matchList = matchList;
     }
+
+    public LeaguePositionList getPositionList() {
+        return positionList;
+    }
+
+    public void setPositionList(LeaguePositionList positionList) {
+        this.positionList = positionList;
+    }
+
+    public void loadImageFromDDragon(ImageView imageView) {
+        URL url = NetworkUtils.buildUrl(String.valueOf(this.profileIconId), NetworkUtils.GET_DDRAGON_PROFILE_ICON);
+        Log.d("Icon Image", "URL: " + url.toString());
+        Picasso.get().load(url.toString()).into(imageView);
+    }
+
+
 
     public String toString(){
         StringBuilder builder = new StringBuilder();
