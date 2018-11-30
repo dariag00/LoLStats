@@ -5,10 +5,16 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.champions.Champion;
+import com.example.klost.lolstats.models.champions.ChampionList;
 import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.models.matches.Team;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -185,6 +191,204 @@ public class LoLStatsUtils {
         return contadorDeVictorias;
 
     }
+    //TODO testear
+
+    public static double getAverageKillsOfLast20Games(List<Match> listOfGames, Summoner summoner){
+
+        int totalKills = 0;
+
+        for(int i=0; i<20; i++){
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()){
+                Player currentPlayer = match.getPlayer(summoner);
+                totalKills = totalKills + currentPlayer.getKills();
+            }
+        }
+
+        return (double) totalKills / 20.0;
+    }
+
+    public static double getAverageDeathsOfLast20Games(List<Match> listOfGames, Summoner summoner){
+
+        int totalDeaths = 0;
+
+        for(int i=0; i<20; i++){
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()){
+                Player currentPlayer = match.getPlayer(summoner);
+                totalDeaths = totalDeaths + currentPlayer.getDeaths();
+            }
+        }
+
+        return (double) totalDeaths / 20.0;
+
+    }
+
+    public static double getAverageAssistsOfLast20Games(List<Match> listOfGames, Summoner summoner){
+
+        int totalAssists = 0;
+
+        for(int i=0; i<20; i++){
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()){
+                Player currentPlayer = match.getPlayer(summoner);
+                totalAssists = totalAssists + currentPlayer.getAssists();
+            }
+        }
+
+        return (double) totalAssists / 20.0;
+    }
+
+    public static double getAverageKDAOfLast20Games(List<Match> listOfGames, Summoner summoner){
+
+        double totalKills = getAverageKillsOfLast20Games(listOfGames, summoner);
+        double totalAssists = getAverageAssistsOfLast20Games(listOfGames, summoner);
+        double totalDeaths = getAverageDeathsOfLast20Games(listOfGames, summoner);
+
+        double kda = (totalKills + totalAssists) / totalDeaths;
+
+        return kda;
+    }
+
+    public static double[] getPercentageOfGamesPlayedAndWonAsTop(List<Match> listOfGames, Summoner summoner){
+
+        double[] data = new double[2];
+        int played = 0;
+        int won = 0;
+
+        for(int i=0; i<20; i++) {
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()) {
+                Log.d(LOG_TAG, "Lane: " + match.getLane() +" Role: " + match.getRole());
+                if(match.getLane().equals("TOP")){
+                    played++;
+                    if(match.getTeamOfGivenSummoner(summoner).isWon()){
+                        won++;
+                    }
+                }
+            }
+        }
+
+        Log.d(LOG_TAG, "Nums: " + played + " " + "won");
+
+        data[0] = ((double)played / 20.0) * 100;
+        data[1] = ((double)won / 20.0) * 100;
+
+        return data;
+    }
+
+    public static double[] getPercentageOfGamesPlayedAndWonAsJungle(List<Match> listOfGames, Summoner summoner){
+        double[] data = new double[2];
+        int played = 0;
+        int won = 0;
+
+        for(int i=0; i<20; i++) {
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()) {
+                if(match.getLane().equals("JUNGLE")){
+                    played++;
+                    if(match.getTeamOfGivenSummoner(summoner).isWon()){
+                        won++;
+                    }
+                }
+            }
+        }
+
+        data[0] = ((double)played / 20.0) * 100;
+        data[1] = ((double)won / 20.0) * 100;
+
+
+        return data;
+    }
+
+    public static double[] getPercentageOfGamesPlayedAndWonAsMid(List<Match> listOfGames, Summoner summoner){
+        double[] data = new double[2];
+        int played = 0;
+        int won = 0;
+
+        for(int i=0; i<20; i++) {
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()) {
+                if(match.getLane().equals("MID")){
+                    played++;
+                    if(match.getTeamOfGivenSummoner(summoner).isWon()){
+                        won++;
+                    }
+                }
+            }
+        }
+
+        data[0] = ((double)played / 20.0) * 100;
+        data[1] = ((double)won / 20.0) * 100;
+
+
+        return data;
+    }
+
+
+    public static double[] getPercentageOfGamesPlayedAndWonAsBottom(List<Match> listOfGames, Summoner summoner){
+        double[] data = new double[2];
+        int played = 0;
+        int won = 0;
+
+        for(int i=0; i<20; i++) {
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()) {
+                if(match.getLane().equals("BOTTOM") && match.getRole().equals("DUO_CARRY")){
+                    played++;
+                    if(match.getTeamOfGivenSummoner(summoner).isWon()){
+                        won++;
+                    }
+                }
+            }
+        }
+        data[0] = ((double)played / 20.0) * 100;
+        data[1] = ((double)won / 20.0) * 100;
+
+        return data;
+    }
+
+
+    public static double[] getPercentageOfGamesPlayedAndWonAsSupport(List<Match> listOfGames, Summoner summoner){
+        double[] data = new double[2];
+        int played = 0;
+        int won = 0;
+
+        for(int i=0; i<20; i++) {
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()) {
+                if(match.getLane().equals("BOTTOM") && match.getRole().equals("DUO_SUPPORT")){
+                    played++;
+                    if(match.getTeamOfGivenSummoner(summoner).isWon()){
+                        won++;
+                    }
+                }
+            }
+        }
+
+        data[0] = ((double)played / 20.0) * 100;
+        data[1] = ((double)won / 20.0) * 100;
+
+        return data;
+    }
+
+    public static Champion getMostUsedChampion(List<Match> listOfGames, Summoner summoner, ChampionList championList){
+
+        List<Integer> usedChampions = new ArrayList<>();
+
+        for(int i=0; i<20; i++) {
+            Match match = listOfGames.get(i);
+            if(match.isProcessed()){
+                usedChampions.add(match.getChampionId());
+            }
+        }
+
+        int mostUsedChampionId = Collections.max(usedChampions);
+
+        return championList.getChampionById(mostUsedChampionId);
+    }
+
+
 
 
     //TODO añadir loadFromDDragon aqui?

@@ -426,6 +426,63 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 Legend legend = chart.getLegend();
                 legend.setEnabled(false);
 
+                //Setteamos los valores de campeones mas jugados
+                TextView winRateTopView = activity.findViewById(R.id.tv_top_winrate);
+                TextView playRateTopView = activity.findViewById(R.id.tv_top_played);
+                double[] topValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsTop(matchList.getMatches(), summoner);
+                String topWinRate = String.format(Locale.ENGLISH, "%.2f", topValues[0]).concat("%");
+                String topRate = String.format(Locale.ENGLISH, "%.2f", topValues[1]).concat("%");
+                winRateTopView.setText(topWinRate);
+                playRateTopView.setText(topRate);
+
+                TextView winRateJungleView = activity.findViewById(R.id.tv_jungle_winrate);
+                TextView playRateJungleView = activity.findViewById(R.id.tv_jungle_played);
+                double[] jungleValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsJungle(matchList.getMatches(), summoner);
+                String jungleWinRate = String.format(Locale.ENGLISH, "%.2f", jungleValues[0]).concat("%");
+                String jungleRate = String.format(Locale.ENGLISH, "%.2f", jungleValues[1]).concat("%");
+                winRateJungleView.setText(jungleWinRate);
+                playRateJungleView.setText(jungleRate);
+
+                TextView winRateMidView = activity.findViewById(R.id.tv_mid_winrate);
+                TextView playRateMidView = activity.findViewById(R.id.tv_mid_played);
+                double[] midValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsMid(matchList.getMatches(), summoner);
+                String midWinRate = String.format(Locale.ENGLISH, "%.2f", midValues[0]).concat("%");
+                String midRate = String.format(Locale.ENGLISH, "%.2f", midValues[1]).concat("%");
+                winRateMidView.setText(midWinRate);
+                playRateMidView.setText(midRate);
+
+                TextView winRateBottomView = activity.findViewById(R.id.tv_bottom_winrate);
+                TextView playRateBottomView = activity.findViewById(R.id.tv_bottom_played);
+                double[] bottomValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsBottom(matchList.getMatches(), summoner);
+                String bottomWinRate = String.format(Locale.ENGLISH, "%.2f", bottomValues[0]).concat("%");
+                String bottomRate = String.format(Locale.ENGLISH, "%.2f", bottomValues[1]).concat("%");
+                winRateBottomView.setText(bottomWinRate);
+                playRateBottomView.setText(bottomRate);
+
+                TextView winRateSupportView = activity.findViewById(R.id.tv_support_winrate);
+                TextView playRateSupportView = activity.findViewById(R.id.tv_support_played);
+                double[] supportValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsSupport(matchList.getMatches(), summoner);
+                String supportWinRate = String.format(Locale.ENGLISH, "%.2f", supportValues[0]).concat("%");
+                String supportRate = String.format(Locale.ENGLISH, "%.2f", supportValues[1]).concat("%");
+                winRateSupportView.setText(supportWinRate);
+                playRateSupportView.setText(supportRate);
+
+                //Setteamos los datos globales de resultados
+                TextView killsView = activity.findViewById(R.id.tv_global_kills);
+                String kills = String.format(Locale.ENGLISH, "%.2f", LoLStatsUtils.getAverageKillsOfLast20Games(matchList.getMatches(), summoner));
+                killsView.setText(kills);
+
+                TextView deathsView = activity.findViewById(R.id.tv_global_deaths);
+                String deaths = String.format(Locale.ENGLISH, "%.2f", LoLStatsUtils.getAverageDeathsOfLast20Games(matchList.getMatches(), summoner));
+                deathsView.setText(deaths);
+
+                TextView assistsView = activity.findViewById(R.id.tv_global_assists);
+                String assists = String.format(Locale.ENGLISH, "%.2f", LoLStatsUtils.getAverageAssistsOfLast20Games(matchList.getMatches(), summoner));
+                assistsView.setText(assists);
+
+                TextView kdaView = activity.findViewById(R.id.tv_global_kda);
+                String kda = String.format(Locale.ENGLISH, "%.2f", LoLStatsUtils.getAverageKDAOfLast20Games(matchList.getMatches(), summoner));
+                kdaView.setText(kda);
 
             }else{
                 showErrorMessage(activity);

@@ -11,6 +11,7 @@ public class Match {
 
     //TODO añadir estadisticas del JSON de GET_MATCH
     //TODO poner en private
+    //TODO pasar el role a Player
 
     String lane;
     long gameId;
