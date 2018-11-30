@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:parentActivityName=".InitialActivity"></activity>
+            android:parentActivityName=".InitialActivity" />
         <activity
             android:name=".InitialActivity"
             android:label="Prueba">
@@ -23,7 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".TestMainLayoutActivity"></activity>
     </application>
 
 </manifest>

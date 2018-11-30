@@ -20,6 +20,7 @@ public class InitialActivity extends AppCompatActivity {
     private EditText summonerNameView;
     private Button searchButton;
     private Button testButton;
+    private Button testButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,24 @@ public class InitialActivity extends AppCompatActivity {
             }
         });
 
+        testButton2 = findViewById(R.id.bt_test2);
+
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toTest2();
+            }
+        });
+
     }
 
     private void toTest(){
         Intent intent = new Intent(this, TestActivity.class);
+        startActivity(intent);
+    }
+
+    private void toTest2(){
+        Intent intent = new Intent(this, TestMainLayoutActivity.class);
         startActivity(intent);
     }
 

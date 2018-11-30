@@ -51,4 +51,26 @@
         android:layout_marginLeft="10dp"
         android:text="IR A LOS NUEVOS LAYOUTS"/>
 
+    <Button
+        android:id="@+id/bt_test2"
+        android:layout_width="wrap_content"
+        android:textSize="13dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="IR A LOS NUEVOS LAYOUTS 2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/border"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/picture"/>
+
+    </LinearLayout>
+
 </LinearLayout>
