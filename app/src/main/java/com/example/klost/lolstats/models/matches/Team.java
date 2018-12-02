@@ -12,20 +12,20 @@ public class Team {
     //TODO falta implentación de modos diferentes a Summoner Rift y los baneos
     //TODO sacar los datos del jugador que ha buscado este match
 
-    int teamId; //100 for blue side, 200 for red side
-    boolean firstDragon; //Flag indicating whether or not the team scored the first Dragon kill
-    boolean firstInhibitor; //Flag indicating whether or not the team destroyed the first inhibitor
-    int baronKills; //Number of times the team killed Baron
-    boolean firstRiftHerald; //Flag indicating whether or not the team scored the first Rift Herald kill
-    boolean firstBaron; //Flag indicating whether or not the team scored the first Baron kill
-    int riftHeraldKills; //Number of times the team killed Rift Herald
-    boolean firstBlood; //Flag indicating whether or not the team scored the first blood
-    boolean firstTower; //Flag indicating whether or not the team destroyed the first tower
-    int inhibitorKills; //Number of inhibitors the team destroyed
-    int towerKills; //Number of towers the team destroyed
-    String win; //Legal Values Fail, Win
-    int dragonKills; //Number of times the team killed Dragon
-    List<Player> players;
+    private int teamId; //100 for blue side, 200 for red side
+    private boolean firstDragon; //Flag indicating whether or not the team scored the first Dragon kill
+    private boolean firstInhibitor; //Flag indicating whether or not the team destroyed the first inhibitor
+    private int baronKills; //Number of times the team killed Baron
+    private boolean firstRiftHerald; //Flag indicating whether or not the team scored the first Rift Herald kill
+    private boolean firstBaron; //Flag indicating whether or not the team scored the first Baron kill
+    private int riftHeraldKills; //Number of times the team killed Rift Herald
+    private boolean firstBlood; //Flag indicating whether or not the team scored the first blood
+    private boolean firstTower; //Flag indicating whether or not the team destroyed the first tower
+    private int inhibitorKills; //Number of inhibitors the team destroyed
+    private int towerKills; //Number of towers the team destroyed
+    private String win; //Legal Values Fail, Win
+    private int dragonKills; //Number of times the team killed Dragon
+    private List<Player> players;
 
     public Team(){
         players = new ArrayList<>();

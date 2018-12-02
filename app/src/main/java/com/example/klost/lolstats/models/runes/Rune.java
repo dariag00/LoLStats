@@ -10,12 +10,12 @@ import java.net.URL;
 
 public class Rune {
 
-    int id;
-    String key;
-    String iconPath;
-    String name;
-    String shortDesc;
-    String longDesc;
+    private int id;
+    private String key;
+    private String iconPath;
+    private String name;
+    private String shortDesc;
+    private String longDesc;
 
     public Rune(){
 

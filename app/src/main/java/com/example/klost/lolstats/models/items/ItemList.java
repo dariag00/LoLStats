@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ItemList {
 
-    List<Item> itemList;
+    private List<Item> itemList;
 
     public ItemList(){
         itemList = new ArrayList<>();

@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/summoner_name"
                 android:maxLines="1"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
@@ -36,9 +36,10 @@
         <Button
             android:id="@+id/bt_search"
             android:layout_width="75dp"
-            android:textSize="13dp"
+            android:textSize="13sp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="@string/search"/>
 
     </LinearLayout>
@@ -46,17 +47,19 @@
     <Button
         android:id="@+id/bt_test"
         android:layout_width="wrap_content"
-        android:textSize="13dp"
+        android:textSize="13sp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:text="IR A LOS NUEVOS LAYOUTS"/>
 
     <Button
         android:id="@+id/bt_test2"
         android:layout_width="wrap_content"
-        android:textSize="13dp"
+        android:textSize="13sp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:text="IR A LOS NUEVOS LAYOUTS 2"/>
 
     <LinearLayout
@@ -69,6 +72,7 @@
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:contentDescription="Imagen"
             android:src="@drawable/picture"/>
 
     </LinearLayout>

@@ -42,41 +42,41 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
     public class RiotAdapterViewHolder extends RecyclerView.ViewHolder{
 
 
-        public final LinearLayout matchLinearLayout;
+        final LinearLayout matchLinearLayout;
 
-        public final CircleImageView championImageView;
+        final CircleImageView championImageView;
 
-        public final ImageView firstSummonerSpellIconView;
-        public final ImageView secondSummonerSpellIconView;
+        final ImageView firstSummonerSpellIconView;
+        final ImageView secondSummonerSpellIconView;
 
-        public final ImageView mainRuneView;
-        public final ImageView secondaryRuneView;
+        final ImageView mainRuneView;
+        final ImageView secondaryRuneView;
 
-        public final TextView killsTextView;
-        public final TextView deathsTextView;
-        public final TextView assistsTextView;
-        public final TextView kdaTextView;
+        final TextView killsTextView;
+        final TextView deathsTextView;
+        final TextView assistsTextView;
+        final TextView kdaTextView;
 
-        public final ImageView firstItemView;
-        public final ImageView secondItemView;
-        public final ImageView thirdItemView;
-        public final ImageView fourthItemView;
-        public final ImageView fifthItemView;
-        public final ImageView sixthItemView;
-        public final ImageView trinketItemView;
+        final ImageView firstItemView;
+        final ImageView secondItemView;
+        final ImageView thirdItemView;
+        final ImageView fourthItemView;
+        final ImageView fifthItemView;
+        final ImageView sixthItemView;
+        final ImageView trinketItemView;
 
-        public final TextView gameDateView;
-        public final TextView queueTypeView;
-        public final TextView gameDurationTextView;
+        final TextView gameDateView;
+        final TextView queueTypeView;
+        final TextView gameDurationTextView;
 
-        public final View gameResultIndicatorView;
+        final View gameResultIndicatorView;
 
-        public final TextView csPerMinView;
-        public final TextView dmgPerMinView;
+        final TextView csPerMinView;
+        final TextView dmgPerMinView;
 
 
 
-        public RiotAdapterViewHolder(View view){
+        RiotAdapterViewHolder(View view){
             super(view);
             matchLinearLayout = view.findViewById(R.id.ly_match_container);
 
@@ -251,7 +251,7 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
     }
 
 
-    public void setData(Match[] matchesData, Summoner summoner, ChampionList championList, RuneList runeList, SummonerSpellList summonerSpellList, ItemList itemList) {
+     void setData(Match[] matchesData, Summoner summoner, ChampionList championList, RuneList runeList, SummonerSpellList summonerSpellList, ItemList itemList) {
         this.matchesData = matchesData;
         this.summoner = summoner;
         this.runeList = runeList;

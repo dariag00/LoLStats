@@ -9,4 +9,27 @@
     <string name="error_invalid_summoner_name">Please, introduce a valid summoner name</string>
     <string name="error_empty_summoner_name">Please, introduce a summoner name</string>
 
+    <!-- Strings related to match_list_item.xml-->
+    <string name="slash">/</string>
+    <string name="kda">KDA: </string>
+
+    <string name="csmin">CS/MIN:</string>
+    <string name="dmgmin">DMG/MIN:</string>
+
+    <!-- Strings related to activity_main.xml-->
+    <string name="ranked_solo">Ranked Solo</string>
+    <string name="ranked_flex">Ranked Flex</string>
+    <string name="ranked_3v3">Ranked 3V3</string>
+    <string name="cs">CS:</string>
+
+    <string name="champion_stats">Champion Stats</string>
+
+    <string name="role_stats">Role Stats</string>
+    <string name="top">Top</string>
+    <string name="jungle">Jungle</string>
+    <string name="mid">Mid</string>
+    <string name="bottom">Bottom</string>
+    <string name="support">Support</string>
+
+
 </resources>

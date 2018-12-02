@@ -10,11 +10,11 @@ import java.net.URL;
 
 public class SummonerSpell {
 
-    String id;
-    String name;
-    String description;
-    int key;
-    String imageFileName;
+    private String id;
+    private String name;
+    private String description;
+    private int key;
+    private String imageFileName;
 
     public SummonerSpell(){
 

@@ -13,21 +13,21 @@ public class Match {
     //TODO poner en private
     //TODO pasar el role a Player
 
-    String lane;
-    long gameId;
-    int championId;
-    String platformId;
-    int queue;
-    String role;
-    int season;
-    Team blueTeam;
-    Team redTeam;
+    private String lane;
+    private long gameId;
+    private int championId;
+    private String platformId;
+    private int queue;
+    private String role;
+    private int season;
+    private Team blueTeam;
+    private Team redTeam;
     //Valor que indica si se ha realizado una consulta sobre ese game para sacar mas informacion
-    boolean isProcessed;
+    private boolean isProcessed;
 
-    long gameDuration;
-    Date gameCreation;
-    String gameType;
+    private long gameDuration;
+    private Date gameCreation;
+    private String gameType;
 
 
     public Match(){
@@ -132,8 +132,7 @@ public class Match {
     }
 
     public void setGameCreation(long gameCreation) {
-        Date date = new Date(gameCreation);
-        this.gameCreation = date;
+        this.gameCreation =  new Date(gameCreation);
     }
 
     public String getGameType() {

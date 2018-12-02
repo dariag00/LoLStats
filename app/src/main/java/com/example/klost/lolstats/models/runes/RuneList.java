@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RuneList {
 
-    List<RunePath> runePathList;
+    private List<RunePath> runePathList;
 
     public RuneList(){
         runePathList = new ArrayList<>();

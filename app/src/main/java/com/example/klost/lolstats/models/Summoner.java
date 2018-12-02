@@ -13,19 +13,20 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Summoner {
 
-    long accountId;
-    long summonerId;
-    long summonerLevel;
-    String summonerName;
-    Date revisionDate;
-    int profileIconId;
+    private long accountId;
+    private long summonerId;
+    private long summonerLevel;
+    private String summonerName;
+    private Date revisionDate;
+    private int profileIconId;
 
-    MatchList matchList;
+    private MatchList matchList;
 
-    LeaguePositionList positionList;
+    private LeaguePositionList positionList;
 
 
     public Summoner(){
@@ -128,7 +129,7 @@ public class Summoner {
         builder.append(this.summonerLevel);
         builder.append("\n");
 
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String date = formatter.format(this.revisionDate);
 
         builder.append("Revision Date: ");

@@ -1,326 +1,339 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ly_match_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:background="@drawable/border_with_color"
+    android:orientation="horizontal">
 
-    <!-- TODO Añadir una view de 1dp de ancho para separar -->
+    <View
+        android:id="@+id/view_match_result_indicator"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_width="15dp"
+        android:layout_height="match_parent"
+        android:background="#f44d41"/>
 
     <LinearLayout
-        android:id="@+id/ly_match_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@drawable/border_with_color"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
 
-        <View
-            android:id="@+id/view_match_result_indicator"
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="1dp"
-            android:layout_width="15dp"
-            android:layout_height="match_parent"
-            android:background="#f44d41"/>
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_champion_image"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/mock_champion"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="2dp"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_champion_image"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:src="@drawable/mock_champion"
-                android:layout_marginLeft="3dp"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="2dp" />
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_rune_keystone"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/circle"
+                    android:src="@drawable/main_rune" />
+
+                <ImageView
+                    android:id="@+id/iv_secondary_rune_path"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/circle"
+                    android:src="@drawable/secondary_rune" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/iv_first_summoner_spell"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/ignite" />
+
+                <ImageView
+                    android:id="@+id/iv_second_summoner_spell"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:src="@drawable/flash" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:gravity=""
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/iv_rune_keystone"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/circle"
-                        android:src="@drawable/main_rune" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_kills"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="2"
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/slash"
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:id="@+id/tv_deaths"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="5"
+                            android:textColor="#cc1818"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/slash"
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:id="@+id/tv_assists"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="12"
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
 
-                    <ImageView
-                        android:id="@+id/iv_secondary_rune_path"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="1dp"
-                        android:background="@drawable/circle"
-                        android:src="@drawable/secondary_rune" />
+                    </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:text="@string/kda"/>
+                        <TextView
+                            android:id="@+id/tv_kda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:textSize="10sp"
+                            tools:text="1.57"/>
+                    </LinearLayout>
                 </LinearLayout>
-
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:orientation="vertical">
 
 
-                    <ImageView
-                        android:id="@+id/iv_first_summoner_spell"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginBottom="5dp"
-                        android:src="@drawable/ignite" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/iv_second_summoner_spell"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/flash" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:text="@string/csmin"/>
 
+                        <TextView
+                            android:id="@+id/tv_match_primary_stat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            tools:text="17.2"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="8sp"
+                            android:text="@string/dmgmin"/>
+
+                        <TextView
+                            android:id="@+id/tv_match_secondary_stat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:textSize="8sp"
+                            tools:text="1705"/>
+
+                    </LinearLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|end"
+                    android:orientation="vertical"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginEnd="3dp">
+
+                    <TextView
+                        android:id="@+id/tv_game_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="19/10/1997"
+                        android:textSize="7sp"/>
+                    <TextView
+                        android:id="@+id/tv_game_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="7sp"
+                        tools:text="Ranked Queue"/>
+                    <TextView
+                        android:id="@+id/tv_game_time_ago"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="7sp"
+                        tools:text="Hace 5 dias"/>
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/iv_item0"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/empty_item"/>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:gravity=""
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/iv_item1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/empty_item"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:id="@+id/tv_kills"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2"
-                                android:textColor="@android:color/black"
-                                android:textSize="13sp" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="/"
-                                android:textColor="@android:color/black"
-                                android:textSize="13sp" />
-                            <TextView
-                                android:id="@+id/tv_deaths"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="5"
-                                android:textColor="#cc1818"
-                                android:textSize="13sp" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="/"
-                                android:textColor="@android:color/black"
-                                android:textSize="13sp" />
-                            <TextView
-                                android:id="@+id/tv_assists"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="12"
-                                android:textColor="@android:color/black"
-                                android:textSize="13sp" />
+                <ImageView
+                    android:id="@+id/iv_item2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/empty_item"/>
 
-                        </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_item3"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/empty_item"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/iv_item4"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/empty_item"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="10dp"
-                                android:text="KDA: "/>
-                            <TextView
-                                android:id="@+id/tv_kda"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:layout_marginBottom="2dp"
-                                android:textSize="10dp"
-                                android:text="1,57"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_item5"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/empty_item"/>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                <!--TODO crear empty trinket -->
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_trinket"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
+                    android:src="@drawable/trinket"
+                    />
 
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="10dp"
-                                android:text="CS/MIN: "/>
-
-                            <TextView
-                                android:id="@+id/tv_match_primary_stat"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="17.2"
-                                android:textSize="10dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="8dp"
-                                android:text="DMG/MIN: "/>
-
-                            <TextView
-                                android:id="@+id/tv_match_secondary_stat"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="8dp"
-                                android:text="1705"/>
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|end"
-                        android:orientation="vertical"
-                        android:layout_marginRight="3dp">
-
-                        <TextView
-                            android:id="@+id/tv_game_duration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="19/10/1997"
-                            android:textSize="7sp"/>
-                        <TextView
-                            android:id="@+id/tv_game_type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="7sp"
-                            android:text="Ranked queue"/>
-                        <TextView
-                            android:id="@+id/tv_game_time_ago"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="7sp"
-                            android:text="Hace 5 dias"/>
-
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/iv_item0"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/item1" />
-
-                    <ImageView
-                        android:id="@+id/iv_item1"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/item2" />
-
-                    <ImageView
-                        android:id="@+id/iv_item2"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/item3" />
-
-                    <ImageView
-                        android:id="@+id/iv_item3"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/item4" />
-
-                    <ImageView
-                        android:id="@+id/iv_item4"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/item5" />
-
-                    <ImageView
-                        android:id="@+id/iv_item5"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/item6" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_trinket"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/trinket"
-                        />
-
-
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

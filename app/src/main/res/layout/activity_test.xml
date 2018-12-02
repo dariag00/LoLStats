@@ -309,7 +309,7 @@
                     android:paddingLeft="2dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
-                    android:background="@drawable/border_with_color2">
+                    android:background="@drawable/empty_item">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -857,7 +857,7 @@
                     android:orientation="horizontal"
                     android:paddingLeft="2dp"
                     android:paddingTop="2dp"
-                    android:background="@drawable/border_with_color2"
+                    android:background="@drawable/empty_item"
                     android:paddingBottom="2dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
@@ -1095,7 +1095,7 @@
                     android:orientation="horizontal"
                     android:paddingLeft="2dp"
                     android:paddingTop="2dp"
-                    android:background="@drawable/border_with_color2"
+                    android:background="@drawable/empty_item"
                     android:paddingBottom="2dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView

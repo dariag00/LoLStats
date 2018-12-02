@@ -6,10 +6,10 @@ public class MatchList {
 
     //TODO comprobar que al asignar el match sigue estando en MatchList
 
-    int totalGames;
-    int startIndex;
-    int endIndex;
-    List<Match> matches;
+    private int totalGames;
+    private int startIndex;
+    private int endIndex;
+    private List<Match> matches;
 
     public MatchList(){}
 

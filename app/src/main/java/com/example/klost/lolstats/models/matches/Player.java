@@ -5,42 +5,42 @@ import com.example.klost.lolstats.models.Summoner;
 public class Player {
 
     //TODO falta implementar estadisticas runas y timeline
-    int participantId;
-    int teamId; //TODO realmente necesario?
-    int spell2Id;
-    String highestAchievedSeasoNTier;
-    int spell1Id;
-    int championId;
-    Summoner summoner;//TODO implementar
-    int summonerId;
-    int accountId;
-    long visionScore;
-    int assists;
-    int deaths;
-    int kills;
-    long totalDamageDealtToChampions;
-    int totalMinionsKilled;
-    int neutralMinionsKilled;
+    private int participantId;
+    private int teamId; //TODO realmente necesario?
+    private int spell2Id;
+    private String highestAchievedSeasoNTier;
+    private int spell1Id;
+    private int championId;
+    private Summoner summoner;//TODO implementar
+    private int summonerId;
+    private int accountId;
+    private long visionScore;
+    private int assists;
+    private int deaths;
+    private int kills;
+    private long totalDamageDealtToChampions;
+    private int totalMinionsKilled;
+    private int neutralMinionsKilled;
 
     //TEMPORAL
-    int runePrimaryStyle;
-    int runeSecondaryStyle;
+    private int runePrimaryStyle;
+    private int runeSecondaryStyle;
 
-    int rune0;
-    int rune1;
-    int rune2;
-    int rune3;
+    private int rune0;
+    private int rune1;
+    private int rune2;
+    private int rune3;
 
-    int rune4;
-    int rune5;
+    private int rune4;
+    private int rune5;
 
-    int item0;
-    int item1;
-    int item2;
-    int item3;
-    int item4;
-    int item5;
-    int item6;
+    private int item0;
+    private int item1;
+    private int item2;
+    private int item3;
+    private int item4;
+    private int item5;
+    private int item6;
 
 
     public Player(){

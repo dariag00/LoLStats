@@ -1,12 +1,13 @@
 package com.example.klost.lolstats.models.champions;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ChampionList {
 
-    List<Champion> champions;
-    String version;
+    private List<Champion> champions;
+    private String version;
 
     public ChampionList(){
         champions = new ArrayList<>();
@@ -33,5 +34,12 @@ public class ChampionList {
             }
         }
         return null;
+    }
+
+    class SortByName implements Comparator<Champion> {
+        @Override
+        public int compare(Champion a, Champion b) {
+            return a.getName().compareTo(b.getName());
+        }
     }
 }

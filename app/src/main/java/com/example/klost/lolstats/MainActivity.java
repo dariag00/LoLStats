@@ -3,6 +3,7 @@ package com.example.klost.lolstats;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +53,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.google.common.util.concurrent.RateLimiter;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -202,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
             //TODO estudiar el impacto que tiene esto en la memoria y si no usar SoftReference
             activityReference = new WeakReference<>(context);
             //Seteamos la cantidad de requests que pueden salir por segundo.
-            throttler = throttler.create(0.7);
+            throttler = RateLimiter.create(0.7);
             //throttler2 = throttler2.create(0.1);
         }
 
@@ -293,6 +295,9 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 //Setteamos los datos del perfil
                 ImageView profileIcon = activity.findViewById(R.id.iv_profile_icon);
                 summoner.loadImageFromDDragon(profileIcon);
+
+                TextView summonerLevelView = activity.findViewById(R.id.tv_summoner_level);
+                summonerLevelView.setText(String.valueOf(summoner.getSummonerLevel()));
 
                 ImageView soloQIcon = activity.findViewById(R.id.iv_rank_icon_solo);
                 ImageView flexQIcon = activity.findViewById(R.id.iv_rank_icon_flex);
@@ -427,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 legend.setEnabled(false);
 
                 //Setteamos los valores de campeones mas jugados
-                TextView winRateTopView = activity.findViewById(R.id.tv_top_winrate);
+                /*TextView winRateTopView = activity.findViewById(R.id.tv_top_winrate);
                 TextView playRateTopView = activity.findViewById(R.id.tv_top_played);
                 double[] topValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsTop(matchList.getMatches(), summoner);
                 String topWinRate = String.format(Locale.ENGLISH, "%.2f", topValues[0]).concat("%");
@@ -465,7 +470,9 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 String supportWinRate = String.format(Locale.ENGLISH, "%.2f", supportValues[0]).concat("%");
                 String supportRate = String.format(Locale.ENGLISH, "%.2f", supportValues[1]).concat("%");
                 winRateSupportView.setText(supportWinRate);
-                playRateSupportView.setText(supportRate);
+                playRateSupportView.setText(supportRate);*/
+                String[] roles = LoLStatsUtils.get3MostPlayedRoles(matches, summoner);
+                setMostPlayedRoles(activity, roles, matches, summoner);
 
                 //Setteamos los datos globales de resultados
                 TextView killsView = activity.findViewById(R.id.tv_global_kills);
@@ -483,6 +490,16 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 TextView kdaView = activity.findViewById(R.id.tv_global_kda);
                 String kda = String.format(Locale.ENGLISH, "%.2f", LoLStatsUtils.getAverageKDAOfLast20Games(matchList.getMatches(), summoner));
                 kdaView.setText(kda);
+
+                //Setteo de los mejores champions
+                Champion[] top3Champions = LoLStatsUtils.get3MostPlayedChampion(matches, summoner, championList);
+                int[] stats1 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[0]);
+                int[] stats2 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[1]);
+                int[] stats3 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[2]);
+
+                setBestChampionData(activity, stats1, 1, top3Champions[0]);
+                setBestChampionData(activity, stats2, 2, top3Champions[1]);
+                setBestChampionData(activity, stats3, 3, top3Champions[2]);
 
             }else{
                 showErrorMessage(activity);
@@ -503,6 +520,114 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
             recyclerView.setVisibility(View.INVISIBLE);
             errorMessageDisplay.setVisibility(View.VISIBLE);
             mainLayout.setVisibility(View.INVISIBLE);
+        }
+
+        private void setMostPlayedRoles(MainActivity activity, String[] roles, List<Match> listOfGames, Summoner summoner){
+
+            TextView winRateView1 = activity.findViewById(R.id.tv_role_win_rate1);
+            TextView playRateView1 = activity.findViewById(R.id.tv_role_played1);
+            TextView roleNameView1 = activity.findViewById(R.id.tv_role_name_1);
+
+            TextView winRateView2 = activity.findViewById(R.id.tv_role_win_rate2);
+            TextView playRateView2 = activity.findViewById(R.id.tv_role_played2);
+            TextView roleNameView2 = activity.findViewById(R.id.tv_role_name_2);
+
+            TextView winRateView3 = activity.findViewById(R.id.tv_role_win_rate3);
+            TextView playRateView3 = activity.findViewById(R.id.tv_role_played3);
+            TextView roleNameView3 = activity.findViewById(R.id.tv_role_name_3);
+
+            ImageView roleIcon1 = activity.findViewById(R.id.iv_role_1);
+            ImageView roleIcon2 = activity.findViewById(R.id.iv_role_2);
+            ImageView roleIcon3 = activity.findViewById(R.id.iv_role_3);
+
+            LoLStatsUtils.setRoleImage(roleIcon1, roles[0]);
+            LoLStatsUtils.setRoleImage(roleIcon2, roles[1]);
+            LoLStatsUtils.setRoleImage(roleIcon3, roles[2]);
+
+            roleNameView1.setText(roles[0]);
+            roleNameView2.setText(roles[1]);
+            roleNameView3.setText(roles[2]);
+
+            double[] stats1 = LoLStatsUtils.getRoleStats(listOfGames, summoner, roles[0]);
+
+            Log.d(LOG_TAG, "Played: " + stats1[0] + " Won: " + stats1[1]);
+
+            String winRate1 = String.format(Locale.ENGLISH, "%.2f", stats1[1]).concat("%");
+            String playRate1 = String.format(Locale.ENGLISH, "%.2f", stats1[0]).concat("%");
+            winRateView1.setText(winRate1);
+            playRateView1.setText(playRate1);
+
+            double[] stats2 = LoLStatsUtils.getRoleStats(listOfGames, summoner, roles[1]);
+
+            String winRate2 = String.format(Locale.ENGLISH, "%.2f", stats2[1]).concat("%");
+            String playRate2 = String.format(Locale.ENGLISH, "%.2f", stats2[0]).concat("%");
+            winRateView2.setText(winRate2);
+            playRateView2.setText(playRate2);
+
+            double[] stats3 = LoLStatsUtils.getRoleStats(listOfGames, summoner, roles[2]);
+
+            String winRate3 = String.format(Locale.ENGLISH, "%.2f", stats3[1]).concat("%");
+            String playRate3 = String.format(Locale.ENGLISH, "%.2f", stats3[0]).concat("%");
+            winRateView3.setText(winRate3);
+            playRateView3.setText(playRate3);
+
+        }
+
+        //TODO meter en stats el championid
+        private void setBestChampionData(MainActivity activity, int[] stats, int championRank, Champion champion){
+
+            ImageView championView;
+            TextView championCs;
+            TextView kdaChampionView;
+            TextView gamesPlayedView;
+            TextView gamesWonView;
+
+            if(championRank == 1){
+                championView = activity.findViewById(R.id.iv_champion1_image);
+                championCs = activity.findViewById(R.id.tv_champion1_cs);
+                kdaChampionView = activity.findViewById(R.id.tv_champion1_kda);
+                gamesPlayedView = activity.findViewById(R.id.tv_champion1_games_played);
+                gamesWonView = activity.findViewById(R.id.tv_champion1_win_rate);
+            }else if(championRank == 2){
+                championView = activity.findViewById(R.id.iv_champion2_image);
+                championCs = activity.findViewById(R.id.tv_champion2_cs);
+                kdaChampionView = activity.findViewById(R.id.tv_champion2_kda);
+                gamesPlayedView = activity.findViewById(R.id.tv_champion2_games_played);
+                gamesWonView = activity.findViewById(R.id.tv_champion2_win_rate);
+            }else{
+                championView = activity.findViewById(R.id.iv_champion3_image);
+                championCs = activity.findViewById(R.id.tv_champion3_cs);
+                kdaChampionView = activity.findViewById(R.id.tv_champion3_kda);
+                gamesPlayedView = activity.findViewById(R.id.tv_champion3_games_played);
+                gamesWonView = activity.findViewById(R.id.tv_champion3_win_rate);
+            }
+
+            champion.loadImageFromDDragon(championView);
+
+            int numberOfKills = stats[0];
+            int numberOfDeaths = stats[1];
+            int numberOfAssists = stats[2];
+            int totalMinionsKilled = stats[3];
+            int gamesPlayed = stats[4];
+            int gamesWon = stats[5];
+            Log.d(LOG_TAG, "Games won: " + gamesWon);
+
+            double averageMinionsKilled = (double) totalMinionsKilled / (double) gamesPlayed;
+            double averageKills = (double) numberOfKills / (double) gamesPlayed;
+            double averageDeaths = (double) numberOfDeaths / (double) gamesPlayed;
+            double averageAssists = (double) numberOfAssists / (double) gamesPlayed;
+
+            championCs.setText(String.valueOf(averageMinionsKilled));
+
+            double kdaChampion = LoLStatsUtils.calculateKDA(averageKills, averageAssists, averageDeaths);
+            LoLStatsUtils.setKdaAndTextColorInView(kdaChampionView, kdaChampion);
+
+            double winRate = ((double) gamesWon / (double) gamesPlayed) *100;
+            Log.d(LOG_TAG, "WR: " + winRate + " dividiendo " + gamesWon + " entre "+ gamesPlayed);
+
+            gamesPlayedView.setText("Games: " + String.valueOf(gamesPlayed));
+            gamesWonView.setText(String.valueOf((int) winRate).concat("%"));
+
         }
 
         private SpannableString generateCenterSpannableText() {
@@ -549,7 +674,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
         OnTaskCompleted listener;
 
-        public ReadTextTask(OnTaskCompleted listener){
+        ReadTextTask(OnTaskCompleted listener){
             this.listener=listener;
         }
 

@@ -29,7 +29,7 @@ import java.util.List;
 
 public class JsonUtils {
 
-    final static String LOG_TAG = "JsonUtils";
+    private final static String LOG_TAG = "JsonUtils";
 
     public static Summoner getSummonerFromJSON(String requestJsonStr)
             throws JSONException {
@@ -101,7 +101,7 @@ public class JsonUtils {
         return matchList;
     }
 
-    public static Match getMatchFromJSON(String requestJsonStr, Match match) throws JSONException {
+    public static void getMatchFromJSON(String requestJsonStr, Match match) throws JSONException {
         //TODO revisar si es mejor no pasar match
 
 
@@ -178,8 +178,6 @@ public class JsonUtils {
 
             //Array que contiene las estadísticas de un jugador en la partida
             JSONObject statsJSON = participantJSON.getJSONObject("stats");
-
-            long visionScore = statsJSON.getLong("visionScore");
 
             int kills = statsJSON.getInt("kills");
             int deaths = statsJSON.getInt("deaths");
@@ -269,8 +267,6 @@ public class JsonUtils {
         match.setBlueTeam(blueTeam);
         match.setRedTeam(redTeam);
         match.setAsProcessed();
-
-        return match;
     }
 
     public static String getDataTypeFromJSON(String requestJsonStr) throws JSONException {

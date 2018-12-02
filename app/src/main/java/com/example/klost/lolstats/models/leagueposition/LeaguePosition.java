@@ -6,13 +6,13 @@ import com.example.klost.lolstats.R;
 
 public class LeaguePosition {
 
-    String queueType;
-    boolean hotstreak;
-    int wins;
-    int losses;
-    String rank;
-    String tier;
-    int leaguePoints;
+    private String queueType;
+    private boolean hotstreak;
+    private int wins;
+    private int losses;
+    private String rank;
+    private String tier;
+    private int leaguePoints;
 
     public String getQueueType() {
         return queueType;

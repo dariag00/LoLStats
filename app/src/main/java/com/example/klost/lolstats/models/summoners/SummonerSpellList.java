@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SummonerSpellList {
 
-    List<SummonerSpell> spells;
+    private List<SummonerSpell> spells;
 
     public SummonerSpellList(){
         spells = new ArrayList<>();

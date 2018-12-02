@@ -10,16 +10,16 @@ import java.net.URL;
 
 public class Item {
 
-    int id;
-    String name;
-    String plainText;
-    String imagePath;
-    String description;
+    private int id;
+    private String name;
+    private String plainText;
+    private String imagePath;
+    private String description;
 
-    int totalCost;
-    int baseCost;
-    int sellCost;
-    boolean purchasable;
+    private int totalCost;
+    private int baseCost;
+    private int sellCost;
+    private boolean purchasable;
     //TODO añadir estadisticas y mejoras
 
     public Item(){
@@ -125,8 +125,6 @@ public class Item {
         builder.append("Name:");
         builder.append(this.name);
         builder.append("\n");
-
-        builder.toString();
 
         return builder.toString();
     }

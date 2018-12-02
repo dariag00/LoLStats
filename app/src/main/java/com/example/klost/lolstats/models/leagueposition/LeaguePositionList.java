@@ -5,7 +5,7 @@ import java.util.List;
 
 public class LeaguePositionList {
 
-    List<LeaguePosition> list;
+    private List<LeaguePosition> list;
 
     public LeaguePositionList(){
         list = new ArrayList<>();

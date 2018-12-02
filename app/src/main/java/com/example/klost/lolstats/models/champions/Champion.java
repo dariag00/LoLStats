@@ -1,6 +1,5 @@
 package com.example.klost.lolstats.models.champions;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -11,13 +10,12 @@ import java.net.URL;
 
 public class Champion {
 
-    int championId;
-    String name;
-    String title;
-    String imageFileName;
+    private int championId;
+    private String name;
+    private String title;
+    private String imageFileName;
     //TODO añadir stats y + info del campeón
-    //TODO implementar equals
-    Bitmap image;
+    //TODO implementar equals;
 
     public Champion(int championId){
         this.championId = championId;
@@ -58,14 +56,6 @@ public class Champion {
 
     public void setImageFileName(String imageFileName) {
         this.imageFileName = imageFileName;
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
     }
 
     @Override

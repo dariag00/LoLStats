@@ -12,15 +12,15 @@ import java.util.List;
 
 public class RunePath {
 
-    int id;
-    String key;
-    String iconPath;
-    String name;
-    List<Rune> firstSlot;
-    List<Rune> secondSlot;
-    List<Rune> thirdSlot;
-    List<Rune> fourthSlot;
-    List<Rune> allRunesList;
+    private int id;
+    private String key;
+    private String iconPath;
+    private String name;
+    private List<Rune> firstSlot;
+    private List<Rune> secondSlot;
+    private List<Rune> thirdSlot;
+    private List<Rune> fourthSlot;
+    private List<Rune> allRunesList;
 
     public RunePath(){
         firstSlot = new ArrayList<>();
@@ -106,7 +106,7 @@ public class RunePath {
     public Rune getRuneById(int id){
 
         for(Rune r: allRunesList){
-            if(r.id == id)
+            if(r.getId() == id)
                 return r;
         }
         return null;
@@ -129,7 +129,7 @@ public class RunePath {
     public boolean containsId(int id){
 
         for(Rune r: allRunesList){
-            if(r.id == id)
+            if(r.getId() == id)
                 return true;
         }
 

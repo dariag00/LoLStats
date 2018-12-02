@@ -18,9 +18,6 @@ public class InitialActivity extends AppCompatActivity {
     public static final String EXTRA_SUMMONER_NAME = "com.example.klost.lolstats.SUMMONER_NAME";
 
     private EditText summonerNameView;
-    private Button searchButton;
-    private Button testButton;
-    private Button testButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +25,7 @@ public class InitialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial);
 
         summonerNameView = findViewById(R.id.et_summoner_name);
-        searchButton = findViewById(R.id.bt_search);
+        Button searchButton = findViewById(R.id.bt_search);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,7 +34,7 @@ public class InitialActivity extends AppCompatActivity {
             }
         });
 
-        testButton = findViewById(R.id.bt_test);
+        Button testButton = findViewById(R.id.bt_test);
 
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,9 +43,9 @@ public class InitialActivity extends AppCompatActivity {
             }
         });
 
-        testButton2 = findViewById(R.id.bt_test2);
+        Button testButton2 = findViewById(R.id.bt_test2);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
+        testButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toTest2();
@@ -107,7 +104,7 @@ public class InitialActivity extends AppCompatActivity {
     }
 
     private boolean isSummonerNameValid(String summonerName){
-        Pattern pattern = Pattern.compile("^[\\p{L} 0-9_\\.]+$");
+        Pattern pattern = Pattern.compile("^[\\p{L} 0-9_.]+$");
         Matcher matcher = pattern.matcher(summonerName);
         return matcher.find();
     }

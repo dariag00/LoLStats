@@ -2,8 +2,11 @@ package com.example.klost.lolstats.utilities;
 
 import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.klost.lolstats.R;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;
@@ -11,13 +14,17 @@ import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.models.matches.Team;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class LoLStatsUtils {
@@ -159,13 +166,13 @@ public class LoLStatsUtils {
 
     }
 
-    public static double calculateKDA(int kills, int assists, int deaths){
+    public static double calculateKDA(double kills, double assists, double deaths){
 
 
         if(deaths == 0){
             deaths = 1;
         }
-        double kda = ((double) kills + (double) assists)/ (double) deaths;
+        double kda = ( kills +  assists)/  deaths;
         Log.d(LOG_TAG, "Kills: " + kills + " ass " + assists + " deaths " + deaths+ " resultado: " + kda);
 
         return kda;
@@ -245,9 +252,22 @@ public class LoLStatsUtils {
         double totalAssists = getAverageAssistsOfLast20Games(listOfGames, summoner);
         double totalDeaths = getAverageDeathsOfLast20Games(listOfGames, summoner);
 
-        double kda = (totalKills + totalAssists) / totalDeaths;
+        return (totalKills + totalAssists) / totalDeaths;
+    }
 
-        return kda;
+    public static double[] getRoleStats(List<Match> listOfGames, Summoner summoner, String role){
+
+        if(role.equals("Top"))
+            return getPercentageOfGamesPlayedAndWonAsTop(listOfGames, summoner);
+        else if(role.equals("Jungle"))
+            return getPercentageOfGamesPlayedAndWonAsJungle(listOfGames, summoner);
+        else if(role.equals("Mid"))
+            return getPercentageOfGamesPlayedAndWonAsMid(listOfGames, summoner);
+        else if(role.equals("Bottom"))
+            return getPercentageOfGamesPlayedAndWonAsBottom(listOfGames, summoner);
+        else
+            return getPercentageOfGamesPlayedAndWonAsSupport(listOfGames, summoner);
+
     }
 
     public static double[] getPercentageOfGamesPlayedAndWonAsTop(List<Match> listOfGames, Summoner summoner){
@@ -272,7 +292,7 @@ public class LoLStatsUtils {
         Log.d(LOG_TAG, "Nums: " + played + " " + "won");
 
         data[0] = ((double)played / 20.0) * 100;
-        data[1] = ((double)won / 20.0) * 100;
+        data[1] = ((double)won / played) * 100;
 
         return data;
     }
@@ -295,7 +315,7 @@ public class LoLStatsUtils {
         }
 
         data[0] = ((double)played / 20.0) * 100;
-        data[1] = ((double)won / 20.0) * 100;
+        data[1] = ((double)won / played) * 100;
 
 
         return data;
@@ -319,7 +339,7 @@ public class LoLStatsUtils {
         }
 
         data[0] = ((double)played / 20.0) * 100;
-        data[1] = ((double)won / 20.0) * 100;
+        data[1] = ((double)won / played) * 100;
 
 
         return data;
@@ -343,7 +363,7 @@ public class LoLStatsUtils {
             }
         }
         data[0] = ((double)played / 20.0) * 100;
-        data[1] = ((double)won / 20.0) * 100;
+        data[1] = ((double)won / played) * 100;
 
         return data;
     }
@@ -367,14 +387,55 @@ public class LoLStatsUtils {
         }
 
         data[0] = ((double)played / 20.0) * 100;
-        data[1] = ((double)won / 20.0) * 100;
+        data[1] = ((double)won / played) * 100;
 
         return data;
     }
 
-    public static Champion getMostUsedChampion(List<Match> listOfGames, Summoner summoner, ChampionList championList){
+    public static String[] get3MostPlayedRoles(List<Match> listOfGames, Summoner summoner){
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        double[] data = getPercentageOfGamesPlayedAndWonAsTop(listOfGames, summoner);
+        map.put("Top", (int) data[0]);
+        data = getPercentageOfGamesPlayedAndWonAsJungle(listOfGames, summoner);
+        map.put("Jungle", (int) data[0]);
+        data = getPercentageOfGamesPlayedAndWonAsMid(listOfGames, summoner);
+        map.put("Mid", (int) data[0]);
+        data = getPercentageOfGamesPlayedAndWonAsBottom(listOfGames, summoner);
+        map.put("Bottom", (int) data[0]);
+        data = getPercentageOfGamesPlayedAndWonAsSupport(listOfGames, summoner);
+        map.put("Support", (int) data[0]);
+
+
+        Object[] a = map.entrySet().toArray();
+        Arrays.sort(a, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Map.Entry<String, Integer>) o2).getValue()
+                        .compareTo(((Map.Entry<String, Integer>) o1).getValue());
+            }
+        });
+
+        for (Object e : a) {
+            Log.d(LOG_TAG, ((Map.Entry<String, Integer>) e).getKey() + " : "
+                    + ((Map.Entry<String, Integer>) e).getValue());
+        }
+
+        String[] mostPlayedRoles =  new String[3];
+        mostPlayedRoles[0] = ((Map.Entry<String, Integer>) a[0]).getKey();
+        mostPlayedRoles[1] = ((Map.Entry<String, Integer>) a[1]).getKey();
+        mostPlayedRoles[2] = ((Map.Entry<String, Integer>) a[2]).getKey();
+
+        return mostPlayedRoles;
+    }
+
+    public static Champion[] get3MostPlayedChampion(List<Match> listOfGames, Summoner summoner, ChampionList championList){
+
+        Champion[] champions = new Champion[3];
 
         List<Integer> usedChampions = new ArrayList<>();
+
+        HashMap<Integer, Integer> map = new HashMap<>();
 
         for(int i=0; i<20; i++) {
             Match match = listOfGames.get(i);
@@ -383,14 +444,116 @@ public class LoLStatsUtils {
             }
         }
 
-        int mostUsedChampionId = Collections.max(usedChampions);
+        for (Integer s : usedChampions) {
+            if (map.containsKey(s)) {
+                map.put(s, map.get(s) + 1);
+            } else {
+                map.put(s, 1);
+            }
+        }
 
-        return championList.getChampionById(mostUsedChampionId);
+        Object[] a = map.entrySet().toArray();
+        Arrays.sort(a, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Map.Entry<Integer, Integer>) o2).getValue()
+                        .compareTo(((Map.Entry<Integer, Integer>) o1).getValue());
+            }
+        });
+        for (Object e : a) {
+            Log.d(LOG_TAG, ((Map.Entry<Integer, Integer>) e).getKey() + " : "
+                    + ((Map.Entry<Integer, Integer>) e).getValue());
+        }
+
+        Champion champion1 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[0]).getKey());
+        Champion champion2 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[1]).getKey());
+        Champion champion3 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[2]).getKey());
+
+        champions[0] = champion1;
+        champions[1] = champion2;
+        champions[2] = champion3;
+
+        return champions;
+
     }
 
+    public static int[] getChampionStats(List<Match> matchList, Summoner summoner, Champion champion){
+
+        int[] stats = new int[6];
+
+        for(int i = 0; i<20; i++){
+            Match match = matchList.get(i);
+            if(match.isProcessed()){
+                Player player = match.getPlayer(summoner);
+                //Buscamos las partidas en las que ha jugado dicho campeon
+                if(player.getChampionId() == champion.getChampionId()){
+                    Team playerTeam = match.getTeamOfGivenSummoner(summoner);
+                    //TODO sacar tiempo total jugado
+                    //Sacamos los resultados
+                    stats[0] = stats[0] + player.getKills();
+                    stats[1] = stats[1] + player.getDeaths();
+                    stats[2] = stats[2] + player.getAssists();
+                    stats[3] = stats[3] + player.getTotalMinionsKilled() + player.getNeutralMinionsKilled();
+                    stats[4] = stats[4] + 1; //Games played
+                    if(playerTeam.isWon()) {
+                        Log.d(LOG_TAG, "ch: " + champion.getName() + " ha ganado");
+                        stats[5] = stats[5] + 1;//Games won
+                    }
+                }
+            }
+        }
+
+        return stats;
+
+    }
+
+    public static void setChampionTextAndSize(TextView textView, String champion){
+
+        int textSize = 14; //TODO sps?
+
+        Log.d(LOG_TAG, "Champion size " + champion.length());
+
+        if(champion.length() <= 6)
+            textSize = 12;
+        else if(champion.length() == 7)
+            textSize = 11;
+        else if(champion.length() == 8)
+            textSize = 10;
+        else if(champion.length()>=9 && champion.length()<=10)
+            textSize = 8;
+        else if(champion.length()>=11)
+            textSize = 6;
+
+        Log.d(LOG_TAG, "Size: " + textSize);
+
+        textView.setText(champion);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
+    }
+
+    public static void setRoleImage(ImageView imageView, String role){
+
+        switch(role){
+            case "Top":
+                imageView.setImageResource(R.drawable.top_icon);
+                break;
+            case "Jungle":
+                imageView.setImageResource(R.drawable.jungle_icon);
+                break;
+            case "Mid":
+                imageView.setImageResource(R.drawable.mid_icon);
+                break;
+            case "Bottom":
+                imageView.setImageResource(R.drawable.bottom_icon);
+                break;
+            case "Support":
+                imageView.setImageResource(R.drawable.support_icon);
+                break;
+        }
+
+    }
 
 
 
     //TODO añadir loadFromDDragon aqui?
 
 }
+
