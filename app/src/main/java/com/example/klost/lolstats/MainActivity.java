@@ -1,5 +1,6 @@
 package com.example.klost.lolstats;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
@@ -68,7 +70,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
-public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
+public class MainActivity extends AppCompatActivity implements OnTaskCompleted, RiotAdapter.RiotAdapterOnClickHandler{
 
     //TODO comprobar conexión a internet
     //TODO crear clase que ejecute todas las requests de datos estaticos
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        riotAdapter = new RiotAdapter();
+        riotAdapter = new RiotAdapter(this);
         recyclerView.setAdapter(riotAdapter);
 
     }
@@ -191,6 +193,13 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(Match clickedMatch, Summoner givenSummoner) {
+        Context context = this;
+        Toast.makeText(context, "Clicked " + clickedMatch.getGameId() + " summ name " + givenSummoner.getSummonerName(), Toast.LENGTH_SHORT)
+                .show();
     }
 
     public static class RiotQueryTask extends AsyncTask<URL, Void, Summoner> {
@@ -322,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 TextView lpsSoloQView = activity.findViewById(R.id.tv_summoner_rank_lps_solo);
 
                 double winRateSoloQ = (double) soloQ.getWins() / ((double) soloQ.getWins() + soloQ.getLosses()) * 100;
-                String wRSQ = String.format(Locale.ENGLISH, "%.2f", winRateSoloQ);
+                String wRSQ = String.format(Locale.ENGLISH, "%.1f", winRateSoloQ);
                 wRSQ = wRSQ.concat("%");
 
                 winsSoloQView.setText(String.valueOf(soloQ.getWins()));
@@ -339,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 TextView lpsFlexQView = activity.findViewById(R.id.tv_summoner_rank_lps_flex);
 
                 double winRateFlexQ = (double) flexQ.getWins() / ((double) flexQ.getWins() + flexQ.getLosses()) * 100;
-                String wRFQ = String.format(Locale.ENGLISH, "%.2f", winRateFlexQ).concat("%");
+                String wRFQ = String.format(Locale.ENGLISH, "%.1f", winRateFlexQ).concat("%");
 
                 winsFlexQView.setText(String.valueOf(flexQ.getWins()));
                 lossesFlexQView.setText(String.valueOf(flexQ.getLosses()));
@@ -355,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 TextView lps3v3View = activity.findViewById(R.id.tv_summoner_rank_lps_3v3);
 
                 double winRate3v3 = (double) flexTTQ.getWins() / ((double) flexTTQ.getWins() + flexTTQ.getLosses()) * 100;
-                String wRFTTQ = String.format(Locale.ENGLISH, "%.2f", winRate3v3).concat("%");
+                String wRFTTQ = String.format(Locale.ENGLISH, "%.1f", winRate3v3).concat("%");
 
                 winsFlexTTQView.setText(String.valueOf(flexTTQ.getWins()));
                 lossesFlexTTQView.setText(String.valueOf(flexTTQ.getLosses()));
@@ -431,46 +440,6 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
                 Legend legend = chart.getLegend();
                 legend.setEnabled(false);
 
-                //Setteamos los valores de campeones mas jugados
-                /*TextView winRateTopView = activity.findViewById(R.id.tv_top_winrate);
-                TextView playRateTopView = activity.findViewById(R.id.tv_top_played);
-                double[] topValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsTop(matchList.getMatches(), summoner);
-                String topWinRate = String.format(Locale.ENGLISH, "%.2f", topValues[0]).concat("%");
-                String topRate = String.format(Locale.ENGLISH, "%.2f", topValues[1]).concat("%");
-                winRateTopView.setText(topWinRate);
-                playRateTopView.setText(topRate);
-
-                TextView winRateJungleView = activity.findViewById(R.id.tv_jungle_winrate);
-                TextView playRateJungleView = activity.findViewById(R.id.tv_jungle_played);
-                double[] jungleValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsJungle(matchList.getMatches(), summoner);
-                String jungleWinRate = String.format(Locale.ENGLISH, "%.2f", jungleValues[0]).concat("%");
-                String jungleRate = String.format(Locale.ENGLISH, "%.2f", jungleValues[1]).concat("%");
-                winRateJungleView.setText(jungleWinRate);
-                playRateJungleView.setText(jungleRate);
-
-                TextView winRateMidView = activity.findViewById(R.id.tv_mid_winrate);
-                TextView playRateMidView = activity.findViewById(R.id.tv_mid_played);
-                double[] midValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsMid(matchList.getMatches(), summoner);
-                String midWinRate = String.format(Locale.ENGLISH, "%.2f", midValues[0]).concat("%");
-                String midRate = String.format(Locale.ENGLISH, "%.2f", midValues[1]).concat("%");
-                winRateMidView.setText(midWinRate);
-                playRateMidView.setText(midRate);
-
-                TextView winRateBottomView = activity.findViewById(R.id.tv_bottom_winrate);
-                TextView playRateBottomView = activity.findViewById(R.id.tv_bottom_played);
-                double[] bottomValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsBottom(matchList.getMatches(), summoner);
-                String bottomWinRate = String.format(Locale.ENGLISH, "%.2f", bottomValues[0]).concat("%");
-                String bottomRate = String.format(Locale.ENGLISH, "%.2f", bottomValues[1]).concat("%");
-                winRateBottomView.setText(bottomWinRate);
-                playRateBottomView.setText(bottomRate);
-
-                TextView winRateSupportView = activity.findViewById(R.id.tv_support_winrate);
-                TextView playRateSupportView = activity.findViewById(R.id.tv_support_played);
-                double[] supportValues = LoLStatsUtils.getPercentageOfGamesPlayedAndWonAsSupport(matchList.getMatches(), summoner);
-                String supportWinRate = String.format(Locale.ENGLISH, "%.2f", supportValues[0]).concat("%");
-                String supportRate = String.format(Locale.ENGLISH, "%.2f", supportValues[1]).concat("%");
-                winRateSupportView.setText(supportWinRate);
-                playRateSupportView.setText(supportRate);*/
                 String[] roles = LoLStatsUtils.get3MostPlayedRoles(matches, summoner);
                 setMostPlayedRoles(activity, roles, matches, summoner);
 
@@ -552,22 +521,22 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted {
 
             Log.d(LOG_TAG, "Played: " + stats1[0] + " Won: " + stats1[1]);
 
-            String winRate1 = String.format(Locale.ENGLISH, "%.2f", stats1[1]).concat("%");
-            String playRate1 = String.format(Locale.ENGLISH, "%.2f", stats1[0]).concat("%");
+            String winRate1 = String.format(Locale.ENGLISH, "%.1f", stats1[1]).concat("%");
+            String playRate1 = String.valueOf((int) stats1[0]).concat("%");
             winRateView1.setText(winRate1);
             playRateView1.setText(playRate1);
 
             double[] stats2 = LoLStatsUtils.getRoleStats(listOfGames, summoner, roles[1]);
 
-            String winRate2 = String.format(Locale.ENGLISH, "%.2f", stats2[1]).concat("%");
-            String playRate2 = String.format(Locale.ENGLISH, "%.2f", stats2[0]).concat("%");
+            String winRate2 = String.format(Locale.ENGLISH, "%.1f", stats2[1]).concat("%");
+            String playRate2 = String.valueOf((int) stats2[0]).concat("%");
             winRateView2.setText(winRate2);
             playRateView2.setText(playRate2);
 
             double[] stats3 = LoLStatsUtils.getRoleStats(listOfGames, summoner, roles[2]);
 
-            String winRate3 = String.format(Locale.ENGLISH, "%.2f", stats3[1]).concat("%");
-            String playRate3 = String.format(Locale.ENGLISH, "%.2f", stats3[0]).concat("%");
+            String winRate3 = String.format(Locale.ENGLISH, "%.1f", stats3[1]).concat("%");
+            String playRate3 =String.valueOf((int) stats3[0]).concat("%");
             winRateView3.setText(winRate3);
             playRateView3.setText(playRate3);
 

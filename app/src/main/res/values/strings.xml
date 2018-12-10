@@ -11,7 +11,7 @@
 
     <!-- Strings related to match_list_item.xml-->
     <string name="slash">/</string>
-    <string name="kda">KDA: </string>
+    <string name="kda">KDA</string>
 
     <string name="csmin">CS/MIN:</string>
     <string name="dmgmin">DMG/MIN:</string>

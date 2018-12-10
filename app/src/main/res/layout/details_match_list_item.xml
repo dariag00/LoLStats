@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:orientation="horizontal"
+    android:background="@android:color/white"
+    android:paddingLeft="2dp"
+    android:paddingStart="2dp"
+    android:paddingEnd="2dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:src="@drawable/mock_champion"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        style="@style/match_details_champion_image" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:src="@drawable/main_rune"
+                style="@style/match_details_top_icon" />
+
+            <ImageView
+                android:src="@drawable/secondary_rune"
+                style="@style/match_details_bottom_icon" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                style="@style/match_details_top_icon"
+                android:src="@drawable/ignite" />
+
+            <ImageView
+                style="@style/match_details_bottom_icon"
+                android:src="@drawable/flash" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="Summoner"
+                style="@style/match_details_summoner_name" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/grandmaster_mini"
+                    android:layout_margin="2dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="7sp"
+                    android:text="Challenger"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="0.4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_level"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="14"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/match_details_text_container">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:text="2"
+                    style="@style/match_details_kda_detailed" />
+                <TextView
+                    android:text="@string/slash"
+                    style="@style/match_details_kda_detailed" />
+                <TextView
+                    style="@style/match_details_kda_detailed"
+                    android:text="5"
+                    android:textColor="#cc1818" />
+                <TextView
+                    android:text="@string/slash"
+                    style="@style/match_details_kda_detailed" />
+                <TextView
+                    android:text="2"
+                    style="@style/match_details_kda_detailed" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="1.57"
+                    style="@style/match_details_kda_value" />
+
+                <TextView
+                    android:text="@string/kda"
+                    style="@style/match_details_kda" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/match_details_items_container">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView style="@style/match_details_item_top" />
+
+                <ImageView style="@style/match_details_item_top" />
+
+                <ImageView style="@style/match_details_item_top" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView style="@style/match_details_item_bot" />
+
+                <ImageView style="@style/match_details_item_bot" />
+
+                <ImageView style="@style/match_details_item_bot" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:src="@drawable/empty_trinket"
+                    style="@style/match_details_item_trinket" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="GOLD"
+                    style="@style/match_details_stats" />
+
+                <TextView
+                    android:id="@+id/tv_gold"
+                    style="@style/match_details_stats_value"
+                    android:text="1705"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/cs"
+                    style="@style/match_details_stats" />
+
+                <TextView
+                    android:id="@+id/player_cs"
+                    android:text="172"
+                    style="@style/match_details_stats_value" />
+                <TextView
+                    android:id="@+id/player_cs_min"
+                    android:text="(17.2)"
+                    style="@style/match_details_stats_value" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/match_details_stats"
+                    android:text="DMG%"/>
+
+                <TextView
+                    android:id="@+id/player_damage_percent"
+                    android:text="17.2"
+                    style="@style/match_details_stats_value" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

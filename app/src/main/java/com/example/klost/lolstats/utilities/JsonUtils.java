@@ -492,7 +492,7 @@ public class JsonUtils {
             String rank = positionJSON.getString("rank");
             String tier = positionJSON.getString("tier");
             int leaguePoints = positionJSON.getInt("leaguePoints");
-            boolean hotStreak = positionJSON.getBoolean("hotStreak");
+      //      boolean hotStreak = positionJSON.getBoolean("hotStreak");
 
             LeaguePosition position = new LeaguePosition();
 
@@ -502,7 +502,7 @@ public class JsonUtils {
             position.setLosses(losses);
             position.setRank(rank);
             position.setQueueType(queueType);
-            position.setHotstreak(hotStreak);
+          //  position.setHotstreak(hotStreak);
 
             list.addLeaguePosition(position);
         }

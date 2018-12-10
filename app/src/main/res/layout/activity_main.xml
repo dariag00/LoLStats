@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingTop="8dp"
     android:background="#f9c7c7"
-    android:paddingBottom="16dp"
+    android:paddingBottom="8dp"
     tools:context=".MainActivity">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/media_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardElevation="5dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -16,9 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:background="@drawable/border_with_color"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:id="@+id/ly_profile_container"
@@ -86,7 +91,7 @@
                         android:id="@+id/iv_rank_icon_solo"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="3dp"
                         android:src="@drawable/bronze"/>
 
                         <TextView
@@ -162,7 +167,7 @@
                         android:id="@+id/iv_rank_icon_flex"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="3dp"
                         android:src="@drawable/silver"/>
 
 
@@ -239,7 +244,7 @@
                         android:id="@+id/iv_rank_icon_3v3"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="3dp"
                         android:src="@drawable/diamond"/>
 
                         <TextView
@@ -311,13 +316,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
+            android:layout_marginBottom="5dp"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -581,7 +587,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:layout_marginRight="2dp"
                     android:layout_marginEnd="2dp"
@@ -590,7 +596,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="20G 10L 10W"/>
+                        android:text="20G 10L 10W"/>
 
                     <TextView
                         android:id="@+id/tv_global_kda"
@@ -655,9 +661,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_marginBottom="3dp"
                     android:layout_marginRight="2dp"
                     android:layout_marginEnd="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
                     android:orientation="vertical">
 
                    <LinearLayout
@@ -846,16 +853,17 @@
 
     </LinearLayout>
 
+    </android.support.v7.widget.CardView>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="8dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_matches"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
 
         <TextView
             android:id="@+id/tv_error_message"

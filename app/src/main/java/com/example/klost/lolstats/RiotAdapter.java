@@ -39,8 +39,17 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
     private ItemList itemList;
     private ChampionList championList;
 
-    public class RiotAdapterViewHolder extends RecyclerView.ViewHolder{
+    private final RiotAdapterOnClickHandler mClickHandler;
 
+    public interface RiotAdapterOnClickHandler{
+        void onClick(Match clickedMatch, Summoner givenSummoner);
+    }
+
+    RiotAdapter(RiotAdapterOnClickHandler clickHandler){
+        mClickHandler = clickHandler;
+    }
+
+    public class RiotAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         final LinearLayout matchLinearLayout;
 
@@ -109,8 +118,17 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
 
             csPerMinView = view.findViewById(R.id.tv_match_primary_stat);
             dmgPerMinView = view.findViewById(R.id.tv_match_secondary_stat);
+
+            view.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Match clickedMatch = matchesData[adapterPosition];
+            Summoner givenSummoner = summoner;
+            mClickHandler.onClick(clickedMatch, givenSummoner);
+        }
     }
 
     /**

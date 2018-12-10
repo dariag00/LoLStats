@@ -43,12 +43,21 @@ public class InitialActivity extends AppCompatActivity {
             }
         });
 
-        Button testButton2 = findViewById(R.id.bt_test2);
+        /*Button testButton2 = findViewById(R.id.bt_test2);
 
         testButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toTest2();
+            }
+        });*/
+
+        Button testButton3 = findViewById(R.id.bt_test3);
+
+        testButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toMatchDetail();
             }
         });
 
@@ -61,6 +70,11 @@ public class InitialActivity extends AppCompatActivity {
 
     private void toTest2(){
         Intent intent = new Intent(this, TestMainLayoutActivity.class);
+        startActivity(intent);
+    }
+
+    private void toMatchDetail(){
+        Intent intent = new Intent(this, GameDetailsActivity.class);
         startActivity(intent);
     }
 
