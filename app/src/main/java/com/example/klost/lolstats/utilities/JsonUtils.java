@@ -151,17 +151,28 @@ public class JsonUtils {
         redTeam.setTeamId(200);
         for(int i=0; i<teamsJSON.length(); i++){
             //TODO procesar el resto de datos del Team
+            //TODO añadir bans
             JSONObject teamJSON = teamsJSON.getJSONObject(i);
 
             //Si el id es 100 el equipo jugó en el lado azul, si es 200, en el rojo
             int teamId = teamJSON.getInt("teamId");
             String win = teamJSON.getString("win");
+            int dragonsKilled = teamJSON.getInt("dragonKills");
+            int towersDestroyed = teamJSON.getInt("towerKills");
+            Log.d("TOWERS DESTROYED", "T:" + towersDestroyed);
+            int baronsKilled = teamJSON.getInt("baronKills");
             Log.d(LOG_TAG, "Team: " + teamId + " game result: " + win);
 
             if(teamId == 100){
                 blueTeam.setWin(win);
+                blueTeam.setBaronKills(baronsKilled);
+                blueTeam.setDragonKills(dragonsKilled);
+                blueTeam.setTowerKills(towersDestroyed);
             }else if(teamId == 200){
                 redTeam.setWin(win);
+                redTeam.setBaronKills(baronsKilled);
+                redTeam.setDragonKills(dragonsKilled);
+                redTeam.setTowerKills(towersDestroyed);
             }
         }
 
@@ -175,6 +186,7 @@ public class JsonUtils {
             int teamId = participantJSON.getInt("teamId");
             int championId = participantJSON.getInt("championId");
             int participantId = participantJSON.getInt("participantId");
+            int participantAccountId = participantJSON.getInt("accountId");
 
             //Array que contiene las estadísticas de un jugador en la partida
             JSONObject statsJSON = participantJSON.getJSONObject("stats");
@@ -208,8 +220,13 @@ public class JsonUtils {
             int totalMinionsKilled = statsJSON.getInt("totalMinionsKilled");
             int neutralMinionsKilled = statsJSON.getInt("neutralMinionsKilled");
 
+            int goldEarned = statsJSON.getInt("goldEarned");
+            int goldSpent = statsJSON.getInt("goldSpent");
+
             for(Player player : playerList){
                 if(player.getParticipantId() == participantId){
+
+                    player.setAccountId(participantAccountId);
 
                     player.setSpell1Id(spell1Id);
                     player.setSpell2Id(spell2Id);
@@ -247,14 +264,13 @@ public class JsonUtils {
                     player.setTotalMinionsKilled(totalMinionsKilled);
                     player.setNeutralMinionsKilled(neutralMinionsKilled);
 
+                    player.setGoldEarned(goldEarned);
+                    player.setGoldSpent(goldSpent);
 
-                    Log.d(LOG_TAG, "ID DEL TEAM; " + String.valueOf(teamId));
                     //Determinamos el equipo del jugador
                     if(teamId == blueTeam.getTeamId()){
-                        Log.d(LOG_TAG, "AÑADO UN PLAYER al equipo azul" + player.toString());
                         blueTeam.addPlayer(player);
                     }else if(teamId == redTeam.getTeamId()){
-                        Log.d(LOG_TAG, "AÑADO UN PLAYER al equipo rojo" + player.toString());
                         redTeam.addPlayer(player);
                     }else{
                         Log.d(LOG_TAG, "EL objeto es nulo");

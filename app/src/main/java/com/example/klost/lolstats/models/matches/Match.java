@@ -4,13 +4,13 @@ import android.util.Log;
 
 import com.example.klost.lolstats.models.Summoner;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class Match {
+public class Match implements Serializable {
 
     //TODO añadir estadisticas del JSON de GET_MATCH
-    //TODO poner en private
     //TODO pasar el role a Player
 
     private String lane;

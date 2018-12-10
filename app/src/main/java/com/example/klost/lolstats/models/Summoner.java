@@ -9,13 +9,14 @@ import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Summoner {
+public class Summoner implements Serializable {
 
     private long accountId;
     private long summonerId;

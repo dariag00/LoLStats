@@ -44,6 +44,7 @@ import com.example.klost.lolstats.models.summoners.SummonerSpellList;
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
+import com.example.klost.lolstats.utilities.StaticData;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -153,18 +154,22 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 switch (dataType) {
                     case "summoner":
                         summonerSpellList = JsonUtils.getSpellListFromJSON(result);
+                        StaticData.setSpellList(summonerSpellList);
                         break;
                     case "champion":
                         championList = JsonUtils.getChampionListFromJSON(result);
+                        StaticData.setChampionList(championList);
                         break;
                     case "item":
                         itemList = JsonUtils.getItemListFromJSON(result);
+                        StaticData.setItemList(itemList);
                         break;
                 }
             }else{
                 //TODO fix this
                 Log.d(LOG_TAG, "dataType es null");
                 runeList = JsonUtils.getRuneListFromJSON(result);
+                StaticData.setRuneList(runeList);
             }
 
         } catch (JSONException e) {
@@ -200,6 +205,12 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
         Context context = this;
         Toast.makeText(context, "Clicked " + clickedMatch.getGameId() + " summ name " + givenSummoner.getSummonerName(), Toast.LENGTH_SHORT)
                 .show();
+
+        Intent intent = new Intent(this, GameDetailsActivity.class);
+        intent.putExtra("matchObject", clickedMatch);
+        intent.putExtra("summonerObject", givenSummoner);
+        startActivity(intent);
+
     }
 
     public static class RiotQueryTask extends AsyncTask<URL, Void, Summoner> {

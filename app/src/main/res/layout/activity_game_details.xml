@@ -31,13 +31,13 @@
                     android:layout_margin="3dp">
                     <TextView
                         android:id="@+id/tv_blue_team"
-                        android:layout_width="wrap_content"
+                        android:layout_width="65dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="VICTORY"/>
 
                     <TextView
-                        android:id="@+id/tv_kills"
+                        android:id="@+id/tv_kills_blue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="32"
@@ -50,11 +50,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/slash"
-                        android:layout_toRightOf="@id/tv_kills"
+                        android:layout_toRightOf="@id/tv_kills_blue"
                         android:textColor="@android:color/black"
                         android:textSize="13sp" />
                     <TextView
-                        android:id="@+id/tv_deaths"
+                        android:id="@+id/tv_deaths_blue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/slash1"
@@ -65,12 +65,12 @@
                         android:id="@+id/slash2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/tv_deaths"
+                        android:layout_toRightOf="@id/tv_deaths_blue"
                         android:text="@string/slash"
                         android:textColor="@android:color/black"
                         android:textSize="13sp" />
                     <TextView
-                        android:id="@+id/tv_assists"
+                        android:id="@+id/tv_assists_blue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/slash2"
@@ -83,7 +83,7 @@
                         android:layout_height="15dp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/tv_assists"
+                        android:layout_toRightOf="@id/tv_assists_blue"
                         android:src="@drawable/mask_icon_offense_100"/>
 
                     <ImageView
@@ -193,7 +193,8 @@
                     android:layout_margin="3dp">
                     <TextView
                         android:id="@+id/tv_red_team"
-                        android:layout_width="wrap_content"
+                        android:layout_width="65dp"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:text="DEFEAT"/>
 

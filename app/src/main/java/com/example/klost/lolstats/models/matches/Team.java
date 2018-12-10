@@ -4,10 +4,11 @@ import android.util.Log;
 
 import com.example.klost.lolstats.models.Summoner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Team {
+public class Team implements Serializable {
 
     //TODO falta implentación de modos diferentes a Summoner Rift y los baneos
     //TODO sacar los datos del jugador que ha buscado este match

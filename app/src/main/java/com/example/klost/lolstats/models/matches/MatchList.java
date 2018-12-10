@@ -1,8 +1,9 @@
 package com.example.klost.lolstats.models.matches;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MatchList {
+public class MatchList implements Serializable {
 
     //TODO comprobar que al asignar el match sigue estando en MatchList
 

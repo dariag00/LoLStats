@@ -177,7 +177,6 @@ public class NetworkUtils {
         return url;
     }
 
-    //TODO procesar los limites de llamadas ubicados en el header
     public static String getResponseFromHttpUrl(URL url, RateLimiter throttle) throws IOException {
 
         throttle.acquire();

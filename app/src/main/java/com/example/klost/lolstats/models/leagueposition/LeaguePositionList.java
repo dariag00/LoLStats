@@ -1,9 +1,10 @@
 package com.example.klost.lolstats.models.leagueposition;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeaguePositionList {
+public class LeaguePositionList implements Serializable {
 
     private List<LeaguePosition> list;
 

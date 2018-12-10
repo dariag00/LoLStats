@@ -2,9 +2,12 @@ package com.example.klost.lolstats.models.matches;
 
 import com.example.klost.lolstats.models.Summoner;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
 
     //TODO falta implementar estadisticas runas y timeline
+    //TODO añadir gold
     private int participantId;
     private int teamId; //TODO realmente necesario?
     private int spell2Id;
@@ -21,6 +24,8 @@ public class Player {
     private long totalDamageDealtToChampions;
     private int totalMinionsKilled;
     private int neutralMinionsKilled;
+    private int goldEarned;
+    private int goldSpent;
 
     //TEMPORAL
     private int runePrimaryStyle;
@@ -41,7 +46,6 @@ public class Player {
     private int item4;
     private int item5;
     private int item6;
-
 
     public Player(){
 
@@ -161,6 +165,22 @@ public class Player {
 
     public void setTotalDamageDealtToChampions(long totalDamageDealtToChampions) {
         this.totalDamageDealtToChampions = totalDamageDealtToChampions;
+    }
+
+    public int getGoldEarned() {
+        return goldEarned;
+    }
+
+    public void setGoldEarned(int goldEarned) {
+        this.goldEarned = goldEarned;
+    }
+
+    public int getGoldSpent() {
+        return goldSpent;
+    }
+
+    public void setGoldSpent(int goldSpent) {
+        this.goldSpent = goldSpent;
     }
 
     //TEMPORAL

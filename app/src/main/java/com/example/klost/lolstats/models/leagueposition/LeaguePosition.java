@@ -4,7 +4,9 @@ import android.widget.ImageView;
 
 import com.example.klost.lolstats.R;
 
-public class LeaguePosition {
+import java.io.Serializable;
+
+public class LeaguePosition implements Serializable {
 
     private String queueType;
     private boolean hotstreak;

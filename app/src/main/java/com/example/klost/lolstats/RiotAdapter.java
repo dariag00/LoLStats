@@ -231,7 +231,7 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
         Item fifthItem = itemList.getItemById(player.getItem4());
         Item sixthItem = itemList.getItemById(player.getItem5());
         Item seventhItem = itemList.getItemById(player.getItem6());
-        //TODO creat item vacio
+
         if(firstItem != null)
             firstItem.loadImageFromDDragon(riotAdapterViewHolder.firstItemView);
         if(secondItem != null)
@@ -244,7 +244,6 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
             fifthItem.loadImageFromDDragon(riotAdapterViewHolder.fifthItemView);
         if(sixthItem != null)
             sixthItem.loadImageFromDDragon(riotAdapterViewHolder.sixthItemView);
-        //TODO mirar trinket en aram
         if(seventhItem != null)
             seventhItem.loadImageFromDDragon(riotAdapterViewHolder.trinketItemView);
 
