@@ -23,7 +23,7 @@
         android:id="@+id/view_match_result_indicator"
         android:layout_width="15dp"
         android:layout_height="match_parent"
-        android:background="#f44d41"/>
+        android:background="@color/defeatColor"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -145,7 +145,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="5"
-                            android:textColor="#cc1818"
+                            android:textColor="@color/deathsColor"
                             android:textSize="13sp" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -170,20 +170,21 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="10sp"
-                            android:text="@string/kda"/>
-                        <TextView
                             android:id="@+id/tv_kda"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:layout_marginBottom="2dp"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginStart="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginEnd="2dp"
                             android:textSize="10sp"
                             tools:text="1.57"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:text="@string/kda"/>
                     </LinearLayout>
                 </LinearLayout>
 

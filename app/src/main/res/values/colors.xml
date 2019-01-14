@@ -6,4 +6,15 @@
 
     <color name="defeatColor">#f44d41</color>
     <color name="victoryColor">#4286f4</color>
+
+    <color name="deathsColor">#cc1818</color>
+
+    <color name="lowKdaColor">#65bc94</color>
+    <color name="lowToMidKdaColor">#4fa1ff</color>
+    <color name="midKdaColor">#5f41ba</color>
+    <color name="highKdaColor">#f7a64f</color>
+    <color name="test">#d6ac37</color>
+
+    <color name="lightRed">#fc9f9f</color>
+    <color name="lightBlue">#9fc2fc</color>
 </resources>

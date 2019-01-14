@@ -1,7 +1,9 @@
 package com.example.klost.lolstats;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,21 +11,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.items.Item;
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.models.runes.Rune;
 import com.example.klost.lolstats.models.runes.RunePath;
 import com.example.klost.lolstats.models.summoners.SummonerSpell;
+import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.example.klost.lolstats.utilities.StaticData;
+import com.google.common.util.concurrent.RateLimiter;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,7 +44,7 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
 
     private Summoner summoner;
     private List<Player> players;
-
+    private Match match;
     private final MatchDetailAdapter.MatchAdapterOnClickHandler mClickHandler;
 
     public interface MatchAdapterOnClickHandler{
@@ -43,6 +56,8 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
     }
 
     public class MatchDetailAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        final LinearLayout playerContainer;
 
         final CircleImageView championView;
         final ImageView keystoneView;
@@ -86,7 +101,7 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
             summonerNameView = view.findViewById(R.id.tv_summoner_name);
             divisionTextView = view.findViewById(R.id.tv_player_division);
             divisionImageView = view.findViewById(R.id.iv_player_division);
-            summonerLevelView = view.findViewById(R.id.tv_summoner_level);
+            summonerLevelView = view.findViewById(R.id.tv_player_level);
             killsView = view.findViewById(R.id.tv_player_kills);
             deathsView = view.findViewById(R.id.tv_player_deaths);
             assistsView = view.findViewById(R.id.tv_player_assists);
@@ -102,6 +117,7 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
             damagePercentView = view.findViewById(R.id.player_damage_percent);
             totalCsView = view.findViewById(R.id.player_cs);
             csPerMinView = view.findViewById(R.id.player_cs_min);
+            playerContainer = view.findViewById(R.id.ly_player_container);
         }
 
         @Override
@@ -131,15 +147,19 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
     public void onBindViewHolder(@NonNull MatchDetailAdapter.MatchDetailAdapterViewHolder matchDetailAdapterViewHolder, int position) {
 
         Player player = players.get(position);
-        Summoner currentSummoner;
+        Summoner currentSummoner = player.getSummoner();
         //Miramos si el player es nuestro summoner
-        Log.d("DetailAdapter", "SUMM: " + summoner.getAccountId() +" otro id: " + summoner.getSummonerId() + " y comp: " + player.getAccountId());
-        if(summoner.getSummonerId() == player.getAccountId()){
-            currentSummoner = summoner;
-            matchDetailAdapterViewHolder.summonerNameView.setText(summoner.getSummonerName());
-            matchDetailAdapterViewHolder.divisionTextView.setText(summoner.getPositionList().getRankedSoloPosition().getTier());
-        }else{
-            currentSummoner = summoner;
+        Log.d("DetailAdapter", "SUMM: " + summoner.getAccountId() +" otro id: " + summoner.getSummonerId() + " y comp: " + player.getSummoner().getAccountId());
+        if(summoner.getAccountId() == player.getSummoner().getAccountId()){
+            matchDetailAdapterViewHolder.playerContainer.setBackgroundColor(Color.parseColor("#d6ffe7"));
+        }
+
+        matchDetailAdapterViewHolder.summonerNameView.setText(player.getSummoner().getSummonerName());
+        matchDetailAdapterViewHolder.summonerLevelView.setText(String.valueOf(player.getChampionLevel()));
+
+        if(currentSummoner.getAccountId() != 0) {
+            URL riotSearchUrl = NetworkUtils.buildUrl(String.valueOf(currentSummoner.getSummonerId()), NetworkUtils.GET_LEAGUES_POSITIONS);
+            new DivisionQueryTask(matchDetailAdapterViewHolder).execute(riotSearchUrl);
         }
 
 
@@ -154,9 +174,14 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         champion.loadImageFromDDragon(matchDetailAdapterViewHolder.championView);
 
         SummonerSpell firstSummonerSpell = StaticData.getSpellList().getSpellById(player.getSpell1Id());
-        firstSummonerSpell.loadImageFromDDragon(matchDetailAdapterViewHolder.firstSummonerView);
+        //TODO revisar dama con flama
+        //TODO error con summoners de los bots
+        //TODO crear mock para cuando sean 0 los summoner spells
+        if(firstSummonerSpell != null)
+            firstSummonerSpell.loadImageFromDDragon(matchDetailAdapterViewHolder.firstSummonerView);
         SummonerSpell secondSummonerSpell = StaticData.getSpellList().getSpellById(player.getSpell2Id());
-        secondSummonerSpell.loadImageFromDDragon(matchDetailAdapterViewHolder.secondSummonerView);
+        if(secondSummonerSpell != null)
+            secondSummonerSpell.loadImageFromDDragon(matchDetailAdapterViewHolder.secondSummonerView);
 
         Rune mainRune = StaticData.getRuneList().getRuneById(player.getRune0());
         mainRune.loadImageFromDDragon(matchDetailAdapterViewHolder.keystoneView);
@@ -169,10 +194,8 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         matchDetailAdapterViewHolder.assistsView.setText(String.valueOf(player.getAssists()));
 
         double kda = LoLStatsUtils.calculateKDA(player.getKills(), player.getAssists(), player.getDeaths());
-        LoLStatsUtils.setKdaAndTextColorInView(matchDetailAdapterViewHolder.kdaView, kda);
-
+        LoLStatsUtils.setKdaAndTextColorInView(matchDetailAdapterViewHolder.kdaView, kda, matchDetailAdapterViewHolder.itemView.getContext());
         //Setteo de los items
-
         Item firstItem = StaticData.getItemList().getItemById(player.getItem0());
         Item secondItem = StaticData.getItemList().getItemById(player.getItem1());
         Item thirdItem = StaticData.getItemList().getItemById(player.getItem2());
@@ -201,9 +224,10 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         matchDetailAdapterViewHolder.goldView.setText(String.valueOf(gold));
         int cs = player.getTotalMinionsKilled();
         matchDetailAdapterViewHolder.totalCsView.setText(String.valueOf(cs));
-
+        double totalCsPerMin = (double) cs / (double) match.getGameDuration();
+        matchDetailAdapterViewHolder.csPerMinView.setText(String.format(Locale.ENGLISH, "%.1f", totalCsPerMin));
+        matchDetailAdapterViewHolder.damagePercentView.setText(String.format(Locale.ENGLISH, "%.1f", LoLStatsUtils.getDamagePercentOfGivenPlayer(players, player)).concat("%"));
     }
-
 
     @Override
     public int getItemCount() {
@@ -212,9 +236,69 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         return players.size();
     }
 
-    public void setData(List<Player> playerList, Summoner mSummoner) {
+    public void setData(List<Player> playerList, Summoner mSummoner, Match mMatch) {
         players = playerList;
         summoner = mSummoner;
+        match = mMatch;
         notifyDataSetChanged();
     }
+
+    public static class DivisionQueryTask extends AsyncTask<URL, Void, LeaguePosition>{
+
+        private WeakReference<MatchDetailAdapterViewHolder> viewHolderWeakReference;
+
+        DivisionQueryTask(MatchDetailAdapterViewHolder context){
+            viewHolderWeakReference = new WeakReference<>(context);
+        }
+
+        @Override
+        protected LeaguePosition doInBackground(URL... urls) {
+
+           URL url = urls[0];
+            RateLimiter throttler = RateLimiter.create(0.7);
+            String leaguesSearchResult = null;
+            try {
+                leaguesSearchResult = NetworkUtils.getResponseFromHttpUrl(url, throttler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            LeaguePositionList positionList = null;
+            try {
+                positionList = JsonUtils.getLeaguePositionListFromJSON(leaguesSearchResult);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //TODO en funcion de la cola pasar uno u otro, en normal pasar soloq
+            if(positionList.getRankedSoloPosition() != null){
+                return positionList.getRankedSoloPosition();
+            }
+
+            if(positionList.getRankedFlexPosition() != null){
+                return positionList.getRankedFlexPosition();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(LeaguePosition leaguePosition) {
+            if(leaguePosition == null){
+                Log.d("xd", "null lp");
+            }
+            MatchDetailAdapterViewHolder viewHolder = viewHolderWeakReference.get();
+            if(leaguePosition == null){
+                ImageView divisionImageView = viewHolder.itemView.findViewById(R.id.iv_player_division);
+                divisionImageView.setImageResource(R.drawable.unranked);
+                TextView divisionTextView = viewHolder.itemView.findViewById(R.id.tv_player_division);
+                divisionTextView.setText("Unranked");
+            }else{
+                ImageView divisionImageView = viewHolder.itemView.findViewById(R.id.iv_player_division);
+                leaguePosition.setLeagueMiniIconOnImageView(divisionImageView);
+                TextView divisionTextView = viewHolder.itemView.findViewById(R.id.tv_player_division);
+                divisionTextView.setText(leaguePosition.getRankAndTier());
+
+            }
+        }
+    }
+
 }

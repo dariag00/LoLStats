@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-fe829090-7e1b-410f-bd7b-79a4caeec278";
+    private final static String RIOT_API_KEY = "RGAPI-de3a721c-46e2-4f4a-a03f-cd4e1bddd95d";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -39,7 +39,7 @@ public class NetworkUtils {
     private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
 
     //TODO sacarlo de la url: https://ddragon.leagueoflegends.com/api/versions.json
-    private final static String DDRAGON_VERSION = "8.23.1";
+    private final static String DDRAGON_VERSION = "8.24.1";
 
     private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
 
@@ -52,7 +52,6 @@ public class NetworkUtils {
     private final static String DDRAGON_GET_ITEM_IMAGE = "/img/item/";
 
     private final static String DDRAGON_GET_PROFILE_ICON = "/img/profileicon/";
-
 
     public final static int GET_SUMMONER = 0;
 

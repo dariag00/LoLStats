@@ -15,8 +15,6 @@ public class Player implements Serializable {
     private int spell1Id;
     private int championId;
     private Summoner summoner;//TODO implementar
-    private int summonerId;
-    private int accountId;
     private long visionScore;
     private int assists;
     private int deaths;
@@ -26,6 +24,7 @@ public class Player implements Serializable {
     private int neutralMinionsKilled;
     private int goldEarned;
     private int goldSpent;
+    private int championLevel;
 
     //TEMPORAL
     private int runePrimaryStyle;
@@ -109,22 +108,6 @@ public class Player implements Serializable {
 
     public void setSummoner(Summoner summoner) {
         this.summoner = summoner;
-    }
-
-    public int getSummonerId() {
-        return summonerId;
-    }
-
-    public void setSummonerId(int summonerId) {
-        this.summonerId = summonerId;
-    }
-
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
     }
 
     public long getVisionScore() {
@@ -320,6 +303,14 @@ public class Player implements Serializable {
         this.neutralMinionsKilled = neutralMinionsKilled;
     }
 
+    public int getChampionLevel() {
+        return championLevel;
+    }
+
+    public void setChampionLevel(int championLevel) {
+        this.championLevel = championLevel;
+    }
+
     public String toString(){
 
         StringBuilder builder = new StringBuilder();
@@ -329,7 +320,7 @@ public class Player implements Serializable {
         builder.append("\n");
 
         builder.append("Account Id: ");
-        builder.append(String.valueOf(accountId));
+        builder.append(String.valueOf(summoner.getAccountId()));
         builder.append("\n");
 
         return builder.toString();

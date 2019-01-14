@@ -72,9 +72,16 @@ public class LeaguePosition implements Serializable {
         this.leaguePoints = leaguePoints;
     }
 
+    public String getRankAndTier(){
+        return tier + " " + rank;
+    }
+
     public void setLeagueIconOnImageView(ImageView imageView){
 
         switch (tier){
+            case "IRON":
+                imageView.setImageResource(R.drawable.iron);
+                break;
             case "BRONZE":
                 imageView.setImageResource(R.drawable.bronze);
                 break;
@@ -93,11 +100,51 @@ public class LeaguePosition implements Serializable {
             case "MASTER":
                 imageView.setImageResource(R.drawable.master);
                 break;
+            case "GRANDMASTER":
+                imageView.setImageResource(R.drawable.grandmaster);
+                break;
             case "CHALLENGER":
                 imageView.setImageResource(R.drawable.challenger);
                 break;
-                default:
-                    imageView.setImageResource(R.drawable.provisional);
+            default:
+                imageView.setImageResource(R.drawable.unranked);
+
+        }
+
+    }
+
+    public void setLeagueMiniIconOnImageView(ImageView imageView){
+
+        switch (tier){
+            case "IRON":
+                imageView.setImageResource(R.drawable.iron_mini);
+                break;
+            case "BRONZE":
+                imageView.setImageResource(R.drawable.bronze_mini);
+                break;
+            case "SILVER":
+                imageView.setImageResource(R.drawable.silver_mini);
+                break;
+            case "GOLD":
+                imageView.setImageResource(R.drawable.gold_mini);
+                break;
+            case "PLATINUM":
+                imageView.setImageResource(R.drawable.platinum_mini);
+                break;
+            case "DIAMOND":
+                imageView.setImageResource(R.drawable.diamond_mini);
+                break;
+            case "MASTER":
+                imageView.setImageResource(R.drawable.master_mini);
+                break;
+            case "GRANDMASTER":
+                imageView.setImageResource(R.drawable.grandmaster_mini);
+                break;
+            case "CHALLENGER":
+                imageView.setImageResource(R.drawable.challenger_mini);
+                break;
+            default:
+                imageView.setImageResource(R.drawable.unranked);
 
         }
 

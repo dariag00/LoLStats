@@ -130,10 +130,21 @@ public class JsonUtils {
             int participantId = participantIdentityJSON.getInt("participantId");
             JSONObject playerJSON = participantIdentityJSON.getJSONObject("player");
             //TODO implementar Summoner info
+            //TODO no value for summonerId
 
-            int accountId = playerJSON.getInt("accountId");
-            int summonerId = playerJSON.getInt("summonerId");
+            long accountId = playerJSON.getLong("accountId");
+            long summonerId;
+
+            //En caso de que sea 0 se trata de un bot
+            if(playerJSON.has("summonerId"))
+                summonerId = playerJSON.getLong("summonerId");
+            else
+                summonerId = 0;
+
+            String summonerName = playerJSON.getString("summonerName");
+
             Summoner summoner = new Summoner(accountId, summonerId);
+            summoner.setSummonerName(summonerName);
 
             Player player = new Player(participantId);
             player.setSummoner(summoner);
@@ -186,7 +197,6 @@ public class JsonUtils {
             int teamId = participantJSON.getInt("teamId");
             int championId = participantJSON.getInt("championId");
             int participantId = participantJSON.getInt("participantId");
-            int participantAccountId = participantJSON.getInt("accountId");
 
             //Array que contiene las estadísticas de un jugador en la partida
             JSONObject statsJSON = participantJSON.getJSONObject("stats");
@@ -217,6 +227,8 @@ public class JsonUtils {
             int item5 = statsJSON.getInt("item5");
             int item6 = statsJSON.getInt("item6");
 
+            int champLevel = statsJSON.getInt("champLevel");
+
             int totalMinionsKilled = statsJSON.getInt("totalMinionsKilled");
             int neutralMinionsKilled = statsJSON.getInt("neutralMinionsKilled");
 
@@ -226,18 +238,17 @@ public class JsonUtils {
             for(Player player : playerList){
                 if(player.getParticipantId() == participantId){
 
-                    player.setAccountId(participantAccountId);
-
                     player.setSpell1Id(spell1Id);
                     player.setSpell2Id(spell2Id);
+                    Log.d(LOG_TAG, "Setteo champion Id" + championId);
                     player.setChampionId(championId);
                     player.setTeamId(teamId);
 
                     player.setKills(kills);
-                    Log.d(LOG_TAG, "PLayer kda: " + kills + " "+deaths+ " " + assists);
                     player.setDeaths(deaths);
                     player.setAssists(assists);
 
+                    player.setChampionLevel(champLevel);
                     //TODO modificar para que haya una lista de runas e items en cada player
                     //player.setVisionScore(visionScore);
                     player.setTotalDamageDealtToChampions(totalDamageDealtToChampions);

@@ -626,7 +626,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="2"
-                            android:textColor="#cc1818"
+                            android:textColor="@color/deathsColor"
                             android:textSize="13sp" />
                         <TextView
                             android:layout_width="wrap_content"

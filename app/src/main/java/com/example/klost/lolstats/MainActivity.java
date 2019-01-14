@@ -7,6 +7,11 @@ import android.graphics.Typeface;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -328,9 +333,20 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 LeaguePosition flexQ = list.getRankedFlexPosition();
                 LeaguePosition flexTTQ = list.getRankedFlexTTPosition();
 
-                soloQ.setLeagueIconOnImageView(soloQIcon);
-                flexQ.setLeagueIconOnImageView(flexQIcon);
-                flexTTQ.setLeagueIconOnImageView(flexQTTIcon);
+                if(soloQ == null)
+                    soloQIcon.setImageResource(R.drawable.unranked);
+                else
+                    soloQ.setLeagueIconOnImageView(soloQIcon);
+
+                if(flexQ == null)
+                    flexQIcon.setImageResource(R.drawable.unranked);
+                else
+                    flexQ.setLeagueIconOnImageView(flexQIcon);
+
+                if(flexTTQ == null)
+                    flexQTTIcon.setImageResource(R.drawable.unranked);
+                else
+                    flexTTQ.setLeagueIconOnImageView(flexQTTIcon);
 
                 //TODO no settear si es unranked
                 //TODO arreglar warnings al concatenar strings
@@ -340,16 +356,19 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 TextView winRateSoloQView = activity.findViewById(R.id.tv_wr_soloq);
                 TextView rankSoloQView = activity.findViewById(R.id.tv_summoner_rank_solo);
                 TextView lpsSoloQView = activity.findViewById(R.id.tv_summoner_rank_lps_solo);
+                if(soloQ != null) {
+                    double winRateSoloQ = (double) soloQ.getWins() / ((double) soloQ.getWins() + soloQ.getLosses()) * 100;
+                    String wRSQ = String.format(Locale.ENGLISH, "%.1f", winRateSoloQ);
+                    wRSQ = wRSQ.concat("%");
 
-                double winRateSoloQ = (double) soloQ.getWins() / ((double) soloQ.getWins() + soloQ.getLosses()) * 100;
-                String wRSQ = String.format(Locale.ENGLISH, "%.1f", winRateSoloQ);
-                wRSQ = wRSQ.concat("%");
-
-                winsSoloQView.setText(String.valueOf(soloQ.getWins()));
-                lossesSoloQView.setText(String.valueOf(soloQ.getLosses()));
-                winRateSoloQView.setText(wRSQ);
-                rankSoloQView.setText(soloQ.getTier() + " " + soloQ.getRank());
-                lpsSoloQView.setText(String.valueOf(soloQ.getLeaguePoints())+ " lps");
+                    winsSoloQView.setText(String.valueOf(soloQ.getWins()));
+                    lossesSoloQView.setText(String.valueOf(soloQ.getLosses()));
+                    winRateSoloQView.setText(wRSQ);
+                    rankSoloQView.setText(soloQ.getTier() + " " + soloQ.getRank());
+                    lpsSoloQView.setText(String.valueOf(soloQ.getLeaguePoints())+ " lps");
+                }else{
+                    winsSoloQView.setText("Unranked");
+                }
 
                 //Setteamos los valores de FlexQ
                 TextView winsFlexQView = activity.findViewById(R.id.tv_flex_wins);
@@ -358,14 +377,19 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 TextView rankFlexQView = activity.findViewById(R.id.tv_summoner_rank_flex);
                 TextView lpsFlexQView = activity.findViewById(R.id.tv_summoner_rank_lps_flex);
 
-                double winRateFlexQ = (double) flexQ.getWins() / ((double) flexQ.getWins() + flexQ.getLosses()) * 100;
-                String wRFQ = String.format(Locale.ENGLISH, "%.1f", winRateFlexQ).concat("%");
+                if(flexQ != null){
+                    double winRateFlexQ = (double) flexQ.getWins() / ((double) flexQ.getWins() + flexQ.getLosses()) * 100;
+                    String wRFQ = String.format(Locale.ENGLISH, "%.1f", winRateFlexQ).concat("%");
 
-                winsFlexQView.setText(String.valueOf(flexQ.getWins()));
-                lossesFlexQView.setText(String.valueOf(flexQ.getLosses()));
-                winRateFlexQView.setText(wRFQ);
-                rankFlexQView.setText(flexQ.getTier() + " " + flexQ.getRank());
-                lpsFlexQView.setText(String.valueOf(flexQ.getLeaguePoints())+ " lps");
+                    winsFlexQView.setText(String.valueOf(flexQ.getWins()));
+                    lossesFlexQView.setText(String.valueOf(flexQ.getLosses()));
+                    winRateFlexQView.setText(wRFQ);
+                    rankFlexQView.setText(flexQ.getTier() + " " + flexQ.getRank());
+                    lpsFlexQView.setText(String.valueOf(flexQ.getLeaguePoints())+ " lps");
+                }else{
+                    winRateFlexQView.setText("Unranked");
+                }
+
 
                 //Setteamos los valores de 3v3
                 TextView winsFlexTTQView = activity.findViewById(R.id.tv_3v3_wins);
@@ -374,14 +398,18 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 TextView rank3v3View = activity.findViewById(R.id.tv_summoner_rank_3v3);
                 TextView lps3v3View = activity.findViewById(R.id.tv_summoner_rank_lps_3v3);
 
-                double winRate3v3 = (double) flexTTQ.getWins() / ((double) flexTTQ.getWins() + flexTTQ.getLosses()) * 100;
-                String wRFTTQ = String.format(Locale.ENGLISH, "%.1f", winRate3v3).concat("%");
+                if(flexTTQ != null){
+                    double winRate3v3 = (double) flexTTQ.getWins() / ((double) flexTTQ.getWins() + flexTTQ.getLosses()) * 100;
+                    String wRFTTQ = String.format(Locale.ENGLISH, "%.1f", winRate3v3).concat("%");
 
-                winsFlexTTQView.setText(String.valueOf(flexTTQ.getWins()));
-                lossesFlexTTQView.setText(String.valueOf(flexTTQ.getLosses()));
-                winRate3v3View.setText(wRFTTQ);
-                rank3v3View.setText(flexTTQ.getTier() + " " + flexTTQ.getRank());
-                lps3v3View.setText(String.valueOf(flexTTQ.getLeaguePoints()) + " lps");
+                    winsFlexTTQView.setText(String.valueOf(flexTTQ.getWins()));
+                    lossesFlexTTQView.setText(String.valueOf(flexTTQ.getLosses()));
+                    winRate3v3View.setText(wRFTTQ);
+                    rank3v3View.setText(flexTTQ.getTier() + " " + flexTTQ.getRank());
+                    lps3v3View.setText(String.valueOf(flexTTQ.getLeaguePoints()) + " lps");
+                }else{
+                    winsFlexTTQView.setText("Unranked");
+                }
 
 
                 showData(activity);
@@ -451,8 +479,10 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 Legend legend = chart.getLegend();
                 legend.setEnabled(false);
 
-                String[] roles = LoLStatsUtils.get3MostPlayedRoles(matches, summoner);
-                setMostPlayedRoles(activity, roles, matches, summoner);
+                if(matches.size()>3){
+                    String[] roles = LoLStatsUtils.get3MostPlayedRoles(matches, summoner);
+                    setMostPlayedRoles(activity, roles, matches, summoner);
+                }
 
                 //Setteamos los datos globales de resultados
                 TextView killsView = activity.findViewById(R.id.tv_global_kills);
@@ -473,13 +503,18 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
 
                 //Setteo de los mejores champions
                 Champion[] top3Champions = LoLStatsUtils.get3MostPlayedChampion(matches, summoner, championList);
-                int[] stats1 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[0]);
-                int[] stats2 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[1]);
-                int[] stats3 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[2]);
-
-                setBestChampionData(activity, stats1, 1, top3Champions[0]);
-                setBestChampionData(activity, stats2, 2, top3Champions[1]);
-                setBestChampionData(activity, stats3, 3, top3Champions[2]);
+                if(top3Champions[0] != null) {
+                    int[] stats1 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[0]);
+                    setBestChampionData(activity, stats1, 1, top3Champions[0]);
+                }
+                if(top3Champions[1] != null) {
+                    int[] stats2 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[1]);
+                    setBestChampionData(activity, stats2, 2, top3Champions[1]);
+                }
+                if(top3Champions[2] != null) {
+                    int[] stats3 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[2]);
+                    setBestChampionData(activity, stats3, 3, top3Champions[2]);
+                }
 
             }else{
                 showErrorMessage(activity);
@@ -600,7 +635,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
             championCs.setText(String.valueOf(averageMinionsKilled));
 
             double kdaChampion = LoLStatsUtils.calculateKDA(averageKills, averageAssists, averageDeaths);
-            LoLStatsUtils.setKdaAndTextColorInView(kdaChampionView, kdaChampion);
+            LoLStatsUtils.setKdaAndTextColorInView(kdaChampionView, kdaChampion, activity);
 
             double winRate = ((double) gamesWon / (double) gamesPlayed) *100;
             Log.d(LOG_TAG, "WR: " + winRate + " dividiendo " + gamesWon + " entre "+ gamesPlayed);

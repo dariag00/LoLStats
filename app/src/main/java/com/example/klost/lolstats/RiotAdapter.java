@@ -3,6 +3,7 @@ package com.example.klost.lolstats;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -171,86 +172,95 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
     public void onBindViewHolder(@NonNull RiotAdapterViewHolder riotAdapterViewHolder, int position) {
 
         Match match = matchesData[position];
-
-        boolean gameWon = match.hasGivenSummonerWon(summoner);
-        //TODO codificar en funcion de colors.xml
-        if(gameWon) {
-            riotAdapterViewHolder.gameResultIndicatorView.setBackgroundColor(Color.parseColor("#4286f4"));
-        }else {
-            riotAdapterViewHolder.gameResultIndicatorView.setBackgroundColor(Color.parseColor("#f44d41"));
+        if(match == null){
+            Log.d("RiotAdapter", "match null");
         }
 
-        Player player = match.getPlayer(summoner);
-        int championId = player.getChampionId();
+        if(summoner == null){
+            Log.d("RiotAdapter", "summ null");
+        }
+        //TODO crear lista de processed matches
+        //TODO Death Coil bug con champions y partidas cuando hay matches null, se repiten los matches hasta la saciedad
+        //TODO death coill bug NaN
+        if(match != null) {
+            boolean gameWon = match.hasGivenSummonerWon(summoner);
+            if (gameWon) {
+                riotAdapterViewHolder.gameResultIndicatorView.setBackgroundResource(R.color.victoryColor);
+            } else {
+                riotAdapterViewHolder.gameResultIndicatorView.setBackgroundResource(R.color.defeatColor);
+            }
 
-        //TODO revisar posibles problemas con asyncronia(Firebase?)
-        //Seteo de la imagen del campeon jugado
-        Champion champion = championList.getChampionById(championId);
-        champion.loadImageFromDDragon(riotAdapterViewHolder.championImageView);
+            Player player = match.getPlayer(summoner);
+            int championId = player.getChampionId();
 
-        //Seteo de los hechizos de invocador jugados
-        SummonerSpell firstSummonerSpell = summonerSpellList.getSpellById(player.getSpell1Id());
-        firstSummonerSpell.loadImageFromDDragon(riotAdapterViewHolder.firstSummonerSpellIconView);
+            //Seteo de la imagen del campeon jugado
+            Champion champion = championList.getChampionById(championId);
+            champion.loadImageFromDDragon(riotAdapterViewHolder.championImageView);
 
-        SummonerSpell secondSummonerSpell = summonerSpellList.getSpellById(player.getSpell2Id());
-        secondSummonerSpell.loadImageFromDDragon(riotAdapterViewHolder.secondSummonerSpellIconView);
+            //Seteo de los hechizos de invocador jugados
+            SummonerSpell firstSummonerSpell = summonerSpellList.getSpellById(player.getSpell1Id());
+            firstSummonerSpell.loadImageFromDDragon(riotAdapterViewHolder.firstSummonerSpellIconView);
 
-        //Seteo de la keystone y de la rama de runas secundaria jugadas
-        Rune mainRune = runeList.getRuneById(player.getRune0());
-        mainRune.loadImageFromDDragon(riotAdapterViewHolder.mainRuneView);
+            SummonerSpell secondSummonerSpell = summonerSpellList.getSpellById(player.getSpell2Id());
+            secondSummonerSpell.loadImageFromDDragon(riotAdapterViewHolder.secondSummonerSpellIconView);
 
-        RunePath secondaryRune = runeList.getRunePathById(player.getRuneSecondaryStyle());
-        secondaryRune.loadImageFromDDragon(riotAdapterViewHolder.secondaryRuneView);
+            //Seteo de la keystone y de la rama de runas secundaria jugadas
+            Rune mainRune = runeList.getRuneById(player.getRune0());
+            mainRune.loadImageFromDDragon(riotAdapterViewHolder.mainRuneView);
 
-        //Seteo del resultado del jugador
-        riotAdapterViewHolder.killsTextView.setText(String.valueOf(player.getKills()));
-        riotAdapterViewHolder.deathsTextView.setText(String.valueOf(player.getDeaths()));
-        riotAdapterViewHolder.assistsTextView.setText(String.valueOf(player.getAssists()));
+            RunePath secondaryRune = runeList.getRunePathById(player.getRuneSecondaryStyle());
+            secondaryRune.loadImageFromDDragon(riotAdapterViewHolder.secondaryRuneView);
 
-        //Seteo de las estadisticas
-        int totalCs = player.getTotalMinionsKilled();
-        long totalDamageToChampions = player.getTotalDamageDealtToChampions();
+            //Seteo del resultado del jugador
+            riotAdapterViewHolder.killsTextView.setText(String.valueOf(player.getKills()));
+            riotAdapterViewHolder.deathsTextView.setText(String.valueOf(player.getDeaths()));
+            riotAdapterViewHolder.assistsTextView.setText(String.valueOf(player.getAssists()));
 
-        long gameDuration = match.getGameDuration();
-        long gameDurationInMinutes = gameDuration/60;
+            //Seteo de las estadisticas
+            int totalCs = player.getTotalMinionsKilled();
+            long totalDamageToChampions = player.getTotalDamageDealtToChampions();
 
-        double totalDamagePerMin = (double) totalDamageToChampions / (double) gameDurationInMinutes;
-        double totalCsPerMin = (double) totalCs / (double) gameDurationInMinutes;
+            long gameDuration = match.getGameDuration();
+            long gameDurationInMinutes = gameDuration / 60;
 
-        riotAdapterViewHolder.csPerMinView.setText(String.format(Locale.ENGLISH, "%.2f", totalCsPerMin));
-        riotAdapterViewHolder.dmgPerMinView.setText(String.format(Locale.ENGLISH, "%.2f", totalDamagePerMin));
+            double totalDamagePerMin = (double) totalDamageToChampions / (double) gameDurationInMinutes;
+            double totalCsPerMin = (double) totalCs / (double) gameDurationInMinutes;
 
-        double kda = LoLStatsUtils.calculateKDA(player.getKills(), player.getAssists(), player.getDeaths());
-        LoLStatsUtils.setKdaAndTextColorInView(riotAdapterViewHolder.kdaTextView, kda);
+            riotAdapterViewHolder.csPerMinView.setText(String.format(Locale.ENGLISH, "%.2f", totalCsPerMin));
+            riotAdapterViewHolder.dmgPerMinView.setText(String.format(Locale.ENGLISH, "%.2f", totalDamagePerMin));
 
-        //Seteo de los items jugados
-        Item firstItem = itemList.getItemById(player.getItem0());
-        Item secondItem = itemList.getItemById(player.getItem1());
-        Item thirdItem = itemList.getItemById(player.getItem2());
-        Item fourthItem = itemList.getItemById(player.getItem3());
-        Item fifthItem = itemList.getItemById(player.getItem4());
-        Item sixthItem = itemList.getItemById(player.getItem5());
-        Item seventhItem = itemList.getItemById(player.getItem6());
+            double kda = LoLStatsUtils.calculateKDA(player.getKills(), player.getAssists(), player.getDeaths());
+            LoLStatsUtils.setKdaAndTextColorInView(riotAdapterViewHolder.kdaTextView, kda, riotAdapterViewHolder.itemView.getContext());
 
-        if(firstItem != null)
-            firstItem.loadImageFromDDragon(riotAdapterViewHolder.firstItemView);
-        if(secondItem != null)
-            secondItem.loadImageFromDDragon(riotAdapterViewHolder.secondItemView);
-        if(thirdItem != null)
-            thirdItem.loadImageFromDDragon(riotAdapterViewHolder.thirdItemView);
-        if(fourthItem != null)
-            fourthItem.loadImageFromDDragon(riotAdapterViewHolder.fourthItemView);
-        if(fifthItem != null)
-            fifthItem.loadImageFromDDragon(riotAdapterViewHolder.fifthItemView);
-        if(sixthItem != null)
-            sixthItem.loadImageFromDDragon(riotAdapterViewHolder.sixthItemView);
-        if(seventhItem != null)
-            seventhItem.loadImageFromDDragon(riotAdapterViewHolder.trinketItemView);
+            //Seteo de los items jugados
+            Item firstItem = itemList.getItemById(player.getItem0());
+            Item secondItem = itemList.getItemById(player.getItem1());
+            Item thirdItem = itemList.getItemById(player.getItem2());
+            Item fourthItem = itemList.getItemById(player.getItem3());
+            Item fifthItem = itemList.getItemById(player.getItem4());
+            Item sixthItem = itemList.getItemById(player.getItem5());
+            Item seventhItem = itemList.getItemById(player.getItem6());
 
-        //Seteo del resto de datos
-        riotAdapterViewHolder.gameDurationTextView.setText(match.getGameDurationInMinutesAndSeconds());
-        riotAdapterViewHolder.gameDateView.setText(LoLStatsUtils.getDaysAgo(match.getGameCreation()));
-        riotAdapterViewHolder.queueTypeView.setText(LoLStatsUtils.getQueueName(match.getQueue()));
+            if (firstItem != null)
+                firstItem.loadImageFromDDragon(riotAdapterViewHolder.firstItemView);
+            if (secondItem != null)
+                secondItem.loadImageFromDDragon(riotAdapterViewHolder.secondItemView);
+            if (thirdItem != null)
+                thirdItem.loadImageFromDDragon(riotAdapterViewHolder.thirdItemView);
+            if (fourthItem != null)
+                fourthItem.loadImageFromDDragon(riotAdapterViewHolder.fourthItemView);
+            if (fifthItem != null)
+                fifthItem.loadImageFromDDragon(riotAdapterViewHolder.fifthItemView);
+            if (sixthItem != null)
+                sixthItem.loadImageFromDDragon(riotAdapterViewHolder.sixthItemView);
+            if (seventhItem != null)
+                seventhItem.loadImageFromDDragon(riotAdapterViewHolder.trinketItemView);
+
+            //Seteo del resto de datos
+            riotAdapterViewHolder.gameDurationTextView.setText(match.getGameDurationInMinutesAndSeconds());
+            riotAdapterViewHolder.gameDateView.setText(LoLStatsUtils.getDaysAgo(match.getGameCreation()));
+            riotAdapterViewHolder.queueTypeView.setText(LoLStatsUtils.getQueueName(match.getQueue()));
+        }
 
     }
 
@@ -267,7 +277,7 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
         return matchesData.length;
     }
 
-
+    //TODO poner en funcion de StaticData
      void setData(Match[] matchesData, Summoner summoner, ChampionList championList, RuneList runeList, SummonerSpellList summonerSpellList, ItemList itemList) {
         this.matchesData = matchesData;
         this.summoner = summoner;

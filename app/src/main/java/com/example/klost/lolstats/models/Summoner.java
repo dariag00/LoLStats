@@ -34,7 +34,7 @@ public class Summoner implements Serializable {
 
     }
 
-    public Summoner(int accountId, int summonerId){
+    public Summoner(long accountId, long summonerId){
         this.accountId = accountId;
         this.summonerId = summonerId;
     }

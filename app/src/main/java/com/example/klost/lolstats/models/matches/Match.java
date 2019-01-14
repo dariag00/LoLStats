@@ -151,6 +151,7 @@ public class Match implements Serializable {
             return redTeam;
         }
         //TODO caso que sea null
+        Log.d("Match", "getTeam: Se ha devuelto null al summoner " + summoner.toString());
         return null;
     }
 

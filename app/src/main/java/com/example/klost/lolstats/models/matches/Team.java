@@ -152,11 +152,14 @@ public class Team implements Serializable {
 
     public Player getPlayer(Summoner summoner){
 
-        for(Player player:players){
-            if(player.getSummoner().getSummonerId() == summoner.getSummonerId())
+        for(Player player:players) {
+            if (player.getSummoner().getSummonerId() == summoner.getSummonerId()){
+                Log.d("Team", "getPlayer: se ha encontrado al Player" + player.toString() + summoner.getAccountId());
                 return player;
+            }
         }
         //TODO cambiar cuadno sea null
+        Log.d("Team", "getPlayer: Se ha devuelto null al summoner " + summoner.toString());
         return null;
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/ly_player_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,11 +9,7 @@
     android:layout_marginTop="3dp"
     android:orientation="horizontal"
     android:background="@android:color/white"
-    android:paddingLeft="2dp"
-    android:paddingStart="2dp"
-    android:paddingEnd="2dp"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp">
+    android:padding="2dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_player_champion"
@@ -117,7 +114,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_level"
+                android:id="@+id/tv_player_level"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -135,7 +132,7 @@
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/tv_player_kills"
-                    android:text="2"
+                    android:text="20"
                     style="@style/match_details_kda_detailed" />
                 <TextView
                     android:text="@string/slash"
@@ -143,14 +140,14 @@
                 <TextView
                     android:id="@+id/tv_player_deaths"
                     style="@style/match_details_kda_detailed"
-                    android:text="5"
-                    android:textColor="#cc1818" />
+                    android:text="50"
+                    android:textColor="@color/deathsColor" />
                 <TextView
                     android:text="@string/slash"
                     style="@style/match_details_kda_detailed" />
                 <TextView
                     android:id="@+id/tv_player_assists"
-                    android:text="2"
+                    android:text="20"
                     style="@style/match_details_kda_detailed" />
 
             </LinearLayout>
@@ -163,7 +160,7 @@
 
                 <TextView
                     android:id="@+id/tv_player_kda"
-                    android:text="1.57"
+                    android:text="11.57"
                     style="@style/match_details_kda_value" />
 
                 <TextView
@@ -232,7 +229,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="GOLD"
+                    android:text="GOLD:"
                     style="@style/match_details_stats" />
 
                 <TextView
@@ -269,7 +266,7 @@
 
                 <TextView
                     style="@style/match_details_stats"
-                    android:text="DMG%"/>
+                    android:text="DMG%:"/>
 
                 <TextView
                     android:id="@+id/player_damage_percent"

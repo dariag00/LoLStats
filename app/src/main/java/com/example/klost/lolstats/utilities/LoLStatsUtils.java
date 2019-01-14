@@ -1,6 +1,8 @@
 package com.example.klost.lolstats.utilities;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
@@ -16,12 +18,9 @@ import com.example.klost.lolstats.models.matches.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,20 +30,31 @@ public class LoLStatsUtils {
 
     private static final String LOG_TAG = "LoLStatsUtils";
 
-    public static void setKdaAndTextColorInView(TextView textView, double kda){
+    public static void setKdaAndTextColorInView(TextView textView, double kda, Context context){
 
         String kdaString = String.format(Locale.ENGLISH, "%.2f", kda);
         textView.setText(kdaString);
         //TODO introducir en colors
-        if(kda>=3.0 && kda<5.0){
-            textView.setTextColor(Color.parseColor("#65bc94"));
-        }else if(kda>=5.0 && kda<7.0){
-            textView.setTextColor(Color.parseColor("#599aa3"));
+        if(kda>=2.0 && kda<3.0){
+            textView.setTextColor(ContextCompat.getColor(context, R.color.lowKdaColor));
+        }else if(kda>=3.0 && kda<4.0){
+            textView.setTextColor(ContextCompat.getColor(context, R.color.lowToMidKdaColor));
+        }else if(kda>=4.0 && kda<5.0){
+            textView.setTextColor(ContextCompat.getColor(context, R.color.midKdaColor));
         }else if(kda>=7.0){
-            textView.setTextColor(Color.parseColor("#f4c542"));
+            textView.setTextColor(ContextCompat.getColor(context, R.color.highKdaColor));
         }
 
 
+    }
+
+    public static double getDamagePercentOfGivenPlayer(List<Player> players, Player givenPlayer){
+
+        double totalDamage = 0;
+        for(Player player:players){
+            totalDamage = totalDamage + player.getTotalDamageDealtToChampions();
+        }
+        return (givenPlayer.getTotalDamageDealtToChampions() / totalDamage) * 100;
     }
 
     public static String getDaysAgo(Date date){
@@ -106,6 +116,9 @@ public class LoLStatsUtils {
                 break;
             case 470:
                 queueName = "3v3 Ranked Flex";
+                break;
+            case 1200:
+                queueName ="Nexus Blitz";
                 break;
                 default:
                     queueName = "Not supported";
@@ -177,7 +190,7 @@ public class LoLStatsUtils {
 
         return kda;
     }
-
+    //TODO revisar que peta con RayPrince0709
     public static int getWinsOfLast20Games(List<Match> listOfGames, Summoner summoner){
 
         int contadorDeVictorias = 0;
@@ -188,6 +201,9 @@ public class LoLStatsUtils {
             //Primero revisamos que se ha procesado el match para evitar posibles errores
             if(match.isProcessed()){
                 Team currentPlayerTeam = match.getTeamOfGivenSummoner(summoner);
+                if(currentPlayerTeam == null){
+                    Log.d("PruebaNull", "Es null");
+                }
                 if(currentPlayerTeam.isWon())
                     contadorDeVictorias++;
             }
@@ -198,7 +214,6 @@ public class LoLStatsUtils {
         return contadorDeVictorias;
 
     }
-    //TODO testear
 
     public static double getAverageKillsOfLast20Games(List<Match> listOfGames, Summoner summoner){
 
@@ -428,8 +443,8 @@ public class LoLStatsUtils {
 
         return mostPlayedRoles;
     }
-
-    public static Champion[] get3MostPlayedChampion(List<Match> listOfGames, Summoner summoner, ChampionList championList){
+    //TODO games con bots
+    public static Champion[] get3MostPlayedChampion(List<Match> listOfGames, Summoner summoner, ChampionList championList) {
 
         Champion[] champions = new Champion[3];
 
@@ -437,12 +452,14 @@ public class LoLStatsUtils {
 
         HashMap<Integer, Integer> map = new HashMap<>();
 
-        for(int i=0; i<20; i++) {
+        for (int i = 0; i < 20; i++) {
             Match match = listOfGames.get(i);
-            if(match.isProcessed()){
+            if (match.isProcessed()) {
+                Log.d(LOG_TAG, "Uno procesado ");
                 usedChampions.add(match.getChampionId());
             }
         }
+        Log.d(LOG_TAG, "used champions" + usedChampions.size() + " " + listOfGames.size());
 
         for (Integer s : usedChampions) {
             if (map.containsKey(s)) {
@@ -451,6 +468,7 @@ public class LoLStatsUtils {
                 map.put(s, 1);
             }
         }
+        //TODO error cuando no hay sufucientes campeones
 
         Object[] a = map.entrySet().toArray();
         Arrays.sort(a, new Comparator() {
@@ -464,9 +482,22 @@ public class LoLStatsUtils {
                     + ((Map.Entry<Integer, Integer>) e).getValue());
         }
 
-        Champion champion1 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[0]).getKey());
-        Champion champion2 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[1]).getKey());
-        Champion champion3 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[2]).getKey());
+        Champion champion1 = null;
+        Champion champion2 = null;
+        Champion champion3 = null;
+
+        if (usedChampions.size() >= 1) {
+            Log.d(LOG_TAG, "Entro en size 1" + usedChampions.size());
+            champion1 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[0]).getKey());
+        }
+        if (usedChampions.size() >= 2) {
+            Log.d(LOG_TAG, "Entro en size 2");
+            champion2 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[1]).getKey());
+        }
+        if (usedChampions.size() >= 3){
+            Log.d(LOG_TAG, "Entro en size 3");
+            champion3 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[2]).getKey());
+        }
 
         champions[0] = champion1;
         champions[1] = champion2;
@@ -483,7 +514,12 @@ public class LoLStatsUtils {
         for(int i = 0; i<20; i++){
             Match match = matchList.get(i);
             if(match.isProcessed()){
+                Log.d(LOG_TAG, "El summoner es" + summoner.toString());
                 Player player = match.getPlayer(summoner);
+                if(player == null)
+                    Log.d(LOG_TAG, "Es null");
+                else
+                    Log.d(LOG_TAG, "Player: " + player.toString());
                 //Buscamos las partidas en las que ha jugado dicho campeon
                 if(player.getChampionId() == champion.getChampionId()){
                     Team playerTeam = match.getTeamOfGivenSummoner(summoner);
