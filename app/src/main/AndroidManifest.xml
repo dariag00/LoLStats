@@ -12,11 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:parentActivityName=".InitialActivity"
+            android:name="com.example.klost.lolstats.MainActivity"
+            android:parentActivityName="com.example.klost.lolstats.InitialActivity"
             android:launchMode="singleTop"/>
         <activity
-            android:name=".InitialActivity"
+            android:name="com.example.klost.lolstats.InitialActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,12 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestActivity"
-            android:parentActivityName=".InitialActivity"/>
-        <activity android:name=".TestMainLayoutActivity"
-            android:parentActivityName=".InitialActivity"/>
-        <activity android:name=".GameDetailsActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name="com.example.klost.lolstats.TestActivity"
+            android:parentActivityName="com.example.klost.lolstats.InitialActivity"/>
+        <activity android:name="com.example.klost.lolstats.TestMainLayoutActivity"
+            android:parentActivityName="com.example.klost.lolstats.InitialActivity"/>
+        <activity android:name="com.example.klost.lolstats.GameDetailsActivity"
+            android:parentActivityName="com.example.klost.lolstats.MainActivity"/>
     </application>
 
 </manifest>

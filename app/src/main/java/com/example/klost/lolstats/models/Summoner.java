@@ -3,7 +3,6 @@ package com.example.klost.lolstats.models;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.utilities.NetworkUtils;

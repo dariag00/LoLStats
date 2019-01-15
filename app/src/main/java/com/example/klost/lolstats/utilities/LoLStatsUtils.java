@@ -1,7 +1,6 @@
 package com.example.klost.lolstats.utilities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;

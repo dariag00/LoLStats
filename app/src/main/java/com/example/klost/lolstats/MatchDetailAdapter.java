@@ -2,7 +2,6 @@ package com.example.klost.lolstats;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
