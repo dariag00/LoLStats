@@ -11,6 +11,10 @@ import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.models.matches.Player;
+import com.example.klost.lolstats.models.matches.matchtimeline.MatchEvent;
+import com.example.klost.lolstats.models.matches.matchtimeline.MatchFrame;
+import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
+import com.example.klost.lolstats.models.matches.matchtimeline.ParticipantFrame;
 import com.example.klost.lolstats.models.runes.Rune;
 import com.example.klost.lolstats.models.runes.RuneList;
 import com.example.klost.lolstats.models.runes.RunePath;
@@ -39,17 +43,19 @@ public class JsonUtils {
         String summonerName = requestJSON.getString("name");
         long level  = requestJSON.getLong("summonerLevel");
         long revisionDate = requestJSON.getLong("revisionDate");
-        long summonerId = requestJSON.getLong("id");
-        long accountId = requestJSON.getLong("accountId");
+        String encryptedSummonerId = requestJSON.getString("id");
+        String encryptedAccountId = requestJSON.getString("accountId");
         int profileIconId = requestJSON.getInt("profileIconId");
+        String puuid = requestJSON.getString("puuid");
 
         Summoner summoner = new Summoner();
-        summoner.setAccountId(accountId);
-        summoner.setSummonerId(summonerId);
+        summoner.setEncryptedAccountId(encryptedAccountId);
+        summoner.setEncryptedSummonerId(encryptedSummonerId);
         summoner.setProfileIconId(profileIconId);
         summoner.setRevisionDate(revisionDate);
         summoner.setSummonerName(summonerName);
         summoner.setSummonerLevel(level);
+        summoner.setPuuid(puuid);
 
         return summoner;
     }
@@ -132,14 +138,14 @@ public class JsonUtils {
             //TODO implementar Summoner info
             //TODO no value for summonerId
 
-            long accountId = playerJSON.getLong("accountId");
-            long summonerId;
+            String accountId = playerJSON.getString("currentAccountId");
+            String summonerId;
 
             //En caso de que sea 0 se trata de un bot
             if(playerJSON.has("summonerId"))
-                summonerId = playerJSON.getLong("summonerId");
+                summonerId = playerJSON.getString("summonerId");
             else
-                summonerId = 0;
+                summonerId = "0";
 
             String summonerName = playerJSON.getString("summonerName");
 
@@ -536,6 +542,68 @@ public class JsonUtils {
 
         return list;
 
+    }
+
+    public static MatchTimeline getMatchTimeLine(String requestJsonStr) throws JSONException {
+
+        JSONObject jsonObject = new JSONObject(requestJsonStr);
+
+        ArrayList<MatchFrame> matchFrames = new ArrayList<>();
+        long frameInterval = jsonObject.getLong("frameInterval");
+
+        JSONArray framesJSON = jsonObject.getJSONArray("frames");
+        //Recorremos la lista de frames
+        for(int i = 0; i<framesJSON.length(); i++){
+
+            JSONObject frameJSON = framesJSON.getJSONObject(i);
+            long timestamp = frameJSON.getLong("timestamp");
+            JSONObject participantsJSON = frameJSON.getJSONObject("participantFrames");
+            Iterator x = participantsJSON.keys();
+            JSONArray participantsArray = new JSONArray();
+
+            while (x.hasNext()){
+                String key = (String) x.next();
+                participantsArray.put(participantsJSON.get(key));
+            }
+
+            ArrayList<ParticipantFrame> participantsFrames = new ArrayList<>();
+            //Recorremos la lista de participant frames
+            for(int j = 0; j<participantsArray.length(); j++){
+                JSONObject participantJSON = participantsArray.getJSONObject(j);
+                ParticipantFrame participantFrame = new ParticipantFrame();
+
+                int totalGold = participantJSON.getInt("totalGold");
+                if(participantJSON.has("teamScore")) {
+                    int teamScore = participantJSON.getInt("teamScore");
+                    participantFrame.setTeamScore(teamScore);
+                }
+                int participantId = participantJSON.getInt("participantId");
+                int level = participantJSON.getInt("level");
+                int currentGold = participantJSON.getInt("currentGold");
+                int minionsKilled = participantJSON.getInt("minionsKilled");
+                int jungleMinionsKilled = participantJSON.getInt("jungleMinionsKilled");
+                int xp = participantJSON.getInt("xp");
+                participantFrame.setTotalGold(totalGold);
+                participantFrame.setParticipantId(participantId);
+                participantFrame.setLevel(level);
+                participantFrame.setCurrentGold(currentGold);
+                participantFrame.setMinionsKilled(minionsKilled);
+                participantFrame.setJungleMinionsKilled(jungleMinionsKilled);
+                participantFrame.setXp(xp);
+
+                participantsFrames.add(participantFrame);
+            }
+
+            ArrayList<MatchEvent> matchEvents = new ArrayList<>();
+            //TODO añadir eventos
+
+            MatchFrame frame = new MatchFrame(timestamp, matchEvents, participantsFrames);
+            matchFrames.add(frame);
+        }
+
+        MatchTimeline matchTimeline = new MatchTimeline(matchFrames, frameInterval);
+
+        return matchTimeline;
     }
 
 

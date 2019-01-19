@@ -1,24 +1,44 @@
 package com.example.klost.lolstats;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.example.klost.lolstats.models.champions.ChampionList;
+import com.example.klost.lolstats.models.items.ItemList;
+import com.example.klost.lolstats.models.runes.RuneList;
+import com.example.klost.lolstats.models.summoners.SummonerSpellList;
+import com.example.klost.lolstats.utilities.JsonUtils;
+import com.example.klost.lolstats.utilities.NetworkUtils;
+import com.example.klost.lolstats.utilities.StaticData;
+
+import org.json.JSONException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InitialActivity extends AppCompatActivity {
+public class InitialActivity extends AppCompatActivity{
 
 
     public static final String EXTRA_SUMMONER_NAME = "com.example.klost.lolstats.SUMMONER_NAME";
 
     private EditText summonerNameView;
 
+    private static final String LOG_TAG = "InitialActivity";
+
+    String[] spinnerTitles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +81,12 @@ public class InitialActivity extends AppCompatActivity {
             }
         });
 
+        spinnerTitles = new String[]{"EUW", "EUNE", "NA", "KR", "OCE", "BR", "RU", "JP"};
+        int flags[] = {R.drawable.eu_flag, R.drawable.eune_flag, R.drawable.na_flag, R.drawable.korea_flag, R.drawable.oceania_flag, R.drawable.brazil_flag, R.drawable.russia_flag, R.drawable.japan_flag};
+        //int flags[] = {R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini};
+        Spinner regionSpinner = findViewById(R.id.region_spinner);
+        CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(this, spinnerTitles, flags);
+        regionSpinner.setAdapter(customAdapter);
     }
 
     private void toTest(){
@@ -121,5 +147,10 @@ public class InitialActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile("^[\\p{L} 0-9_.]+$");
         Matcher matcher = pattern.matcher(summonerName);
         return matcher.find();
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.moveTaskToBack(true);
     }
 }

@@ -3,6 +3,7 @@ package com.example.klost.lolstats.models.matches;
 import android.util.Log;
 
 import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +29,7 @@ public class Match implements Serializable {
     private long gameDuration;
     private Date gameCreation;
     private String gameType;
+    private MatchTimeline matchTimeline;
 
 
     public Match(){
@@ -143,6 +145,14 @@ public class Match implements Serializable {
         this.gameType = gameType;
     }
 
+    public MatchTimeline getMatchTimeline() {
+        return matchTimeline;
+    }
+
+    public void setMatchTimeline(MatchTimeline matchTimeline) {
+        this.matchTimeline = matchTimeline;
+    }
+
     public Team getTeamOfGivenSummoner(Summoner summoner){
 
         if(blueTeam.containsSummoner(summoner)){
@@ -176,7 +186,7 @@ public class Match implements Serializable {
 
         return String.valueOf(minutes) + "m " + String.valueOf(uptime) + "s";
     }
-
+    @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
 

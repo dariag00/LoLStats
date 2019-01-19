@@ -21,25 +21,27 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-de3a721c-46e2-4f4a-a03f-cd4e1bddd95d";
+    private final static String RIOT_API_KEY = "RGAPI-0d5d202b-7bb2-48df-bd2c-f9ccef649293";
 
     private final static String PARAM_KEY = "api_key";
 
     private final static String RIOT_BASE_URL = "https://euw1.api.riotgames.com";
 
-    private final static String RIOT_GET_MATCHLIST = "/lol/match/v3/matchlists/by-account";
+    private final static String RIOT_GET_MATCHLIST = "/lol/match/v4/matchlists/by-account";
 
-    private final static String RIOT_GET_MATCH = "/lol/match/v3/matches";
+    private final static String RIOT_GET_MATCH = "/lol/match/v4/matches";
 
-    private final static String RIOT_GET_SUMMONER = "/lol/summoner/v3/summoners/by-name";
+    private final static String RIOT_GET_MATCH_TIMELINE = "/lol/match/v4/timelines/by-match";
 
-    private final static String RIOT_GET_LEAGUES_POSITIONS = "/lol/league/v3/positions/by-summoner";
+    private final static String RIOT_GET_SUMMONER = "/lol/summoner/v4/summoners/by-name";
+
+    private final static String RIOT_GET_LEAGUES_POSITIONS = "/lol/league/v4/positions/by-summoner";
 
 
     private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
 
     //TODO sacarlo de la url: https://ddragon.leagueoflegends.com/api/versions.json
-    private final static String DDRAGON_VERSION = "8.24.1";
+    private final static String DDRAGON_VERSION = "9.1.1";
 
     private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
 
@@ -107,8 +109,12 @@ public class NetworkUtils {
                 break;
 
             case GET_MATCH_TIMELINE:
-                //Not supported yet
-                return null;
+                path = RIOT_BASE_URL + RIOT_GET_MATCH_TIMELINE;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
+                        .build();
+                break;
 
             case GET_LEAGUES_POSITIONS:
                 path = RIOT_BASE_URL + RIOT_GET_LEAGUES_POSITIONS;

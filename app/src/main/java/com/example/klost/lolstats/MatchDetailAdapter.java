@@ -148,16 +148,16 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         Player player = players.get(position);
         Summoner currentSummoner = player.getSummoner();
         //Miramos si el player es nuestro summoner
-        Log.d("DetailAdapter", "SUMM: " + summoner.getAccountId() +" otro id: " + summoner.getSummonerId() + " y comp: " + player.getSummoner().getAccountId());
-        if(summoner.getAccountId() == player.getSummoner().getAccountId()){
+        Log.d("DetailAdapter", "SUMM: " + summoner.getEncryptedAccountId() +" otro id: " + summoner.getEncryptedSummonerId() + " y comp: " + player.getSummoner().getEncryptedAccountId());
+        if(summoner.getEncryptedAccountId() == player.getSummoner().getEncryptedAccountId()){
             matchDetailAdapterViewHolder.playerContainer.setBackgroundColor(Color.parseColor("#d6ffe7"));
         }
 
         matchDetailAdapterViewHolder.summonerNameView.setText(player.getSummoner().getSummonerName());
         matchDetailAdapterViewHolder.summonerLevelView.setText(String.valueOf(player.getChampionLevel()));
 
-        if(currentSummoner.getAccountId() != 0) {
-            URL riotSearchUrl = NetworkUtils.buildUrl(String.valueOf(currentSummoner.getSummonerId()), NetworkUtils.GET_LEAGUES_POSITIONS);
+        if(!currentSummoner.getEncryptedAccountId().equals("0")) {
+            URL riotSearchUrl = NetworkUtils.buildUrl(String.valueOf(currentSummoner.getEncryptedSummonerId()), NetworkUtils.GET_LEAGUES_POSITIONS);
             new DivisionQueryTask(matchDetailAdapterViewHolder).execute(riotSearchUrl);
         }
 

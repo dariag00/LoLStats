@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/tv_summoner_name"
-                android:text="Summoner"
+                tools:text="Summoner"
                 style="@style/match_details_summoner_name" />
 
             <LinearLayout
@@ -100,7 +100,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:textSize="7sp"
-                    android:text="Challenger"/>
+                    tools:text="Challenger"/>
 
             </LinearLayout>
 
@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="14"/>
+                tools:text="14"/>
 
 
         </LinearLayout>
@@ -132,7 +132,7 @@
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/tv_player_kills"
-                    android:text="20"
+                    tools:text="20"
                     style="@style/match_details_kda_detailed" />
                 <TextView
                     android:text="@string/slash"
@@ -140,14 +140,14 @@
                 <TextView
                     android:id="@+id/tv_player_deaths"
                     style="@style/match_details_kda_detailed"
-                    android:text="50"
+                    tools:text="50"
                     android:textColor="@color/deathsColor" />
                 <TextView
                     android:text="@string/slash"
                     style="@style/match_details_kda_detailed" />
                 <TextView
                     android:id="@+id/tv_player_assists"
-                    android:text="20"
+                    tools:text="20"
                     style="@style/match_details_kda_detailed" />
 
             </LinearLayout>
@@ -160,7 +160,7 @@
 
                 <TextView
                     android:id="@+id/tv_player_kda"
-                    android:text="11.57"
+                    tools:text="11.57"
                     style="@style/match_details_kda_value" />
 
                 <TextView
@@ -229,13 +229,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="GOLD:"
+                    android:text="@string/gold"
                     style="@style/match_details_stats" />
 
                 <TextView
                     android:id="@+id/tv_player_gold"
                     style="@style/match_details_stats_value"
-                    android:text="1705"/>
+                    tools:text="1705"/>
 
             </LinearLayout>
 
@@ -250,11 +250,11 @@
 
                 <TextView
                     android:id="@+id/player_cs"
-                    android:text="172"
+                    tools:text="172"
                     style="@style/match_details_stats_value" />
                 <TextView
                     android:id="@+id/player_cs_min"
-                    android:text="(17.2)"
+                    tools:text="(17.2)"
                     style="@style/match_details_stats_value" />
 
             </LinearLayout>
@@ -266,11 +266,11 @@
 
                 <TextView
                     style="@style/match_details_stats"
-                    android:text="DMG%:"/>
+                    android:text="@string/damage_percent"/>
 
                 <TextView
                     android:id="@+id/player_damage_percent"
-                    android:text="17.2"
+                    tools:text="17.2"
                     style="@style/match_details_stats_value" />
 
             </LinearLayout>

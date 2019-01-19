@@ -153,8 +153,8 @@ public class Team implements Serializable {
     public Player getPlayer(Summoner summoner){
 
         for(Player player:players) {
-            if (player.getSummoner().getSummonerId() == summoner.getSummonerId()){
-                Log.d("Team", "getPlayer: se ha encontrado al Player" + player.toString() + summoner.getAccountId());
+            if (player.getSummoner().getEncryptedSummonerId().equals(summoner.getEncryptedSummonerId())){
+                Log.d("Team", "getPlayer: se ha encontrado al Player" + player.toString() + summoner.getEncryptedAccountId());
                 return player;
             }
         }
@@ -166,8 +166,8 @@ public class Team implements Serializable {
     public boolean containsSummoner(Summoner summoner){
 
         for(Player player : players){
-            Log.d("TEAM", "IDS: " + player.getSummoner().getAccountId() + " " + summoner.getAccountId());
-            if(summoner.getAccountId() == player.getSummoner().getAccountId()){
+            Log.d("TEAM", "IDS: " + player.getSummoner().getEncryptedAccountId() + " " + summoner.getEncryptedAccountId());
+            if(summoner.getEncryptedAccountId().equals(player.getSummoner().getEncryptedAccountId())){
                 return true;
             }
         }

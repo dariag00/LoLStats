@@ -31,6 +31,7 @@ import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.MatchList;
+import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
 import com.example.klost.lolstats.models.runes.RuneList;
 import com.example.klost.lolstats.models.summoners.SummonerSpellList;
 import com.example.klost.lolstats.utilities.JsonUtils;
@@ -59,7 +60,7 @@ import java.util.Locale;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
-public class MainActivity extends AppCompatActivity implements OnTaskCompleted, RiotAdapter.RiotAdapterOnClickHandler{
+public class MainActivity extends AppCompatActivity implements RiotAdapter.RiotAdapterOnClickHandler{
 
     //TODO comprobar conexión a internet
     //TODO crear clase que ejecute todas las requests de datos estaticos
@@ -68,15 +69,11 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
 
     private String summonerName;
 
-    private static ChampionList championList;
-    private static SummonerSpellList summonerSpellList;
-    private static RuneList runeList;
-    private static ItemList itemList;
-
     private static RecyclerView recyclerView;
     private static LinearLayout mainLayout;
     private static RiotAdapter riotAdapter;
     private static PieChart chart;
+    private static TextView summonerNameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,35 +81,6 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerview_matches);
         mainLayout = findViewById(R.id.main_layout);
-
-        //Obtencion de los datos estaticos de campeones
-        URL championsUrl = NetworkUtils.buildUrl("champion",NetworkUtils.GET_DDRAGON_DATA);
-        Log.d(LOG_TAG, "URL: " + championsUrl.toString());
-
-        ReadTextTask championsTextTask = new ReadTextTask(this);
-        championsTextTask.execute(championsUrl);
-
-        //Obtencion de los datos estaticos de hechizos de invocador
-        URL summonerSpellsUrl = NetworkUtils.buildUrl("summoner", NetworkUtils.GET_DDRAGON_DATA);
-        Log.d(LOG_TAG, "URL: " + summonerSpellsUrl.toString());
-
-        ReadTextTask spellsTextTask = new ReadTextTask(this);
-        spellsTextTask.execute(summonerSpellsUrl);
-
-        //Obtencion de los datos estaticos de las runas
-        URL runesUrl = NetworkUtils.buildUrl("runesReforged", NetworkUtils.GET_DDRAGON_DATA);
-        Log.d(LOG_TAG, "URL: " + runesUrl.toString());
-
-        ReadTextTask runesTextTask = new ReadTextTask(this);
-        runesTextTask.execute(runesUrl);
-
-        //Obtencion de los datos estaticos de los items
-        URL itemsUrl = NetworkUtils.buildUrl("item", NetworkUtils.GET_DDRAGON_DATA);
-        Log.d(LOG_TAG, "URL: " + itemsUrl.toString());
-
-        ReadTextTask itemsTextTask = new ReadTextTask(this);
-        itemsTextTask.execute(itemsUrl);
-
 
         Intent previousIntent = getIntent();
         summonerName = previousIntent.getStringExtra(InitialActivity.EXTRA_SUMMONER_NAME);
@@ -129,40 +97,9 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
         riotAdapter = new RiotAdapter(this);
         recyclerView.setAdapter(riotAdapter);
 
-    }
+        summonerNameView = findViewById(R.id.tv_summoner_name);
+        summonerNameView.setText(summonerName);
 
-    @Override
-    public void onTaskCompleted(String result, String dataType) {
-
-        Log.d(LOG_TAG, "DATA TYPE: " + dataType);
-
-        try {
-            //TODO problema con las runes
-            if(dataType != null) {
-                switch (dataType) {
-                    case "summoner":
-                        summonerSpellList = JsonUtils.getSpellListFromJSON(result);
-                        StaticData.setSpellList(summonerSpellList);
-                        break;
-                    case "champion":
-                        championList = JsonUtils.getChampionListFromJSON(result);
-                        StaticData.setChampionList(championList);
-                        break;
-                    case "item":
-                        itemList = JsonUtils.getItemListFromJSON(result);
-                        StaticData.setItemList(itemList);
-                        break;
-                }
-            }else{
-                //TODO fix this
-                Log.d(LOG_TAG, "dataType es null");
-                runeList = JsonUtils.getRuneListFromJSON(result);
-                StaticData.setRuneList(runeList);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void makeRiotSearchQuery(String searchQuery){
@@ -231,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
             String summonerSearchResults;
             String matchListSearchResults;
             String matchSearchResults;
+            String matchTimelineSearchResults;
             Summoner summoner = null;
             MatchList matchList;
             try {
@@ -247,14 +185,14 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 //TODO Multiple async task
                 summoner = JsonUtils.getSummonerFromJSON(summonerSearchResults);
 
-                URL leaguesURL = NetworkUtils.buildUrl(String.valueOf(summoner.getSummonerId()), NetworkUtils.GET_LEAGUES_POSITIONS);
+                URL leaguesURL = NetworkUtils.buildUrl(String.valueOf(summoner.getEncryptedSummonerId()), NetworkUtils.GET_LEAGUES_POSITIONS);
                 if(leaguesURL != null){
                     String leaguesSearchResult = NetworkUtils.getResponseFromHttpUrl(leaguesURL, throttler);
                     LeaguePositionList positionList = JsonUtils.getLeaguePositionListFromJSON(leaguesSearchResult);
                     summoner.setPositionList(positionList);
                 }
 
-                URL matchListURL = NetworkUtils.buildUrl(String.valueOf(summoner.getAccountId()), NetworkUtils.GET_MATCHLIST);
+                URL matchListURL = NetworkUtils.buildUrl(String.valueOf(summoner.getEncryptedAccountId()), NetworkUtils.GET_MATCHLIST);
                 if(matchListURL != null){
                     matchListSearchResults = NetworkUtils.getResponseFromHttpUrl(matchListURL, throttler);
                     matchList = JsonUtils.getMatchListFromJSON(matchListSearchResults);
@@ -268,6 +206,14 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                         if(getMatchURL != null){
                             matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL, throttler);
                             JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
+
+                            URL getMatchTimelineURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH_TIMELINE);
+                            if(getMatchTimelineURL != null){
+                                matchTimelineSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchTimelineURL, throttler);
+                                MatchTimeline matchTimeline = JsonUtils.getMatchTimeLine(matchTimelineSearchResults);
+                                match.setMatchTimeline(matchTimeline);
+                                Log.d(LOG_TAG, "Procesado con exito");
+                            }
                         }else{
                             return null;
                         }
@@ -417,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
 
                 //TODO procesar N matches
 
-                riotAdapter.setData(processedMatches, summoner, championList, runeList, summonerSpellList, itemList);
+                riotAdapter.setData(processedMatches, summoner, StaticData.getChampionList(), StaticData.getRuneList(), StaticData.getSpellList(), StaticData.getItemList());
 
                 //TODO grafico de victorias
                 chart = activity.findViewById(R.id.pie_chart);
@@ -485,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
                 kdaView.setText(kda);
 
                 //Setteo de los mejores champions
-                Champion[] top3Champions = LoLStatsUtils.get3MostPlayedChampion(matches, summoner, championList);
+                Champion[] top3Champions = LoLStatsUtils.get3MostPlayedChampion(matches, summoner, StaticData.getChampionList());
                 if(top3Champions[0] != null) {
                     int[] stats1 = LoLStatsUtils.getChampionStats(matches, summoner, top3Champions[0]);
                     setBestChampionData(activity, stats1, 1, top3Champions[0]);
@@ -667,47 +613,5 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted, 
 
     }
 
-
-    private static class ReadTextTask extends AsyncTask<URL, Void, String> {
-
-        OnTaskCompleted listener;
-
-        ReadTextTask(OnTaskCompleted listener){
-            this.listener=listener;
-        }
-
-        @Override
-        protected String doInBackground(URL... urls) {
-            String str = null;
-            try {
-                // Read all the text returned by the server
-                BufferedReader in = new BufferedReader(new InputStreamReader(urls[0].openStream()));
-                str = in.readLine();
-                in.close();
-            }
-            catch (IOException e) {
-                // ** do something here **
-            }
-            return str;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            Log.d("ReadTextTask", "resultado" + result);
-
-            String dataType = null;
-
-            try {
-                dataType = JsonUtils.getDataTypeFromJSON(result);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            listener.onTaskCompleted(result, dataType);
-
-        }
-
-    }
 
 }

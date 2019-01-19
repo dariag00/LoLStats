@@ -18,7 +18,7 @@ import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.models.matches.Team;
 
-public class FragmentStatsGameDetails extends Fragment implements MatchDetailAdapter.MatchAdapterOnClickHandler{
+public class FragmentResultsGameDetails extends Fragment implements MatchDetailAdapter.MatchAdapterOnClickHandler{
 
     private RecyclerView recyclerViewBlueTeam;
     private RecyclerView recyclerViewRedTeam;
@@ -32,13 +32,13 @@ public class FragmentStatsGameDetails extends Fragment implements MatchDetailAda
     private static final String SAVED_MATCH_KEY = "match";
 
 
-    public FragmentStatsGameDetails() {
+    public FragmentResultsGameDetails() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_stats_game_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_results_game_details, container, false);
 
         match = (Match) this.getArguments().getSerializable(SAVED_MATCH_KEY);
         summoner = (Summoner) this.getArguments().getSerializable(SAVED_SUMMONER_KEY);

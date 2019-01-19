@@ -17,8 +17,9 @@ import java.util.Locale;
 
 public class Summoner implements Serializable {
 
-    private long accountId;
-    private long summonerId;
+    private String puuid;
+    private String encryptedAccountId;
+    private String encryptedSummonerId;
     private long summonerLevel;
     private String summonerName;
     private Date revisionDate;
@@ -33,25 +34,25 @@ public class Summoner implements Serializable {
 
     }
 
-    public Summoner(long accountId, long summonerId){
-        this.accountId = accountId;
-        this.summonerId = summonerId;
+    public Summoner(String encryptedAccountId, String encryptedSummonerId){
+        this.encryptedAccountId = encryptedAccountId;
+        this.encryptedSummonerId = encryptedSummonerId;
     }
 
-    public long getAccountId() {
-        return accountId;
+    public String getEncryptedAccountId() {
+        return encryptedAccountId;
     }
 
-    public void setAccountId(long accountId) {
-        this.accountId = accountId;
+    public void setEncryptedAccountId(String encryptedAccountId) {
+        this.encryptedAccountId = encryptedAccountId;
     }
 
-    public long getSummonerId() {
-        return summonerId;
+    public String getEncryptedSummonerId() {
+        return encryptedSummonerId;
     }
 
-    public void setSummonerId(long summonerId) {
-        this.summonerId = summonerId;
+    public void setEncryptedSummonerId(String encryptedSummonerId) {
+        this.encryptedSummonerId = encryptedSummonerId;
     }
 
     public long getSummonerLevel() {
@@ -114,7 +115,7 @@ public class Summoner implements Serializable {
         StringBuilder builder = new StringBuilder();
 
         builder.append("Account ID: ");
-        builder.append(this.accountId);
+        builder.append(this.encryptedAccountId);
         builder.append("\n");
 
         builder.append("Summoner Name: ");
@@ -122,7 +123,7 @@ public class Summoner implements Serializable {
         builder.append("\n");
 
         builder.append("Summoner Id: ");
-        builder.append(this.summonerId);
+        builder.append(this.encryptedSummonerId);
         builder.append("\n");
 
         builder.append("Summoner Level: ");
@@ -143,4 +144,11 @@ public class Summoner implements Serializable {
         return builder.toString();
     }
 
+    public String getPuuid() {
+        return puuid;
+    }
+
+    public void setPuuid(String puuid) {
+        this.puuid = puuid;
+    }
 }

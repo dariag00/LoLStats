@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#f44d41</color>
     <color name="colorPrimaryDark">#a32828</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#000000</color>
 
     <color name="defeatColor">#f44d41</color>
     <color name="victoryColor">#4286f4</color>

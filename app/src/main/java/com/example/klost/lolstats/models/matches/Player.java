@@ -27,6 +27,7 @@ public class Player implements Serializable {
     private int championLevel;
 
     //TEMPORAL
+    //TODO añadir RuneList
     private int runePrimaryStyle;
     private int runeSecondaryStyle;
 
@@ -320,7 +321,7 @@ public class Player implements Serializable {
         builder.append("\n");
 
         builder.append("Account Id: ");
-        builder.append(String.valueOf(summoner.getAccountId()));
+        builder.append(String.valueOf(summoner.getEncryptedAccountId()));
         builder.append("\n");
 
         return builder.toString();

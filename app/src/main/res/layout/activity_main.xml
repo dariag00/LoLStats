@@ -25,6 +25,16 @@
         android:layout_marginRight="2dp"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_summoner_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            tools:text="USERNAME"/>
+
         <LinearLayout
             android:id="@+id/ly_profile_container"
             android:layout_width="match_parent"
@@ -405,7 +415,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="8sp"
-                                android:text="20 Played"/>
+                                tools:text="20 Played"/>
 
                         </LinearLayout>
 
@@ -479,14 +489,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"
-                                android:text="55%"/>
+                                tools:text="55%"/>
 
                             <TextView
                                 android:id="@+id/tv_champion2_games_played"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="8sp"
-                                android:text="20 Played"/>
+                                tools:text="20 Played"/>
 
                         </LinearLayout>
 
@@ -560,14 +570,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"
-                                android:text="55%"/>
+                                tools:text="55%"/>
 
                             <TextView
                                 android:id="@+id/tv_champion3_games_played"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="8sp"
-                                android:text="20 Played"/>
+                                tools:text="20 Played"/>
 
                         </LinearLayout>
 
@@ -596,7 +606,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20G 10L 10W"/>
+                        tools:text="20G 10L 10W"/>
 
                     <TextView
                         android:id="@+id/tv_global_kda"
@@ -676,8 +686,7 @@
                            android:id="@+id/iv_role_1"
                            android:layout_width="36dp"
                            android:layout_height="36dp"
-                           android:src="@drawable/top_icon"
-                           />
+                           android:src="@drawable/top_icon" />
 
                        <LinearLayout
                            android:layout_width="match_parent"
@@ -876,9 +885,9 @@
 
         <ProgressBar
             android:id="@+id/pb_loading_indicator"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
             android:visibility="invisible" />
     </FrameLayout>
 

@@ -34,25 +34,25 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         switch (i) {
             case 0:
-                FragmentStatsGameDetails fragmentStatsGameDetails = new FragmentStatsGameDetails();
-                fragmentStatsGameDetails.setArguments(bundle);
-                return fragmentStatsGameDetails;
+                FragmentResultsGameDetails fragmentResultsGameDetails = new FragmentResultsGameDetails();
+                fragmentResultsGameDetails.setArguments(bundle);
+                return fragmentResultsGameDetails;
             case 1:
-                fragmentStatsGameDetails = new FragmentStatsGameDetails();
-                fragmentStatsGameDetails.setArguments(bundle);
-                return fragmentStatsGameDetails;
+                fragmentResultsGameDetails = new FragmentResultsGameDetails();
+                fragmentResultsGameDetails.setArguments(bundle);
+                return fragmentResultsGameDetails;
             case 2:
-                fragmentStatsGameDetails = new FragmentStatsGameDetails();
-                fragmentStatsGameDetails.setArguments(bundle);
-                return fragmentStatsGameDetails;
+                fragmentResultsGameDetails = new FragmentResultsGameDetails();
+                fragmentResultsGameDetails.setArguments(bundle);
+                return fragmentResultsGameDetails;
             case 3:
-                fragmentStatsGameDetails = new FragmentStatsGameDetails();
-                fragmentStatsGameDetails.setArguments(bundle);
-                return fragmentStatsGameDetails;
+                fragmentResultsGameDetails = new FragmentResultsGameDetails();
+                fragmentResultsGameDetails.setArguments(bundle);
+                return fragmentResultsGameDetails;
             case 4:
-                fragmentStatsGameDetails = new FragmentStatsGameDetails();
-                fragmentStatsGameDetails.setArguments(bundle);
-                return fragmentStatsGameDetails;
+                fragmentResultsGameDetails = new FragmentResultsGameDetails();
+                fragmentResultsGameDetails.setArguments(bundle);
+                return fragmentResultsGameDetails;
             default:
                 return null;
         }
@@ -68,16 +68,16 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         String title = null;
         switch (position) {
             case 0:
-                title = "Game Details";
+                title = "Game Summary";
                 break;
             case 1:
-                title = "Game Details";
+                title = "Game Stats";
                 break;
             case 2:
-                title = "Game Details";
+                title = "Analysis";
                 break;
             case 3:
-                title = "Game Details";
+                title = "";
                 break;
         }
 
