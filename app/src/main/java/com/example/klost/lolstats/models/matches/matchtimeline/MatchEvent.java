@@ -1,8 +1,9 @@
 package com.example.klost.lolstats.models.matches.matchtimeline;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MatchEvent {
+public class MatchEvent implements Serializable{
 
     long timestamp;
     String type; //Legal values: CHAMPION_KILL, WARD_PLACED, WARD_KILL, BUILDING_KILL,

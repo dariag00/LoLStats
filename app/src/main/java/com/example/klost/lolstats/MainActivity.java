@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements RiotAdapter.RiotA
         intent.putExtra("matchObject", clickedMatch);
         intent.putExtra("summonerObject", givenSummoner);
         startActivity(intent);
-
     }
 
     public static class RiotQueryTask extends AsyncTask<URL, Void, Summoner> {
@@ -608,8 +607,6 @@ public class MainActivity extends AppCompatActivity implements RiotAdapter.RiotA
 
             chart.invalidate();
         }
-
-
 
     }
 

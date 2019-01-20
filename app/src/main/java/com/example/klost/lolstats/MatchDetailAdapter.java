@@ -295,7 +295,6 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
                 leaguePosition.setLeagueMiniIconOnImageView(divisionImageView);
                 TextView divisionTextView = viewHolder.itemView.findViewById(R.id.tv_player_division);
                 divisionTextView.setText(leaguePosition.getRankAndTier());
-
             }
         }
     }

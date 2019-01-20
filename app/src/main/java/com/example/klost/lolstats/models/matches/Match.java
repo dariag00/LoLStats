@@ -3,10 +3,13 @@ package com.example.klost.lolstats.models.matches;
 import android.util.Log;
 
 import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.matches.matchtimeline.MatchFrame;
 import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Match implements Serializable {
@@ -186,6 +189,11 @@ public class Match implements Serializable {
 
         return String.valueOf(minutes) + "m " + String.valueOf(uptime) + "s";
     }
+
+    public Map<Long, Integer> getParticipantCs(int participantId){
+        return matchTimeline.getParticipantCs(participantId);
+    }
+
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();

@@ -1,6 +1,8 @@
 package com.example.klost.lolstats.models.matches.matchtimeline;
 
-public class ParticipantFrame {
+import java.io.Serializable;
+
+public class ParticipantFrame implements Serializable{
 
     private int totalGold;
     private int teamScore;

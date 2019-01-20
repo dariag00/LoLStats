@@ -38,21 +38,16 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 fragmentResultsGameDetails.setArguments(bundle);
                 return fragmentResultsGameDetails;
             case 1:
-                fragmentResultsGameDetails = new FragmentResultsGameDetails();
-                fragmentResultsGameDetails.setArguments(bundle);
-                return fragmentResultsGameDetails;
+                FragmentSummaryGameDetails summaryGameDetails = new FragmentSummaryGameDetails();
+                return summaryGameDetails;
             case 2:
-                fragmentResultsGameDetails = new FragmentResultsGameDetails();
-                fragmentResultsGameDetails.setArguments(bundle);
-                return fragmentResultsGameDetails;
-            case 3:
-                fragmentResultsGameDetails = new FragmentResultsGameDetails();
-                fragmentResultsGameDetails.setArguments(bundle);
-                return fragmentResultsGameDetails;
-            case 4:
-                fragmentResultsGameDetails = new FragmentResultsGameDetails();
-                fragmentResultsGameDetails.setArguments(bundle);
-                return fragmentResultsGameDetails;
+                FragmentAnalysisGameDetails fragmentAnalysis = new FragmentAnalysisGameDetails();
+                fragmentAnalysis.setArguments(bundle);
+                return fragmentAnalysis;
+            /*case 2:
+                 summaryGameDetails = new FragmentSummaryGameDetails();
+                summaryGameDetails.setArguments(bundle);
+                return summaryGameDetails;*/
             default:
                 return null;
         }
@@ -60,7 +55,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -75,9 +70,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 break;
             case 2:
                 title = "Analysis";
-                break;
-            case 3:
-                title = "";
                 break;
         }
 

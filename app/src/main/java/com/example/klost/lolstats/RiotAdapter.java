@@ -215,7 +215,7 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
             riotAdapterViewHolder.assistsTextView.setText(String.valueOf(player.getAssists()));
 
             //Seteo de las estadisticas
-            int totalCs = player.getTotalMinionsKilled();
+            int totalCs = player.getTotalMinionsKilled() + player.getNeutralMinionsKilled();
             long totalDamageToChampions = player.getTotalDamageDealtToChampions();
 
             long gameDuration = match.getGameDuration();
