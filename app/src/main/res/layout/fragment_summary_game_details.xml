@@ -1,6 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VICTORIA"
+            android:textSize="25sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_game_length"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="55m 14s"/>
+
+            <TextView
+                android:id="@+id/tv_game_type"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="RANKED QUEUE"/>
+
+            <TextView
+                android:id="@+id/tv_game_date"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textSize="16sp"
+                android:layout_height="wrap_content"
+                android:text="9/10/1997"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PONER GRAFICA DE ORO"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/media_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        card_view:cardElevation="5dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="PERSONAL SUMMARY"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="96dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_champion_played"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:src="@drawable/mock_champion"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Poner Tags con logros"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="KDA"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="?android:attr/listDivider" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_global_kills"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="2"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/slash"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
+                        <TextView
+                            android:id="@+id/tv_global_deaths"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="2"
+                            android:textColor="@color/deathsColor"
+                            android:textSize="25sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/slash"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
+                        <TextView
+                            android:id="@+id/tv_global_assists"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="12"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="25sp"
+                            android:layout_marginLeft="15dp"
+                            android:text="KDA"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="25sp"
+                            android:text="2,14"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Final Build"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="?android:attr/listDivider" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="32sp"
+                            android:layout_height="32dp"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/item1"/>
+
+                        <ImageView
+                            android:layout_width="32sp"
+                            android:layout_height="32dp"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/item1"/>
+
+                        <ImageView
+                            android:layout_width="32sp"
+                            android:layout_height="32dp"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/item1"/>
+
+                        <ImageView
+                            android:layout_width="32sp"
+                            android:layout_height="32dp"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/item1"/>
+
+                        <ImageView
+                            android:layout_width="32sp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/item1"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Runes"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="?android:attr/listDivider" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_rune_path"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/main_rune"/>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_rune1"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_below="@id/iv_rune_path"
+                                android:src="@drawable/main_rune"/>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_rune2"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_below="@id/iv_rune1"
+                                android:src="@drawable/main_rune"/>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_rune3"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_below="@id/iv_rune2"
+                                android:src="@drawable/main_rune"/>
+
+                            <TextView
+                                android:id="@+id/tv_rune_path_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_toRightOf="@id/iv_rune_path"
+                                android:text="Rune Name"/>
+                            <TextView
+                                android:id="@+id/tv_rune1_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_toRightOf="@id/iv_rune1"
+                                android:layout_alignBottom="@id/iv_rune1"
+                                android:text="Rune Name"/>
+                            <TextView
+                                android:id="@+id/tv_rune2name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_toRightOf="@id/iv_rune2"
+                                android:layout_alignBottom="@id/iv_rune2"
+                                android:text="Rune Name"/>
+                            <TextView
+                                android:id="@+id/tv_rune3_name"
+                                android:layout_width="wrap_content"
+                                android:layout_toRightOf="@id/iv_rune3"
+                                android:layout_alignBottom="@id/iv_rune3"
+                                android:layout_height="48dp"
+                                android:text="Rune Name"/>
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="?android:attr/listDivider" />
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_rune_path2"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/secondary_rune"/>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_rune2_1"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_below="@id/iv_rune_path2"
+                                android:src="@drawable/main_rune"/>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_rune2_2"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_below="@id/iv_rune2_1"
+                                android:src="@drawable/main_rune"/>
+                            <TextView
+                                android:id="@+id/tv_rune_path2_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_toRightOf="@id/iv_rune_path2"
+                                android:text="Rune Name"/>
+                            <TextView
+                                android:id="@+id/tv_rune2_1_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_toRightOf="@id/iv_rune2_1"
+                                android:layout_alignBottom="@id/iv_rune2_1"
+                                android:text="Rune Name"/>
+                            <TextView
+                                android:id="@+id/tv_rune2_2name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_toRightOf="@id/iv_rune2_2"
+                                android:layout_alignBottom="@id/iv_rune2_2"
+                                android:text="Rune Name"/>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comparacion"/>
+
+</LinearLayout>

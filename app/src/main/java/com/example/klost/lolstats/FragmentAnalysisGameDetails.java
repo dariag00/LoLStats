@@ -54,6 +54,7 @@ public class FragmentAnalysisGameDetails extends Fragment {
         chart = view.findViewById(R.id.cs_chart);
         LineData data = getData(player1, player2);
         setupChart(chart, data);
+
         return view;
     }
 
@@ -93,11 +94,6 @@ public class FragmentAnalysisGameDetails extends Fragment {
 
         ArrayList<Entry> values = new ArrayList<>();
         ArrayList<Entry> values2 = new ArrayList<>();
-
-        /*for (int i = 0; i < 10; i++) {
-            values.add(new Entry(i, val));
-            values2.add(new Entry(i,val2));
-        }*/
 
         Iterator<Map.Entry<Long, Integer>> iterator = player1.entrySet().iterator();
         while (iterator.hasNext()) {
