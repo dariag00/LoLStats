@@ -121,12 +121,16 @@ public class StartActivity extends AppCompatActivity implements OnTaskCompleted{
             String str = null;
             try {
                 // Read all the text returned by the server
+                Log.d("Start","LA URL ES: " + urls[0].toString());
                 BufferedReader in = new BufferedReader(new InputStreamReader(urls[0].openStream()));
+                Log.d("Start", "Paso");
                 str = in.readLine();
+                Log.d("Start", "Paso");
                 in.close();
+                Log.d("Start", "Paso");
             }
             catch (IOException e) {
-                // ** do something here **
+                Log.d("Start", "Se ha producido una excepcion " + e.getMessage());
             }
             return str;
         }
@@ -134,7 +138,7 @@ public class StartActivity extends AppCompatActivity implements OnTaskCompleted{
         @Override
         protected void onPostExecute(String result) {
 
-            Log.d("ReadTextTask", "resultado" + result);
+            Log.d("ReadTextTask", "resultado " + result);
 
             String dataType = null;
 

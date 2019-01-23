@@ -9,39 +9,51 @@ import android.util.Log;
 
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.matches.Player;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private Match match;
     private Summoner summoner;
+    private Player currentPlayer;
 
     private static final String SAVED_SUMMONER_KEY = "summoner";
     private static final String SAVED_MATCH_KEY = "match";
+    private static final String SAVED_PLAYER_KEY = "player";
 
-    public ViewPagerAdapter(FragmentManager fm, Match match, Summoner summoner) {
+    private static final String LOG_TAG = "ViewPagerAdapter";
+
+    public ViewPagerAdapter(FragmentManager fm, Match match, Summoner summoner, Player player) {
         super(fm);
         this.match = match;
         this.summoner = summoner;
+        this.currentPlayer = player;
     }
 
     @Override
     public Fragment getItem(int i) {
 
         Bundle bundle = new Bundle();
-        Log.d("Prueba", summoner.toString());
-        bundle.putSerializable(SAVED_MATCH_KEY, match);
-        bundle.putSerializable(SAVED_SUMMONER_KEY, summoner);
 
         switch (i) {
             case 0:
-                FragmentResultsGameDetails fragmentResultsGameDetails = new FragmentResultsGameDetails();
-                fragmentResultsGameDetails.setArguments(bundle);
-                return fragmentResultsGameDetails;
+                FragmentResultsGameDetails resultsGameDetails = new FragmentResultsGameDetails();
+                bundle.putSerializable(SAVED_MATCH_KEY, match);
+                bundle.putSerializable(SAVED_SUMMONER_KEY, summoner);
+                resultsGameDetails.setArguments(bundle);
+                return resultsGameDetails;
             case 1:
                 FragmentSummaryGameDetails summaryGameDetails = new FragmentSummaryGameDetails();
+                bundle.putSerializable(SAVED_PLAYER_KEY, currentPlayer);
+                Log.d(LOG_TAG, "Player: " + currentPlayer);
+                Log.d(LOG_TAG, "Bungle" + bundle.toString());
+                summaryGameDetails.setArguments(bundle);
+                Log.d(LOG_TAG, "Bungle" + summaryGameDetails.getArguments().toString());
                 return summaryGameDetails;
             case 2:
                 FragmentAnalysisGameDetails fragmentAnalysis = new FragmentAnalysisGameDetails();
+                bundle.putSerializable(SAVED_MATCH_KEY, match);
+                bundle.putSerializable(SAVED_SUMMONER_KEY, summoner);
                 fragmentAnalysis.setArguments(bundle);
                 return fragmentAnalysis;
             /*case 2:

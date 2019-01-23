@@ -304,6 +304,7 @@ public class JsonUtils {
 
     public static String getDataTypeFromJSON(String requestJsonStr) throws JSONException {
         //TODO yype mismatch con rune
+        Log.d(LOG_TAG, "Entro con: " + requestJsonStr);
         JSONObject requestJSON = new JSONObject(requestJsonStr);
 
         if(requestJSON.has("type"))

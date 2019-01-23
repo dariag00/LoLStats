@@ -24,14 +24,14 @@ public class MatchFrame implements Serializable{
         return matchEvents;
     }
 
-    public ArrayList<ParticipantFrame> getParticipantFrames() {
+    public ArrayList<ParticipantFrame> getParticipantsFrames() {
         return participantFrames;
     }
 
     /*
         Metodo que devuelve el frame de un participante concreto
      */
-    public ParticipantFrame getParticipantFrames(int participantId){
+    private ParticipantFrame getParticipantFrame(int participantId){
 
         for(ParticipantFrame participantFrame: participantFrames){
             if(participantFrame.getParticipantId() == participantId){
@@ -44,8 +44,14 @@ public class MatchFrame implements Serializable{
     /*
         Metodo que devuelve los CS que ha tenido el participante en este frame concreto
      */
-    public int getParticipantCsFrames(int participantId){
-        ParticipantFrame participantFrame = this.getParticipantFrames(participantId);
+    public int getParticipantCsFrame(int participantId){
+        ParticipantFrame participantFrame = this.getParticipantFrame(participantId);
         return participantFrame.getMinionsKilled() + participantFrame.getJungleMinionsKilled();
     }
+
+    public int getParticipantGoldFrame(int participantId){
+        ParticipantFrame participantFrame = this.getParticipantFrame(participantId);
+        return participantFrame.getTotalGold();
+    }
+
 }

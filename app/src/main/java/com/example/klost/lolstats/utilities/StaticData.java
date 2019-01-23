@@ -2,6 +2,7 @@ package com.example.klost.lolstats.utilities;
 
 import com.example.klost.lolstats.models.champions.ChampionList;
 import com.example.klost.lolstats.models.items.ItemList;
+import com.example.klost.lolstats.models.perks.PerkList;
 import com.example.klost.lolstats.models.runes.RuneList;
 import com.example.klost.lolstats.models.summoners.SummonerSpellList;
 
@@ -11,6 +12,7 @@ public class StaticData {
     private static ItemList itemList;
     private static SummonerSpellList spellList;
     private static RuneList runeList;
+    private static PerkList perkList;
 
     public static ChampionList getChampionList() {
         return championList;
@@ -42,5 +44,13 @@ public class StaticData {
 
     public static void setRuneList(RuneList list) {
         runeList = list;
+    }
+
+    public static void setPerkList(PerkList list){
+        perkList = list;
+    }
+
+    public static PerkList getPerkList(){
+        return perkList;
     }
 }

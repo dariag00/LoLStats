@@ -33,7 +33,7 @@ public class LoLStatsUtils {
 
         String kdaString = String.format(Locale.ENGLISH, "%.2f", kda);
         textView.setText(kdaString);
-        //TODO introducir en colors
+
         if(kda>=2.0 && kda<3.0){
             textView.setTextColor(ContextCompat.getColor(context, R.color.lowKdaColor));
         }else if(kda>=3.0 && kda<4.0){

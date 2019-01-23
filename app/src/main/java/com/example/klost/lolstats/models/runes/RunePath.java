@@ -139,7 +139,7 @@ public class RunePath {
 
     public void loadImageFromDDragon(ImageView imageView) {
         URL url = NetworkUtils.buildUrl(this.iconPath, NetworkUtils.GET_DDRAGON_RUNE_IMAGE);
-        Log.d("SummonerSpell", "URL: " + url.toString());
+        Log.d("RunePath", "URL: " + url.toString());
         Picasso.get().load(url.toString()).into(imageView);
     }
 

@@ -7,8 +7,10 @@ import com.example.klost.lolstats.models.matches.matchtimeline.MatchFrame;
 import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -194,6 +196,35 @@ public class Match implements Serializable {
         return matchTimeline.getParticipantCs(participantId);
     }
 
+    public Map<Long, Integer> getBlueTeamGoldOverTime(){
+        int[] participantIds = getTeamPlayerIds(blueTeam);
+        return matchTimeline.getTeamGoldFrames(participantIds);
+    }
+
+    public Map<Long, Integer> getRedTeamGoldOverTime(){
+        int[] participantIds = getTeamPlayerIds(redTeam);
+        return matchTimeline.getTeamGoldFrames(participantIds);
+    }
+
+    public Map<Long, Integer> getGoldDifferenceOverTime(){
+        int[] participantIdsRedTeam = getTeamPlayerIds(redTeam);
+        int[] participantIdsBlueTeam = getTeamPlayerIds(blueTeam);
+        return matchTimeline.getGoldDifferenceFrames(participantIdsBlueTeam, participantIdsRedTeam );
+    }
+
+    private int[] getTeamPlayerIds(Team team){
+
+        List<Player> players = team.getPlayers();
+        int[] participantIds = new int[players.size()];
+
+        for(int i = 0; i<5; i++){
+            participantIds[i] = players.get(i).getParticipantId();
+        }
+
+        return participantIds;
+
+    }
+
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
@@ -205,14 +236,6 @@ public class Match implements Serializable {
         builder.append("Queue: ");
         builder.append(this.queue);
         builder.append("\n");
-
-        //TODO Poner hace cuanto tiempo
-       /* DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String date = formatter.format(this.date);
-
-        builder.append("Date: ");
-        builder.append(date);
-        builder.append("\n");*/
 
         builder.append("com.example.klost.lolstats.models.champions.Champion: ");
         builder.append(this.championId);

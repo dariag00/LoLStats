@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-9c3c0e40-4855-4139-beda-d8bfd1e2ddaf";
+    private final static String RIOT_API_KEY = "RGAPI-d5160bdc-c923-4dc0-a9d2-d22acabfaaa6";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -40,6 +40,8 @@ public class NetworkUtils {
 
     private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
 
+    private final static String CDRAGON_BASE_URL = "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/";
+
     //TODO sacarlo de la url: https://ddragon.leagueoflegends.com/api/versions.json
     private final static String DDRAGON_VERSION = "9.1.1";
 
@@ -54,6 +56,8 @@ public class NetworkUtils {
     private final static String DDRAGON_GET_ITEM_IMAGE = "/img/item/";
 
     private final static String DDRAGON_GET_PROFILE_ICON = "/img/profileicon/";
+
+    public final static String CDRAGON_GET_PERKS = "global/default/v1/perks.json";
 
     public final static int GET_SUMMONER = 0;
 
@@ -76,6 +80,8 @@ public class NetworkUtils {
     public final static int GET_DDRAGON_RUNE_IMAGE = 9;
 
     public final static int GET_DDRAGON_ITEM_IMAGE = 10;
+
+    public final static int GET_CDRAGON_PERKS = 11;
 
     //TODO documentar los metodos
     //TODO buscar si path = X + Y es realmente la solucion
@@ -162,6 +168,10 @@ public class NetworkUtils {
 
             case GET_DDRAGON_RUNE_IMAGE:
                 path = DDRAGON_BASE_URL + DDRAGON_GET_RUNE_IMAGE + riotSearchQuery;
+                builtUri = Uri.parse(path).buildUpon().build();
+                break;
+            case GET_CDRAGON_PERKS:
+                path = CDRAGON_BASE_URL + CDRAGON_GET_PERKS;
                 builtUri = Uri.parse(path).buildUpon().build();
                 break;
 
