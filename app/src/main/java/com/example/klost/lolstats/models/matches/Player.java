@@ -1,6 +1,7 @@
 package com.example.klost.lolstats.models.matches;
 
 import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.champions.Champion;
 
 import java.io.Serializable;
 
@@ -310,6 +311,24 @@ public class Player implements Serializable {
 
     public void setChampionLevel(int championLevel) {
         this.championLevel = championLevel;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj)
+            return true;
+        if(obj == null)
+            return false;
+        if(obj instanceof Player) {
+            Player player = (Player) obj;
+            return player.getParticipantId() == this.getParticipantId();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     public String toString(){

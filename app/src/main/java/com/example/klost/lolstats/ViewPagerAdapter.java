@@ -11,6 +11,9 @@ import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private Match match;
@@ -20,6 +23,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private static final String SAVED_SUMMONER_KEY = "summoner";
     private static final String SAVED_MATCH_KEY = "match";
     private static final String SAVED_PLAYER_KEY = "player";
+    private static final String SAVED_GOLD_MAP_KEY = "gold";
 
     private static final String LOG_TAG = "ViewPagerAdapter";
 
@@ -45,10 +49,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 FragmentSummaryGameDetails summaryGameDetails = new FragmentSummaryGameDetails();
                 bundle.putSerializable(SAVED_PLAYER_KEY, currentPlayer);
-                Log.d(LOG_TAG, "Player: " + currentPlayer);
-                Log.d(LOG_TAG, "Bungle" + bundle.toString());
+                bundle.putSerializable(SAVED_MATCH_KEY, match);
                 summaryGameDetails.setArguments(bundle);
-                Log.d(LOG_TAG, "Bungle" + summaryGameDetails.getArguments().toString());
                 return summaryGameDetails;
             case 2:
                 FragmentAnalysisGameDetails fragmentAnalysis = new FragmentAnalysisGameDetails();

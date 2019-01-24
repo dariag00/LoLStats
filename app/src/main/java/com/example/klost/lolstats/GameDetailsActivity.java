@@ -34,7 +34,6 @@ public class GameDetailsActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout =  findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     @Override

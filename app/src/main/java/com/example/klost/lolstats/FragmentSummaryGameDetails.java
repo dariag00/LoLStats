@@ -1,9 +1,11 @@
 package com.example.klost.lolstats;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +20,26 @@ import com.example.klost.lolstats.models.items.Item;
 import com.example.klost.lolstats.models.items.ItemList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
+import com.example.klost.lolstats.models.matches.Team;
 import com.example.klost.lolstats.models.runes.Rune;
 import com.example.klost.lolstats.models.runes.RuneList;
 import com.example.klost.lolstats.models.runes.RunePath;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.StaticData;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,8 +47,9 @@ public class FragmentSummaryGameDetails  extends Fragment{
 
 
     private Player currentPlayer;
+    private Match match;
 
-    private static final String SAVED_GOLD_MAP_KEY = "gold";
+    private static final String SAVED_MATCH_KEY = "match";
     private static final String SAVED_PLAYER_KEY = "player";
 
     private LineChart goldChart;
@@ -52,6 +69,27 @@ public class FragmentSummaryGameDetails  extends Fragment{
         }
 
         currentPlayer = (Player) this.getArguments().getSerializable(SAVED_PLAYER_KEY);
+        match = (Match) this.getArguments().getSerializable(SAVED_MATCH_KEY);
+
+        TextView gameResultView = view.findViewById(R.id.tv_game_result);
+        if(match.hasGivenPlayerWon(currentPlayer))
+            gameResultView.setText("VICTORY");
+        else
+            gameResultView.setText("DEFEAT");
+
+        TextView gameLengthView = view.findViewById(R.id.tv_game_length);
+        gameLengthView.setText(match.getGameDurationInMinutesAndSeconds());
+        TextView gameDateView = view.findViewById(R.id.tv_game_date);
+        Date date = match.getGameCreation();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        String dateString = String.valueOf(day) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year).substring(2,4);
+        gameDateView.setText(dateString);
+        TextView gameTypeView = view.findViewById(R.id.tv_game_type);
+        gameTypeView.setText(LoLStatsUtils.getQueueName(match.getQueue()));
 
         CircleImageView championImageView = view.findViewById(R.id.iv_champion_played);
 
@@ -160,6 +198,71 @@ public class FragmentSummaryGameDetails  extends Fragment{
         rune6.loadImageFromDDragon(secondaryPathRune2IconView);
         secondaryPathRune2NameView.setText(rune6.getName());
 
+        goldChart = view.findViewById(R.id.gold_chart);
+        Map<Long, Integer> goldMap = match.getGoldDifferenceOverTime();
+        LineData data = getData(goldMap);
+        setupChart(goldChart, data);
+
         return view;
     }
+
+    private void setupChart(LineChart chart, LineData data) {
+
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleHoleColor(Color.rgb(255, 255, 255));
+
+        chart.getDescription().setEnabled(false);
+        chart.setDrawGridBackground(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //xAxis.setTypeface(mTf);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        //leftAxis.setTypeface(mTf);
+        leftAxis.setLabelCount(5, false);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        YAxis rightAxis = chart.getAxisRight();
+        //rightAxis.setTypeface(mTf);
+        rightAxis.setLabelCount(5, false);
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        // set data
+        chart.setData(data);
+
+        // do not forget to refresh the chart
+        // holder.chart.invalidate();
+        chart.animateX(2500);
+    }
+
+    private LineData getData(Map<Long,Integer> goldDifference) {
+
+        ArrayList<Entry> values = new ArrayList<>();
+
+        Iterator<Map.Entry<Long, Integer>> iterator = goldDifference.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Long, Integer> entry = iterator.next();
+            Log.d("FRAME", "Aqui llega: " + entry.getKey());
+            int minute = (int) (entry.getKey()/60000);
+            Log.d("Analysis", "Meto " + entry.getValue() + " en el minuto " + minute);
+            values.add(new Entry(minute, entry.getValue()));
+        }
+
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(values, "Gold Difference");
+        // set1.setFillAlpha(110);
+        // set1.setFillColor(Color.RED);
+
+        set1.setLineWidth(2.5f);
+        set1.setDrawValues(false);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+        sets.add(set1);
+
+        return new LineData(sets);
+    }
+
 }

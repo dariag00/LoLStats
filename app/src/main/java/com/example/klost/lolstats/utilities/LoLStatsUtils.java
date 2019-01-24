@@ -64,15 +64,21 @@ public class LoLStatsUtils {
 
         long diff = today.getTime() - date.getTime();
         long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-
+        //TODO poner meses
         //Si el game se jugo hace mas de un dia lo contamos como unidad de tiempo
-        if(days>=1){
+        if(days==1){
+            timeAgo = timeAgo + String.valueOf(days) + " dia";
+        }else if(days>=2){
             timeAgo = timeAgo + String.valueOf(days) + " dias";
         }else{
             //Si no las horas pasan a serlo
             long hours = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
             if(hours>=1){
-                timeAgo = timeAgo + String.valueOf(hours) + " horas";
+                if(hours == 1){
+                    timeAgo = timeAgo + String.valueOf(hours) + " hora";
+                }else{
+                    timeAgo = timeAgo + String.valueOf(hours) + " horas";
+                }
             }else{
                 //Si se jugó hace menos de 1 hora la unidad pasa a ser minutos
                 long minutes = TimeUnit.MINUTES.convert(diff, TimeUnit.MINUTES);

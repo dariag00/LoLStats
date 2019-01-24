@@ -20,6 +20,7 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <TextView
+                android:id="@+id/tv_game_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="VICTORIA"
@@ -445,8 +446,7 @@
                             android:layout_height="42dp"
                             android:layout_below="@id/iv_rune1"
                             android:layout_toRightOf="@id/separator_rune2"
-                            android:background="@drawable/circle"
-                            android:src="@drawable/test_rune" />
+                            android:background="@drawable/circle" />
 
                         <View
                             android:id="@+id/separator_rune3"

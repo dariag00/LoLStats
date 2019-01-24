@@ -60,8 +60,21 @@ public class Champion {
 
     @Override
     public boolean equals(Object obj) {
+
+        if(this == obj)
+            return true;
+        if(obj == null)
+            return false;
+        if(getClass() != obj.getClass())
+            return false;
+
         Champion champion = (Champion) obj;
         return champion.getChampionId() == this.getChampionId();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 

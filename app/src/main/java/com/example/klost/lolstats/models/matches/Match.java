@@ -170,10 +170,23 @@ public class Match implements Serializable {
         return null;
     }
 
+    public Team getTeamOfGivenPlayer(Player player){
+        if(blueTeam.containsPlayer(player)){
+            return blueTeam;
+        }else if(redTeam.containsPlayer(player)){
+            return redTeam;
+        }
+        return null;
+    }
+
     public boolean hasGivenSummonerWon(Summoner summoner){
         return getTeamOfGivenSummoner(summoner).isWon();
     }
-    //TODO revisar metodo
+
+    public boolean hasGivenPlayerWon(Player player){
+        return getTeamOfGivenPlayer(player).isWon();
+    }
+
     public Player getPlayer(Summoner summoner){
         Team team = getTeamOfGivenSummoner(summoner);
         return team.getPlayer(summoner);

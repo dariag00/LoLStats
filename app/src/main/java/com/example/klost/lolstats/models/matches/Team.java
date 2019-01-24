@@ -175,6 +175,15 @@ public class Team implements Serializable {
         return false;
     }
 
+    public boolean containsPlayer(Player player){
+        for(Player pl:players){
+            if(player.equals(player))
+                return true;
+        }
+
+        return false;
+    }
+
     public boolean isWon(){
         return win.equals("Win");
     }
