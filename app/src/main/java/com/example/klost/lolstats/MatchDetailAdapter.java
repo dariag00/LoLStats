@@ -223,7 +223,9 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         matchDetailAdapterViewHolder.goldView.setText(String.valueOf(gold));
         int cs = player.getTotalMinionsKilled();
         matchDetailAdapterViewHolder.totalCsView.setText(String.valueOf(cs));
-        double totalCsPerMin = (double) cs / (double) match.getGameDuration();
+        long gameDuration = match.getGameDuration();
+        long gameDurationInMinutes = gameDuration / 60;
+        double totalCsPerMin = (double) cs / (double) gameDurationInMinutes;
         matchDetailAdapterViewHolder.csPerMinView.setText(String.format(Locale.ENGLISH, "%.1f", totalCsPerMin));
         matchDetailAdapterViewHolder.damagePercentView.setText(String.format(Locale.ENGLISH, "%.1f", LoLStatsUtils.getDamagePercentOfGivenPlayer(players, player)).concat("%"));
     }

@@ -16,7 +16,10 @@ public class ContentProvider extends android.content.ContentProvider {
     public static final int USERS = 100;
     public static final int USER_WITH_ID = 101;
 
-    private UserDbHelper userDbHelper;
+    public static final int MATCHES = 200;
+    public static final int MATCH_WITH_ID = 201;
+
+    private DbHelper dbHelper;
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
@@ -24,8 +27,10 @@ public class ContentProvider extends android.content.ContentProvider {
 
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        uriMatcher.addURI(UserContract.AUTHORITY, UserContract.PATH_USERS, USERS);
-        uriMatcher.addURI(UserContract.AUTHORITY, UserContract.PATH_USERS + "/#", USER_WITH_ID);
+        uriMatcher.addURI(DbContract.AUTHORITY, DbContract.PATH_USERS, USERS);
+        uriMatcher.addURI(DbContract.AUTHORITY, DbContract.PATH_USERS + "/#", USER_WITH_ID);
+        uriMatcher.addURI(DbContract.AUTHORITY, DbContract.PATH_MATCHES_STATS, MATCHES);
+        uriMatcher.addURI(DbContract.AUTHORITY, DbContract.PATH_MATCHES_STATS + "/#", MATCH_WITH_ID);
 
         return uriMatcher;
     }
@@ -33,7 +38,7 @@ public class ContentProvider extends android.content.ContentProvider {
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        userDbHelper = new UserDbHelper(context);
+        dbHelper = new DbHelper(context);
         return true;
     }
 
@@ -41,14 +46,24 @@ public class ContentProvider extends android.content.ContentProvider {
     @Nullable
     @Override
     public Cursor query(@androidx.annotation.NonNull @NonNull Uri uri, @androidx.annotation.Nullable @Nullable String[] projection, @androidx.annotation.Nullable @Nullable String selection, @androidx.annotation.Nullable @Nullable String[] selectionArgs, @androidx.annotation.Nullable @Nullable String sortOrder) {
-        final SQLiteDatabase db = userDbHelper.getReadableDatabase();
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         int match = uriMatcher.match(uri);
         Cursor retCursor;
 
         switch (match){
             case USERS:
-                retCursor = db.query(UserContract.UserEntry.TABLE_NAME,
+                retCursor = db.query(DbContract.UserEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+
+            case MATCHES:
+                retCursor = db.query(DbContract.MatchStatsEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -76,20 +91,30 @@ public class ContentProvider extends android.content.ContentProvider {
     @Nullable
     @Override
     public Uri insert(@androidx.annotation.NonNull @NonNull Uri uri, @androidx.annotation.Nullable @Nullable ContentValues values) {
-        final SQLiteDatabase db = userDbHelper.getWritableDatabase();
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);
         Uri returnUri;
 
         switch(match){
             case USERS:
-                long id = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
-                if(id>0){
-                    returnUri = ContentUris.withAppendedId(UserContract.UserEntry.CONTENT_URI, id);
+                long usersId = db.insert(DbContract.UserEntry.TABLE_NAME, null, values);
+                if(usersId>0){
+                    returnUri = ContentUris.withAppendedId(DbContract.UserEntry.CONTENT_URI_USERS, usersId);
                 }else{
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
                 break;
+
+            case MATCHES:
+                long matchesId = db.insert(DbContract.MatchStatsEntry.TABLE_NAME, null, values);
+                if(matchesId>0){
+                    returnUri = ContentUris.withAppendedId(DbContract.MatchStatsEntry.CONTENT_URI_CHAMPIONS, matchesId);
+                }else{
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -102,17 +127,24 @@ public class ContentProvider extends android.content.ContentProvider {
     @Override
     public int delete(@androidx.annotation.NonNull @NonNull Uri uri, @androidx.annotation.Nullable @Nullable String selection, @androidx.annotation.Nullable @Nullable String[] selectionArgs) {
 
-        final SQLiteDatabase db = userDbHelper.getWritableDatabase();
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);
 
         int tasksDeleted;
+        String id;
 
         switch (match){
             case USER_WITH_ID:
-                String id = uri.getPathSegments().get(1);
-                tasksDeleted = db.delete(UserContract.UserEntry.TABLE_NAME, "_id=?", new String[]{id});
+                id = uri.getPathSegments().get(1);
+                tasksDeleted = db.delete(DbContract.UserEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
+
+            case MATCH_WITH_ID:
+                id = uri.getPathSegments().get(1);
+                tasksDeleted = db.delete(DbContract.MatchStatsEntry.TABLE_NAME, "matchid=?", new String[]{id});
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

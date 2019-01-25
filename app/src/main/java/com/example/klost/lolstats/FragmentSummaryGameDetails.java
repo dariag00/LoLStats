@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -111,6 +112,35 @@ public class FragmentSummaryGameDetails  extends Fragment{
         assistsView.setText(String.valueOf(numberOfAssists));
         double kda = LoLStatsUtils.calculateKDA(numberOfKills, numberOfAssists, numberOfDeaths);
         LoLStatsUtils.setKdaAndTextColorInView(kdaView, kda, view.getContext());
+
+        TextView damagePercentView = view.findViewById(R.id.tv_damage_percent);
+        TextView totalDamageView = view.findViewById(R.id.tv_damage_dealt);
+        TextView totalCsView = view.findViewById(R.id.tv_total_cs);
+        TextView csPerMinView = view.findViewById(R.id.tv_cs_min);
+        TextView totalGoldView = view.findViewById(R.id.tv_total_gold);
+        TextView goldPercentView = view.findViewById(R.id.tv_gold_percent);
+
+        double damagePercent = LoLStatsUtils.getDamagePercentOfGivenPlayer(match.getTeamOfGivenPlayer(currentPlayer).getPlayers(), currentPlayer);
+        String damagePercentString = "DMG%: " + String.format(Locale.ENGLISH, "%.1f", damagePercent) + "%";
+        damagePercentView.setText(damagePercentString);
+
+        String damageDealt = "DD: " + currentPlayer.getTotalDamageDealtToChampions();
+        totalDamageView.setText(damageDealt);
+        int cs = currentPlayer.getTotalMinionsKilled() + currentPlayer.getNeutralMinionsKilled();
+        String totalCs = "CS: " + cs;
+        totalCsView.setText(totalCs);
+
+        long gameDuration = match.getGameDuration();
+        long gameDurationInMinutes = gameDuration / 60;
+        double totalCsPerMin = (double) cs / (double) gameDurationInMinutes;
+        String csPerMinString = "CS/MIN: " + String.format(Locale.ENGLISH, "%.1f", totalCsPerMin);
+        csPerMinView.setText(csPerMinString);
+
+        String totalGold = "GOLD: " + currentPlayer.getGoldEarned();
+        totalGoldView.setText(totalGold);
+
+        String goldPercentString = "G%: " + String.format(Locale.ENGLISH, "%.1f", LoLStatsUtils.getGoldPercentOfGivenPlayer(match.getTeamOfGivenPlayer(currentPlayer).getPlayers(), currentPlayer)) + "%";
+        goldPercentView.setText(goldPercentString);
 
         ImageView itemView1 = view.findViewById(R.id.iv_item1);
         ImageView itemView2 = view.findViewById(R.id.iv_item2);
@@ -222,13 +252,11 @@ public class FragmentSummaryGameDetails  extends Fragment{
         YAxis leftAxis = chart.getAxisLeft();
         //leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5, false);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         YAxis rightAxis = chart.getAxisRight();
         //rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(5, false);
         rightAxis.setDrawGridLines(false);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         // set data
         chart.setData(data);
@@ -253,11 +281,12 @@ public class FragmentSummaryGameDetails  extends Fragment{
 
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(values, "Gold Difference");
-        // set1.setFillAlpha(110);
+        set1.setFillAlpha(Color.RED);
         // set1.setFillColor(Color.RED);
 
         set1.setLineWidth(2.5f);
         set1.setDrawValues(false);
+        set1.setDrawCircleHole(false);
 
         ArrayList<ILineDataSet> sets = new ArrayList<>();
         sets.add(set1);

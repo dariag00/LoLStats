@@ -222,6 +222,7 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
             long gameDurationInMinutes = gameDuration / 60;
 
             double totalDamagePerMin = (double) totalDamageToChampions / (double) gameDurationInMinutes;
+            //TODO bug con los junglas
             double totalCsPerMin = (double) totalCs / (double) gameDurationInMinutes;
 
             riotAdapterViewHolder.csPerMinView.setText(String.format(Locale.ENGLISH, "%.2f", totalCsPerMin));

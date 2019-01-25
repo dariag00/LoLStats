@@ -56,6 +56,14 @@ public class LoLStatsUtils {
         return (givenPlayer.getTotalDamageDealtToChampions() / totalDamage) * 100;
     }
 
+    public static double getGoldPercentOfGivenPlayer(List<Player> players, Player givenPlayer){
+        double totalGold = 0;
+        for(Player player:players){
+            totalGold = totalGold + player.getGoldEarned();
+        }
+        return (givenPlayer.getGoldEarned() / totalGold) * 100;
+    }
+
     public static String getDaysAgo(Date date){
 
         String timeAgo = "Hace ";

@@ -23,7 +23,7 @@
                 android:id="@+id/tv_game_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="VICTORIA"
+                tools:text="VICTORIA"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp" />
 
@@ -37,7 +37,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="55m 14s"
+                    tools:text="55m 14s"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
@@ -48,7 +48,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="#FFFFFF"
-                    android:text="RANKED QUEUE"
+                    tools:text="RANKED QUEUE"
                     android:textSize="14sp" />
 
                 <TextView
@@ -58,7 +58,7 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:textColor="#FFFFFF"
-                    android:text="9/10/1997"
+                    tools:text="9/10/1997"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -112,6 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
+                        android:layout_marginStart="3dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -152,7 +153,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@android:color/black"
                                 android:textSize="25sp"
-                                android:text="2" />
+                                tools:text="2" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -167,7 +168,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/deathsColor"
                                 android:textSize="25sp"
-                                android:text="2" />
+                                tools:text="2" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -182,12 +183,13 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@android:color/black"
                                 android:textSize="25sp"
-                                android:text="12" />
+                                tools:text="12" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
+                                android:layout_marginStart="15dp"
                                 android:text="KDA"
                                 android:textSize="25sp" />
 
@@ -196,7 +198,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
-                                android:text="2,14"
+                                android:layout_marginStart="5dp"
+                                tools:text="2,14"
                                 android:textSize="25sp" />
 
                         </LinearLayout>
@@ -212,21 +215,25 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/tv_damage_dealt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="DD: 5000"/>
 
                                 <TextView
+                                    android:id="@+id/tv_damage_percent"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="DMG%: 54%"/>
 
                                 <TextView
+                                    android:id="@+id/tv_total_cs"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Total CS: 296"/>
 
                                 <TextView
+                                    android:id="@+id/tv_cs_min"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="CS/MIN: 10.2"/>
@@ -239,11 +246,13 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/tv_total_gold"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="GOLD: 45k"/>
 
                                 <TextView
+                                    android:id="@+id/tv_gold_percent"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="GOLD%: 22%"/>
