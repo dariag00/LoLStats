@@ -18,13 +18,13 @@ public interface SummonerDao {
     LiveData<List<SummonerEntry>> loadAllSummoners();
 
     @Insert
-    void insertMatchStats(SummonerEntry summonerEntry);
+    void insertSummoner(SummonerEntry summonerEntry);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMatchStats(SummonerEntry summonerEntry);
+    void updateSummoner(SummonerEntry summonerEntry);
 
     @Delete
-    void deleteMatchStats(SummonerEntry summonerEntry);
+    void deleteSummoner(SummonerEntry summonerEntry);
 
 
 

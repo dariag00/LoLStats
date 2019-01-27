@@ -77,8 +77,6 @@ public class FragmentResultsGameDetails extends Fragment implements MatchDetailA
         return  view;
     }
 
-
-
     private void setBlueTeamData(View view){
 
         TextView result =  view.findViewById(R.id.tv_blue_team);

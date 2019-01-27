@@ -1,18 +1,29 @@
 package com.example.klost.lolstats.data.database;
 
+import android.util.Log;
+import android.widget.ImageView;
+
+import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.utilities.NetworkUtils;
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
+
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "favourite_summoner")
-public class SummonerEntry {
+public class SummonerEntry{
 
-    @PrimaryKey
-    private long puuid;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String puuid;
     private String summonerName;
-    private long accoundId;
-    private long summonerId;
+    private String accoundId;
+    private String summonerId;
     private int profileIconId;
-    private int summonerLevel;
+    private long summonerLevel;
     private String division;
     private String rank;
     private String tier;
@@ -21,10 +32,27 @@ public class SummonerEntry {
     private int leaguePoints;
     private int winRate;
 
-    public SummonerEntry(long puuid, long accoundId, long summonerId) {
+    @Ignore
+    public SummonerEntry(String puuid, String accoundId, String summonerId) {
+        this.id = id;
         this.puuid = puuid;
         this.accoundId = accoundId;
         this.summonerId = summonerId;
+    }
+
+    public SummonerEntry(int id, String puuid, String accoundId, String summonerId) {
+        this.id = id;
+        this.puuid = puuid;
+        this.accoundId = accoundId;
+        this.summonerId = summonerId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDivision() {
@@ -83,11 +111,11 @@ public class SummonerEntry {
         this.winRate = winRate;
     }
 
-    public long getPuuid() {
+    public String getPuuid() {
         return puuid;
     }
 
-    public void setPuuid(long puuid) {
+    public void setPuuid(String puuid) {
         this.puuid = puuid;
     }
 
@@ -99,19 +127,19 @@ public class SummonerEntry {
         this.summonerName = summonerName;
     }
 
-    public long getAccoundId() {
+    public String getAccoundId() {
         return accoundId;
     }
 
-    public void setAccoundId(long accoundId) {
+    public void setAccoundId(String accoundId) {
         this.accoundId = accoundId;
     }
 
-    public long getSummonerId() {
+    public String getSummonerId() {
         return summonerId;
     }
 
-    public void setSummonerId(long summonerId) {
+    public void setSummonerId(String summonerId) {
         this.summonerId = summonerId;
     }
 
@@ -123,11 +151,18 @@ public class SummonerEntry {
         this.profileIconId = profileIconId;
     }
 
-    public int getSummonerLevel() {
+    public long getSummonerLevel() {
         return summonerLevel;
     }
 
-    public void setSummonerLevel(int summonerLevel) {
+    public void setSummonerLevel(long summonerLevel) {
         this.summonerLevel = summonerLevel;
     }
+
+    public void loadImageFromDDragon(ImageView imageView) {
+        URL url = NetworkUtils.buildUrl(String.valueOf(this.profileIconId), NetworkUtils.GET_DDRAGON_PROFILE_ICON);
+        Log.d("Icon Image", "URL: " + url.toString());
+        Picasso.get().load(url.toString()).into(imageView);
+    }
+
 }

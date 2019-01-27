@@ -36,8 +36,7 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
     public void onBindViewHolder(@NonNull SummonerViewHolder summonerViewHolder, int position) {
         SummonerEntry summonerEntry = summonerEntries.get(position);
         String summonerName = summonerEntry.getSummonerName();
-        int profileIconId = summonerEntry.getProfileIconId();
-        int summonerLevel = summonerEntry.getSummonerLevel();
+        long summonerLevel = summonerEntry.getSummonerLevel();
         String rank = summonerEntry.getRank();
         String tier = summonerEntry.getTier();
         int leaguePoints = summonerEntry.getLeaguePoints();
@@ -55,6 +54,8 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         summonerViewHolder.winRateView.setText(winRateString);
 
         summonerViewHolder.leaguePointsView.setText(String.valueOf(leaguePoints));
+
+        summonerEntry.loadImageFromDDragon(summonerViewHolder.profileIconView);
     }
 
     @Override
@@ -66,7 +67,16 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
     }
 
     public interface ItemClickListener {
-        void onItemClickListener(long accountId);
+        void onItemClickListener(String accountId);
+    }
+
+    public void setSummonerEntries(List<SummonerEntry> summonerEntries){
+        this.summonerEntries = summonerEntries;
+        notifyDataSetChanged();
+    }
+
+    public List<SummonerEntry> getSummonerEntries(){
+        return summonerEntries;
     }
 
     class SummonerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -94,7 +104,7 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         //TODO implementar
         @Override
         public void onClick(View v) {
-            long elementId = summonerEntries.get(getAdapterPosition()).getAccoundId();
+            String elementId = summonerEntries.get(getAdapterPosition()).getAccoundId();
             itemClickListener.onItemClickListener(elementId);
         }
     }
