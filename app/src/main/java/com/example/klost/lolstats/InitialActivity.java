@@ -1,40 +1,30 @@
 package com.example.klost.lolstats;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.example.klost.lolstats.models.champions.ChampionList;
-import com.example.klost.lolstats.models.items.ItemList;
-import com.example.klost.lolstats.models.runes.RuneList;
-import com.example.klost.lolstats.models.summoners.SummonerSpellList;
-import com.example.klost.lolstats.utilities.JsonUtils;
-import com.example.klost.lolstats.utilities.NetworkUtils;
-import com.example.klost.lolstats.utilities.StaticData;
-
-import org.json.JSONException;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InitialActivity extends AppCompatActivity{
+public class InitialActivity extends AppCompatActivity implements SummonerAdapter.ItemClickListener {
 
 
     public static final String EXTRA_SUMMONER_NAME = "com.example.klost.lolstats.SUMMONER_NAME";
 
     private EditText summonerNameView;
+    private RecyclerView recyclerView;
+    private SummonerAdapter adapter;
 
     private static final String LOG_TAG = "InitialActivity";
 
@@ -87,6 +77,14 @@ public class InitialActivity extends AppCompatActivity{
         Spinner regionSpinner = findViewById(R.id.region_spinner);
         CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(this, spinnerTitles, flags);
         regionSpinner.setAdapter(customAdapter);
+
+
+        recyclerView = findViewById(R.id.recyclerViewSummoners);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new SummonerAdapter(this, this);
+        recyclerView.setAdapter(adapter);
+
     }
 
     private void toTest(){
@@ -152,5 +150,13 @@ public class InitialActivity extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         this.moveTaskToBack(true);
+    }
+
+
+    @Override
+    public void onItemClickListener(long accountId) {
+        Context context = this;
+        Toast.makeText(context, "Clicked " + accountId, Toast.LENGTH_SHORT)
+                .show();
     }
 }

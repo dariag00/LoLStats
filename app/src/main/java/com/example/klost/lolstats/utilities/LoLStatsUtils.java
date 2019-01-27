@@ -1,7 +1,7 @@
 package com.example.klost.lolstats.utilities;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;

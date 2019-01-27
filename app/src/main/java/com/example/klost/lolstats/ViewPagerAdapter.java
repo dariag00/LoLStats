@@ -2,17 +2,13 @@ package com.example.klost.lolstats;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

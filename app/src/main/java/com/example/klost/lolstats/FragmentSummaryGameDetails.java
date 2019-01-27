@@ -2,9 +2,8 @@ package com.example.klost.lolstats;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;
 import com.example.klost.lolstats.models.items.Item;
 import com.example.klost.lolstats.models.items.ItemList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
-import com.example.klost.lolstats.models.matches.Team;
 import com.example.klost.lolstats.models.runes.Rune;
 import com.example.klost.lolstats.models.runes.RuneList;
 import com.example.klost.lolstats.models.runes.RunePath;
@@ -33,7 +30,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Calendar;

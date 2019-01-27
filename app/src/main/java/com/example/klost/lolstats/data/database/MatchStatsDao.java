@@ -1,4 +1,4 @@
-package com.example.klost.lolstats.database;
+package com.example.klost.lolstats.data.database;
 
 import java.util.List;
 

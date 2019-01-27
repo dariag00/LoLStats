@@ -1,4 +1,4 @@
-package com.example.klost.lolstats.database;
+package com.example.klost.lolstats.data.database;
 
 import java.util.Date;
 
@@ -35,32 +35,8 @@ public class MatchStatsEntry {
     private int visionScore;
     private Date gameDate;
 
-    public MatchStatsEntry(long matchId, long championId, int kills, int deaths, int assists, boolean victory, int csAt10, int csAt15, int csAt20, int csDiffAt10, int csDiffAt15, int csDiffAt20, int totalCs, long duration, int goldAt10, int goldAt15, int goldAt20, int goldDiff10, int goldDiff15, int goldDiff20, int totalGold, int damagePercent, int totalDamage, int visionScore, Date date) {
+    public MatchStatsEntry(long matchId) {
         this.matchId = matchId;
-        this.championId = championId;
-        this.kills = kills;
-        this.deaths = deaths;
-        this.assists = assists;
-        this.victory = victory;
-        this.csAt10 = csAt10;
-        this.csAt15 = csAt15;
-        this.csAt20 = csAt20;
-        this.csDiffAt10 = csDiffAt10;
-        this.csDiffAt15 = csDiffAt15;
-        this.csDiffAt20 = csDiffAt20;
-        this.totalCs = totalCs;
-        this.duration = duration;
-        this.goldAt10 = goldAt10;
-        this.goldAt15 = goldAt15;
-        this.goldAt20 = goldAt20;
-        this.goldDiff10 = goldDiff10;
-        this.goldDiff15 = goldDiff15;
-        this.goldDiff20 = goldDiff20;
-        this.totalGold = totalGold;
-        this.damagePercent = damagePercent;
-        this.totalDamage = totalDamage;
-        this.visionScore = visionScore;
-        this.gameDate = date;
     }
 
     public long getMatchId() {
@@ -253,5 +229,13 @@ public class MatchStatsEntry {
 
     public void setVisionScore(int visionScore) {
         this.visionScore = visionScore;
+    }
+
+    public Date getGameDate() {
+        return gameDate;
+    }
+
+    public void setGameDate(Date gameDate) {
+        this.gameDate = gameDate;
     }
 }

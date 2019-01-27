@@ -6,9 +6,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -25,15 +25,11 @@ import android.widget.Toast;
 
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
-import com.example.klost.lolstats.models.champions.ChampionList;
-import com.example.klost.lolstats.models.items.ItemList;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
-import com.example.klost.lolstats.models.runes.RuneList;
-import com.example.klost.lolstats.models.summoners.SummonerSpellList;
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
@@ -47,11 +43,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.google.common.util.concurrent.RateLimiter;
 
-import org.json.JSONException;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.ArrayList;
@@ -87,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements RiotAdapter.RiotA
         makeRiotSearchQuery(summonerName);
 
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayout.VERTICAL);
-        ((LinearLayoutManager) layoutManager).setReverseLayout(false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setReverseLayout(false);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);

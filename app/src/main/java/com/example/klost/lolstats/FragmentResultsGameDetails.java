@@ -2,9 +2,9 @@ package com.example.klost.lolstats;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +45,9 @@ public class FragmentResultsGameDetails extends Fragment implements MatchDetailA
 
         recyclerViewBlueTeam = view.findViewById(R.id.listview_blue_team);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayout.VERTICAL);
-        ((LinearLayoutManager) layoutManager).setReverseLayout(false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setReverseLayout(false);
 
         recyclerViewBlueTeam.setLayoutManager(layoutManager);
         recyclerViewBlueTeam.setHasFixedSize(true);
@@ -62,9 +62,9 @@ public class FragmentResultsGameDetails extends Fragment implements MatchDetailA
 
         recyclerViewRedTeam = view.findViewById(R.id.listview_red_team);
 
-        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getContext());
-        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayout.VERTICAL);
-        ((LinearLayoutManager) layoutManager).setReverseLayout(false);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setReverseLayout(false);
 
         recyclerViewRedTeam.setLayoutManager(layoutManager2);
         recyclerViewRedTeam.setHasFixedSize(true);
@@ -79,7 +79,7 @@ public class FragmentResultsGameDetails extends Fragment implements MatchDetailA
 
 
 
-    public void setBlueTeamData(View view){
+    private void setBlueTeamData(View view){
 
         TextView result =  view.findViewById(R.id.tv_blue_team);
 
@@ -125,7 +125,7 @@ public class FragmentResultsGameDetails extends Fragment implements MatchDetailA
 
     }
 
-    public void setRedTeamData(View view){
+    private void setRedTeamData(View view){
         TextView result = view.findViewById(R.id.tv_red_team);
 
         Team redTeam = match.getRedTeam();

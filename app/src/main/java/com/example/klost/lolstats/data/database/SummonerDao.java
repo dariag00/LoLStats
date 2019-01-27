@@ -1,4 +1,6 @@
-package com.example.klost.lolstats.database;
+package com.example.klost.lolstats.data.database;
+
+import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import androidx.room.Update;
 public interface SummonerDao {
 
     @Query("SELECT * FROM favourite_summoner")
-    List<SummonerEntry> loadAllSummoners();
+    LiveData<List<SummonerEntry>> loadAllSummoners();
 
     @Insert
     void insertMatchStats(SummonerEntry summonerEntry);
@@ -23,5 +25,7 @@ public interface SummonerDao {
 
     @Delete
     void deleteMatchStats(SummonerEntry summonerEntry);
+
+
 
 }
