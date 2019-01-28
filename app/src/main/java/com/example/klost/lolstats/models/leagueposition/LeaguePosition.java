@@ -1,12 +1,13 @@
 package com.example.klost.lolstats.models.leagueposition;
 
+import android.os.Build;
 import android.widget.ImageView;
 
 import com.example.klost.lolstats.R;
 
 import java.io.Serializable;
 
-public class LeaguePosition implements Serializable {
+public class LeaguePosition implements Serializable, Comparable<LeaguePosition>{
 
     private String queueType;
     private boolean hotstreak;
@@ -148,6 +149,65 @@ public class LeaguePosition implements Serializable {
 
         }
 
+    }
+
+    private int getNumericTier(){
+        switch(tier){
+            case "IRON":
+                return 1;
+            case "BRONZE":
+                return 2;
+            case "SILVER":
+                return 3;
+            case "GOLD":
+                return 4;
+            case "PLATINUM":
+                return 5;
+            case "DIAMOND":
+                return 6;
+            case "MASTER":
+                return 7;
+            case "GRANDMASTER":
+                return 8;
+            case "CHALLENGER":
+                return 9;
+            default:
+                return 0;
+        }
+    }
+
+    private int getNumericRank(){
+        switch(tier){
+            case "I":
+                return 1;
+            case "II":
+                return 2;
+            case "III":
+                return 3;
+            case "IV":
+                return 4;
+            default:
+                return -1;
+        }
+    }
+
+
+
+
+    @Override
+    public int compareTo(LeaguePosition o) {
+
+            if(this.getNumericTier() > o.getNumericTier())
+                return 1;
+            else if(this.getNumericTier() == o.getNumericTier())
+                if(this.getNumericRank() > o.getNumericRank())
+                    return 1;
+                else if(this.getNumericRank() == o.getNumericRank())
+                    return 0;
+                else
+                    return -1;
+            else
+                return -1;
     }
 
     public String toString(){

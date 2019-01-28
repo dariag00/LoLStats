@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.klost.lolstats.data.database.SummonerEntry;
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+import com.example.klost.lolstats.utilities.LoLStatsUtils;
 
 import java.util.List;
 
@@ -41,21 +44,28 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         String tier = summonerEntry.getTier();
         int leaguePoints = summonerEntry.getLeaguePoints();
         int winRate = summonerEntry.getWinRate();
-        //TODO icono de perfil y de division
+
         summonerViewHolder.summonerNameView.setText(summonerName);
+        summonerViewHolder.summonerLevelView.setText(String.valueOf(summonerLevel));
 
-        String summonerLevelString = "Level " + summonerLevel;
-        summonerViewHolder.summonerLevelView.setText(summonerLevelString);
+        if(rank == null || tier == null){
+            showNoRankedData(summonerViewHolder);
+            summonerViewHolder.rankView.setText("Unranked");
+            summonerViewHolder.rankIconView.setImageResource(R.drawable.unranked);
+        }else{
+            showRankedData(summonerViewHolder);
 
-        String rankString = rank + " " + tier;
-        summonerViewHolder.rankView.setText(rankString);
-
-        String winRateString = String.valueOf(winRate) + "%";
-        summonerViewHolder.winRateView.setText(winRateString);
-
-        summonerViewHolder.leaguePointsView.setText(String.valueOf(leaguePoints));
-
-        summonerEntry.loadImageFromDDragon(summonerViewHolder.profileIconView);
+            String rankString = tier + " " + rank;
+            summonerViewHolder.rankView.setText(rankString);
+            String winRateString = String.valueOf(winRate) + "%";
+            summonerViewHolder.winRateView.setText(winRateString);
+            summonerViewHolder.leaguePointsView.setText(String.valueOf(leaguePoints));
+            summonerEntry.loadImageFromDDragon(summonerViewHolder.profileIconView);
+            //TODO fix
+            LeaguePosition leaguePosition = new LeaguePosition();
+            leaguePosition.setTier(tier);
+            leaguePosition.setLeagueIconOnImageView(summonerViewHolder.rankIconView);
+        }
     }
 
     @Override
@@ -75,6 +85,16 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         notifyDataSetChanged();
     }
 
+    public void showRankedData(SummonerViewHolder summonerViewHolder){
+        summonerViewHolder.noRankedDataView.setVisibility(View.INVISIBLE);
+        summonerViewHolder.rankedDataContainer.setVisibility(View.VISIBLE);
+    }
+
+    public void showNoRankedData(SummonerViewHolder summonerViewHolder) {
+        summonerViewHolder.noRankedDataView.setVisibility(View.VISIBLE);
+        summonerViewHolder.rankedDataContainer.setVisibility(View.INVISIBLE);
+    }
+
     public List<SummonerEntry> getSummonerEntries(){
         return summonerEntries;
     }
@@ -88,6 +108,8 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         TextView rankView;
         TextView winRateView;
         TextView leaguePointsView;
+        LinearLayout rankedDataContainer;
+        TextView noRankedDataView;
 
         public SummonerViewHolder(View itemView){
             super(itemView);
@@ -99,6 +121,8 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
             rankView = itemView.findViewById(R.id.tv_summoner_rank);
             winRateView = itemView.findViewById(R.id.tv_summoner_winrate);
             leaguePointsView = itemView.findViewById(R.id.tv_summoner_league_points);
+            rankedDataContainer = itemView.findViewById(R.id.ranked_data_container);
+            noRankedDataView = itemView.findViewById(R.id.tv_ranked_data);
         }
 
         //TODO implementar

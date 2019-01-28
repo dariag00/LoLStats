@@ -46,4 +46,18 @@ public class LeaguePositionList implements Serializable {
 
     }
 
+    public LeaguePosition getHighestRankingPosition(){
+
+        LeaguePosition highestPosition = null;
+
+        for(LeaguePosition position : list){
+            if(highestPosition == null)
+                highestPosition = position;
+            else if(position.compareTo(highestPosition) == 1 )
+                highestPosition = position;
+        }
+
+        return highestPosition;
+    }
+
 }

@@ -15,14 +15,33 @@
         android:layout_margin="5dp"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_summoner_icon"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/profile_image"
-            app:civ_border_color="#FF000000"
-            app:civ_border_width="2dp" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_summoner_icon"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/profile_image"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/tv_summoner_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="58"
+                android:textSize="16sp"
+                android:layout_alignRight="@id/iv_summoner_icon"
+                android:layout_alignBottom="@id/iv_summoner_icon"
+                android:padding="3dp"
+                android:layout_margin="3dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/circle"/>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,28 +50,12 @@
             android:layout_marginStart="3dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_summoner_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_summoner_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="Summoner Name"/>
-
-                <TextView
-                    android:id="@+id/tv_summoner_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:text="Level 54"/>
-
-            </LinearLayout>
-
+                android:textSize="20sp"
+                android:text="Summoner Name"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,35 +80,49 @@
                     android:text="Platinum 4"/>
 
             </LinearLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_summoner_winrate"
+                <LinearLayout
+                    android:id="@+id/ranked_data_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:text="45% WR"/>
+                    android:orientation="horizontal">
 
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/listDivider" />
+                    <TextView
+                        android:id="@+id/tv_summoner_winrate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:text="45% WR"/>
+
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/tv_summoner_league_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginLeft="3dp"
+                        android:text="20 LPs"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_summoner_league_points"
+                    android:id="@+id/tv_ranked_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginLeft="3dp"
-                    android:text="20 LPs"/>
+                    android:visibility="invisible"
+                    android:text="NO RANKED DATA AVAILABLE"/>
 
-            </LinearLayout>
+
+            </FrameLayout>
 
         </LinearLayout>
 

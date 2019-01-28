@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements RiotAdapter.RiotA
         progressBar.setVisibility(View.VISIBLE);
         mainLayout.setVisibility(View.INVISIBLE);
 
-        URL riotSearchUrl = NetworkUtils.buildUrl(summonerName, NetworkUtils.GET_SUMMONER);
         setupViewModel();
     }
 

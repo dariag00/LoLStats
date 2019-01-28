@@ -55,6 +55,7 @@ public class MatchTimeline implements Serializable{
             for(int i = 0; i<participantIdsRedTeam.length; i++){
                 totalGoldRedTeamThisFrame = totalGoldRedTeamThisFrame + frame.getParticipantGoldFrame(participantIdsRedTeam[i]);
             }
+            Log.d("LOG", "Blue Gold: " + totalGoldBlueTeamThisFrame + " red gold: " + totalGoldRedTeamThisFrame + " en el frame: " + frame.getTimestamp());
             map.put(frame.getTimestamp(), totalGoldBlueTeamThisFrame-totalGoldRedTeamThisFrame);
         }
         return map;
