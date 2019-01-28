@@ -37,6 +37,14 @@ public class Team implements Serializable {
         players = new ArrayList<>();
     }
 
+    public boolean isBlueTeam(){
+        return teamId == 100;
+    }
+
+    public boolean isRedTeam(){
+        return teamId == 200;
+    }
+
     public int getTeamId() {
         return teamId;
     }
@@ -177,11 +185,19 @@ public class Team implements Serializable {
 
     public boolean containsPlayer(Player player){
         for(Player pl:players){
-            if(player.equals(player))
+            if(player.equals(pl))
                 return true;
         }
 
         return false;
+    }
+
+    public Player getPlayerByRole(String role){
+        for(Player pl: players){
+            if(pl.getRole().equals(role))
+                return pl;
+        }
+        return null;
     }
 
     public boolean isWon(){

@@ -95,6 +95,7 @@ public class JsonUtils {
             match.setQueue(queue);
             match.setRole(role);
             match.setSeason(season);
+            Log.d(LOG_TAG, "Lane: " + lane + " rol " + role);
 
             matches.add(match);
         }
@@ -241,18 +242,51 @@ public class JsonUtils {
             int goldEarned = statsJSON.getInt("goldEarned");
             int goldSpent = statsJSON.getInt("goldSpent");
 
+            long visionScore = statsJSON.getLong("visionScore");
+            int largestMultiKill = statsJSON.getInt("largestMultiKill");
+            int wardsKilled = statsJSON.getInt("wardsKilled");
+            int largestKillingSpree = statsJSON.getInt("largestKillingSpree");
+            int quadrakills = statsJSON.getInt("quadraKills");
+            int wardsPlaced = statsJSON.getInt("wardsPlaced");
+            int pentakills = statsJSON.getInt("pentaKills");
+            int visionWardsBought = statsJSON.getInt("visionWardsBoughtInGame");
+
+            JSONObject timelineJSON = participantJSON.getJSONObject("timeline");
+            String lane = timelineJSON.getString("lane");
+            String role = timelineJSON.getString("role");
+
             for(Player player : playerList){
                 if(player.getParticipantId() == participantId){
 
                     player.setSpell1Id(spell1Id);
                     player.setSpell2Id(spell2Id);
-                    Log.d(LOG_TAG, "Setteo champion Id" + championId);
+                    //TODO eliminar
                     player.setChampionId(championId);
+                    Champion playedChampion = StaticData.getChampionList().getChampionById(championId);
+                    player.setChampion(playedChampion);
                     player.setTeamId(teamId);
 
                     player.setKills(kills);
                     player.setDeaths(deaths);
                     player.setAssists(assists);
+
+                    player.setVisionScore(visionScore);
+                    player.setLargestMultiKill(largestMultiKill);
+                    player.setWardsPlaced(wardsPlaced);
+                    player.setPentaKills(pentakills);
+                    player.setQuadraKills(quadrakills);
+                    player.setVisionWardsBought(visionWardsBought);
+                    player.setWardsKilled(wardsKilled);
+                    player.setLargestKillingSpree(largestKillingSpree);
+
+
+                    if(role.equals("NONE") || role.equals("SOLO")){
+                        player.setRole(lane);
+                    }else{
+                        player.setRole(role);
+                    }
+
+                    player.setLane(lane);
 
                     player.setChampionLevel(champLevel);
                     //TODO modificar para que haya una lista de runas e items en cada player
@@ -270,7 +304,6 @@ public class JsonUtils {
                     player.setRuneSecondaryStyle(runeSecondaryStyle);
 
                     player.setItem0(item0);
-                    Log.d("ERRORR", "Seteo " + item0);
                     player.setItem1(item1);
                     player.setItem2(item2);
                     player.setItem3(item3);

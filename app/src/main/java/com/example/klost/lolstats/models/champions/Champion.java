@@ -6,9 +6,10 @@ import android.widget.ImageView;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.net.URL;
 
-public class Champion {
+public class Champion implements Serializable {
 
     private int championId;
     private String name;

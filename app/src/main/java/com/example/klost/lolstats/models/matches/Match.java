@@ -18,12 +18,14 @@ public class Match implements Serializable {
 
     //TODO añadir estadisticas del JSON de GET_MATCH
     //TODO pasar el role a Player
-
+    //TODO quitar lane de aqui
     private String lane;
     private long gameId;
+    //TODO quitar championId de aqui
     private int championId;
     private String platformId;
     private int queue;
+    //TODO quitar role de aqui
     private String role;
     private int season;
     private Team blueTeam;
@@ -179,6 +181,18 @@ public class Match implements Serializable {
         return null;
     }
 
+    public Team getOppositeTeamOfGivenPlayer(Player player){
+        if(!blueTeam.containsPlayer(player)){
+            Log.d("LOG", "Entro en blue");
+            return blueTeam;
+        }else if(!redTeam.containsPlayer(player)){
+            Log.d("LOG", "Entro en red");
+            return redTeam;
+        }
+        Log.d("LOG", "Entro en null");
+        return null;
+    }
+
     public boolean hasGivenSummonerWon(Summoner summoner){
         return getTeamOfGivenSummoner(summoner).isWon();
     }
@@ -236,6 +250,12 @@ public class Match implements Serializable {
 
         return participantIds;
 
+    }
+
+    public Player getOppositePlayerBasedOnRole(Player player){
+        Team oppositeTeam = getOppositeTeamOfGivenPlayer(player);
+        Log.d("LOG", "Opposite Team " + oppositeTeam.toString());
+        return oppositeTeam.getPlayerByRole(player.getRole());
     }
 
     @Override

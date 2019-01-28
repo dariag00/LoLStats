@@ -170,6 +170,7 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         //Setteo de las imagenes iniciales
         int championId = player.getChampionId();
         Champion champion = StaticData.getChampionList().getChampionById(championId);
+        Log.d("LOG", "ChampionID: " + championId + " y champ " + champion);
         champion.loadImageFromDDragon(matchDetailAdapterViewHolder.championView);
 
         SummonerSpell firstSummonerSpell = StaticData.getSpellList().getSpellById(player.getSpell1Id());

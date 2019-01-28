@@ -7,14 +7,14 @@ import java.io.Serializable;
 
 public class Player implements Serializable {
 
-    //TODO falta implementar estadisticas runas y timeline
-    //TODO añadir gold
     private int participantId;
     private int teamId; //TODO realmente necesario?
     private int spell2Id;
     private String highestAchievedSeasoNTier;
     private int spell1Id;
+    //TODO eliminar
     private int championId;
+    private Champion champion;
     private Summoner summoner;//TODO implementar
     private long visionScore;
     private int assists;
@@ -26,6 +26,15 @@ public class Player implements Serializable {
     private int goldEarned;
     private int goldSpent;
     private int championLevel;
+    private int visionWardsBought;
+    private int pentaKills;
+    private int quadraKills;
+    private int largestKillingSpree;
+    private int wardsPlaced;
+    private int largestMultiKill;
+    private int wardsKilled;
+    private String role;
+    private String lane;
 
     //TEMPORAL
     //TODO añadir RuneList
@@ -54,6 +63,14 @@ public class Player implements Serializable {
 
     public Player(int participantId){
         this.participantId = participantId;
+    }
+
+    public void setChampion(Champion champion) {
+        this.champion = champion;
+    }
+
+    public Champion getChampion() {
+        return champion;
     }
 
     public int getParticipantId() {
@@ -183,6 +200,78 @@ public class Player implements Serializable {
 
     public void setRuneSecondaryStyle(int runeSecondaryStyle) {
         this.runeSecondaryStyle = runeSecondaryStyle;
+    }
+
+    public int getVisionWardsBought() {
+        return visionWardsBought;
+    }
+
+    public void setVisionWardsBought(int visionWardsBought) {
+        this.visionWardsBought = visionWardsBought;
+    }
+
+    public int getPentaKills() {
+        return pentaKills;
+    }
+
+    public void setPentaKills(int pentaKills) {
+        this.pentaKills = pentaKills;
+    }
+
+    public int getQuadraKills() {
+        return quadraKills;
+    }
+
+    public void setQuadraKills(int quadraKills) {
+        this.quadraKills = quadraKills;
+    }
+
+    public int getLargestKillingSpree() {
+        return largestKillingSpree;
+    }
+
+    public void setLargestKillingSpree(int largestKillingSpree) {
+        this.largestKillingSpree = largestKillingSpree;
+    }
+
+    public int getWardsPlaced() {
+        return wardsPlaced;
+    }
+
+    public void setWardsPlaced(int wardsPlaced) {
+        this.wardsPlaced = wardsPlaced;
+    }
+
+    public int getLargestMultiKill() {
+        return largestMultiKill;
+    }
+
+    public void setLargestMultiKill(int largestMultiKill) {
+        this.largestMultiKill = largestMultiKill;
+    }
+
+    public int getWardsKilled() {
+        return wardsKilled;
+    }
+
+    public void setWardsKilled(int wardsKilled) {
+        this.wardsKilled = wardsKilled;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getLane() {
+        return lane;
+    }
+
+    public void setLane(String lane) {
+        this.lane = lane;
     }
 
     public int getRune0() {
