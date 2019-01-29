@@ -2,6 +2,7 @@ package com.example.klost.lolstats.data.database;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,7 +14,10 @@ import androidx.room.Update;
 public interface MatchStatsDao {
 
     @Query("SELECT * FROM match_stats")
-    List<MatchStatsEntry> loadAllMatches();
+    LiveData<List<MatchStatsEntry>> loadAllMatches();
+
+    @Query("SELECT * FROM match_stats WHERE summonerId=:id")
+    LiveData<List<MatchStatsEntry>> loadMatchesForSummoner(final int id);
 
     @Insert
     void insertMatchStats(MatchStatsEntry matchStatsEntry);

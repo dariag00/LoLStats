@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SaveSummonerActivity"></activity>
+        <activity android:name=".SavedProfileActivity"
+            android:parentActivityName=".InitialActivity"></activity>
+        <activity android:name=".SaveSummonerActivity"
+            android:parentActivityName=".InitialActivity"/>
         <activity
             android:name=".StartActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -28,7 +31,7 @@
             android:parentActivityName=".InitialActivity" />
         <activity
             android:name=".InitialActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".TestActivity"
             android:parentActivityName=".InitialActivity" />

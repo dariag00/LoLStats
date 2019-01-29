@@ -40,7 +40,7 @@ public class LoLStatsUtils {
             textView.setTextColor(ContextCompat.getColor(context, R.color.lowToMidKdaColor));
         }else if(kda>=4.0 && kda<5.0){
             textView.setTextColor(ContextCompat.getColor(context, R.color.midKdaColor));
-        }else if(kda>=7.0){
+        }else if(kda>=5.0){
             textView.setTextColor(ContextCompat.getColor(context, R.color.highKdaColor));
         }
 

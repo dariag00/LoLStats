@@ -20,8 +20,10 @@ import android.widget.Toast;
 
 import com.example.klost.lolstats.data.database.AppDatabase;
 import com.example.klost.lolstats.data.database.SummonerEntry;
+import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +36,7 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
     private EditText summonerNameView;
     private RecyclerView recyclerView;
     private SummonerAdapter adapter;
+    public static final String EXTRA_ENTRY_ID = "com.example.klost.lolstats.ENTRY_ID";
 
     private static final String LOG_TAG = InitialActivity.class.getSimpleName();
     private String[] spinnerTitles;
@@ -207,9 +210,14 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
 
 
     @Override
-    public void onItemClickListener(String accountId) {
+    public void onItemClickListener(int id, String accountId) {
         Context context = this;
-        Toast.makeText(context, "Clicked " + accountId, Toast.LENGTH_SHORT)
+        URL riotSearchUrl = NetworkUtils.buildUrl("ScJfpvZkwqgnXiyoQ52hFS5F0iLpaMuHvus_vJf79mDObQ", NetworkUtils.GET_RANKED_MATCHLIST);
+        Log.d(LOG_TAG, "URL: " + riotSearchUrl.toString());
+        Toast.makeText(context, "Clicked " + accountId + " " + accountId, Toast.LENGTH_SHORT)
                 .show();
+        Intent intent = new Intent(this, SavedProfileActivity.class);
+        intent.putExtra(EXTRA_ENTRY_ID, id);
+        startActivity(intent);
     }
 }

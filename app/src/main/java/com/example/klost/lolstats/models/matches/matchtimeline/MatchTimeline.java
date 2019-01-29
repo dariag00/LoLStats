@@ -32,6 +32,18 @@ public class MatchTimeline implements Serializable{
         return map;
     }
 
+    public Map<Long, Integer> getParticipantGold(int participantId){
+
+        Map<Long, Integer> map = new LinkedHashMap<>();
+        for(MatchFrame frame:matchFrames){
+            int gold = frame.getParticipantGoldFrame(participantId);
+            Log.d("FRAMES", "Frame: " + frame.getTimestamp() + " gold " + gold);
+            map.put(frame.getTimestamp(), gold);
+        }
+
+        return map;
+    }
+
     public Map<Long, Integer> getTeamGoldFrames(int[] participantIds){
         Map<Long, Integer> map = new LinkedHashMap<>();
         int totalGoldThisFrame = 0;
@@ -42,6 +54,32 @@ public class MatchTimeline implements Serializable{
             map.put(frame.getTimestamp(), totalGoldThisFrame);
         }
         return map;
+    }
+
+    public Map<Long, Integer> getGoldDifferenceBetween2Players(int participantId1, int participantId2){
+
+        Map<Long, Integer> map = new LinkedHashMap<>();
+        int goldDifference;
+        for(MatchFrame frame: matchFrames){
+            goldDifference = frame.getParticipantGoldFrame(participantId1) - frame.getParticipantGoldFrame(participantId2);
+            map.put(frame.getTimestamp(), goldDifference);
+        }
+
+        return map;
+
+    }
+
+    public Map<Long, Integer> getCsDifferenceBetween2Players(int participantId1, int participantId2){
+
+        Map<Long, Integer> map = new LinkedHashMap<>();
+        int csDifference;
+        for(MatchFrame frame: matchFrames){
+            csDifference = frame.getParticipantCsFrame(participantId1) - frame.getParticipantCsFrame(participantId2);
+            map.put(frame.getTimestamp(), csDifference);
+        }
+
+        return map;
+
     }
 
     public Map<Long, Integer> getGoldDifferenceFrames(int[] participantIdsBlueTeam, int[] participantIdsRedTeam){

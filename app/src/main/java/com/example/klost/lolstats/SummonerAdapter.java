@@ -3,6 +3,8 @@ package com.example.klost.lolstats;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +49,7 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
 
         summonerViewHolder.summonerNameView.setText(summonerName);
         summonerViewHolder.summonerLevelView.setText(String.valueOf(summonerLevel));
+        summonerEntry.loadImageFromDDragon(summonerViewHolder.profileIconView);
 
         if(rank == null || tier == null){
             showNoRankedData(summonerViewHolder);
@@ -59,8 +62,7 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
             summonerViewHolder.rankView.setText(rankString);
             String winRateString = String.valueOf(winRate) + "%";
             summonerViewHolder.winRateView.setText(winRateString);
-            summonerViewHolder.leaguePointsView.setText(String.valueOf(leaguePoints));
-            summonerEntry.loadImageFromDDragon(summonerViewHolder.profileIconView);
+            summonerViewHolder.leaguePointsView.setText(String.valueOf(leaguePoints).concat(" lps"));
             //TODO fix
             LeaguePosition leaguePosition = new LeaguePosition();
             leaguePosition.setTier(tier);
@@ -77,7 +79,7 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
     }
 
     public interface ItemClickListener {
-        void onItemClickListener(String accountId);
+        void onItemClickListener(int id, String accountId);
     }
 
     public void setSummonerEntries(List<SummonerEntry> summonerEntries){
@@ -123,13 +125,15 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
             leaguePointsView = itemView.findViewById(R.id.tv_summoner_league_points);
             rankedDataContainer = itemView.findViewById(R.id.ranked_data_container);
             noRankedDataView = itemView.findViewById(R.id.tv_ranked_data);
+            itemView.setOnClickListener(this);
         }
 
-        //TODO implementar
         @Override
         public void onClick(View v) {
-            String elementId = summonerEntries.get(getAdapterPosition()).getAccoundId();
-            itemClickListener.onItemClickListener(elementId);
+            Log.d("LOG", "ENTRO en onClick");
+            int elementId = summonerEntries.get(getAdapterPosition()).getId();
+            String accountId = summonerEntries.get(getAdapterPosition()).getAccoundId();
+            itemClickListener.onItemClickListener(elementId, accountId);
         }
     }
 }

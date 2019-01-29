@@ -3,6 +3,7 @@ package com.example.klost.lolstats.models;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.klost.lolstats.data.database.SummonerEntry;
 import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.utilities.NetworkUtils;
@@ -32,6 +33,15 @@ public class Summoner implements Serializable {
 
     public Summoner(){
 
+    }
+
+    public Summoner(SummonerEntry entry){
+        this.puuid = entry.getPuuid();
+        this.encryptedAccountId = entry.getAccoundId();
+        this.encryptedSummonerId = entry.getSummonerId();
+        this.summonerLevel = entry.getSummonerLevel();
+        this.summonerName = entry.getSummonerName();
+        this.profileIconId = entry.getProfileIconId();
     }
 
     public Summoner(String encryptedAccountId, String encryptedSummonerId){

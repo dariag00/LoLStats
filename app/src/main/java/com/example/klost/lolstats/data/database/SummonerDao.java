@@ -17,6 +17,9 @@ public interface SummonerDao {
     @Query("SELECT * FROM favourite_summoner")
     LiveData<List<SummonerEntry>> loadAllSummoners();
 
+    @Query("SELECT * FROM favourite_summoner WHERE id = :id")
+    LiveData<SummonerEntry> loadSummonerById(int id);
+
     @Insert
     void insertSummoner(SummonerEntry summonerEntry);
 

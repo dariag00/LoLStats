@@ -1,16 +1,28 @@
 package com.example.klost.lolstats.data.database;
 
+import com.example.klost.lolstats.models.matches.Match;
+
 import java.util.Date;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "match_stats")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "match_stats", foreignKeys = @ForeignKey(entity = SummonerEntry.class,
+        parentColumns = "id",
+        childColumns = "summonerId",
+        onDelete = CASCADE), indices = {@Index("summonerId")})
 public class MatchStatsEntry {
 
     @PrimaryKey
     private long matchId;
-    private long championId;
+    private int championId;
+    private int summonerId;
     private int kills;
     private int deaths;
     private int assists;
@@ -30,10 +42,11 @@ public class MatchStatsEntry {
     private int goldDiff15;
     private int goldDiff20;
     private int totalGold;
-    private int damagePercent;
-    private int totalDamage;
-    private int visionScore;
+    private double damagePercent;
+    private long totalDamage;
+    private long visionScore;
     private Date gameDate;
+    private int seasonId;
 
     public MatchStatsEntry(long matchId) {
         this.matchId = matchId;
@@ -47,11 +60,19 @@ public class MatchStatsEntry {
         this.matchId = matchId;
     }
 
-    public long getChampionId() {
+    public int getSummonerId() {
+        return summonerId;
+    }
+
+    public void setSummonerId(int summonerId) {
+        this.summonerId = summonerId;
+    }
+
+    public int getChampionId() {
         return championId;
     }
 
-    public void setChampionId(long championId) {
+    public void setChampionId(int championId) {
         this.championId = championId;
     }
 
@@ -207,27 +228,27 @@ public class MatchStatsEntry {
         this.totalGold = totalGold;
     }
 
-    public int getDamagePercent() {
+    public double getDamagePercent() {
         return damagePercent;
     }
 
-    public void setDamagePercent(int damagePercent) {
+    public void setDamagePercent(double damagePercent) {
         this.damagePercent = damagePercent;
     }
 
-    public int getTotalDamage() {
+    public long getTotalDamage() {
         return totalDamage;
     }
 
-    public void setTotalDamage(int totalDamage) {
+    public void setTotalDamage(long totalDamage) {
         this.totalDamage = totalDamage;
     }
 
-    public int getVisionScore() {
+    public long getVisionScore() {
         return visionScore;
     }
 
-    public void setVisionScore(int visionScore) {
+    public void setVisionScore(long visionScore) {
         this.visionScore = visionScore;
     }
 
@@ -237,5 +258,13 @@ public class MatchStatsEntry {
 
     public void setGameDate(Date gameDate) {
         this.gameDate = gameDate;
+    }
+
+    public int getSeasonId() {
+        return seasonId;
+    }
+
+    public void setSeasonId(int seasonId) {
+        this.seasonId = seasonId;
     }
 }

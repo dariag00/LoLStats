@@ -28,6 +28,7 @@ public class MainViewModel extends ViewModel {
     private final URL riotSearchUrl;
 
     public MainViewModel(URL url){
+        Log.d(LOG_TAG, "Creo un nuevo viewmodel");
         this.riotSearchUrl = url;
         this.summonerMutableLiveData = new SummonerLiveData();
     }
@@ -103,6 +104,7 @@ public class MainViewModel extends ViewModel {
                                         Log.d(LOG_TAG, "Procesado con exito");
                                     }
                                 }else{
+                                    Log.d(LOG_TAG, "Devuelvo null en getMatchURL");
                                     return null;
                                 }
                             }

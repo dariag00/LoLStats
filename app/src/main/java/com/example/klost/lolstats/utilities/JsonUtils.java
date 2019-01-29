@@ -87,6 +87,7 @@ public class JsonUtils {
             int queue = matchJSON.getInt("queue");
             String role = matchJSON.getString("role");
             int season = matchJSON.getInt("season");
+            long timeStamp = matchJSON.getLong("timestamp");
 
             match.setLane(lane);
             match.setGameId(gameId);
@@ -95,6 +96,7 @@ public class JsonUtils {
             match.setQueue(queue);
             match.setRole(role);
             match.setSeason(season);
+            match.setGameCreation(timeStamp);
             Log.d(LOG_TAG, "Lane: " + lane + " rol " + role);
 
             matches.add(match);
@@ -244,10 +246,16 @@ public class JsonUtils {
 
             long visionScore = statsJSON.getLong("visionScore");
             int largestMultiKill = statsJSON.getInt("largestMultiKill");
-            int wardsKilled = statsJSON.getInt("wardsKilled");
+            int wardsKilled = 0;
+            if(statsJSON.has("wardsKilled")){
+                wardsKilled = statsJSON.getInt("wardsKilled");
+            }
             int largestKillingSpree = statsJSON.getInt("largestKillingSpree");
             int quadrakills = statsJSON.getInt("quadraKills");
-            int wardsPlaced = statsJSON.getInt("wardsPlaced");
+            int wardsPlaced = 0;
+            if(statsJSON.has("wardsPlaced"))
+                wardsPlaced = statsJSON.getInt("wardsPlaced");
+
             int pentakills = statsJSON.getInt("pentaKills");
             int visionWardsBought = statsJSON.getInt("visionWardsBoughtInGame");
 

@@ -9,6 +9,7 @@ import androidx.room.Room;
 import com.example.klost.lolstats.AppExecutors;
 import com.example.klost.lolstats.data.database.AppDatabase;
 import com.example.klost.lolstats.data.database.MatchStatsDao;
+import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.data.database.SummonerDao;
 import com.example.klost.lolstats.data.database.SummonerEntry;
 
@@ -50,6 +51,10 @@ public class LoLStatsRepository {
         return summonerDao.loadAllSummoners();
     }
 
+    public LiveData<SummonerEntry> getSummonerById(int id){
+        return summonerDao.loadSummonerById(id);
+    }
+
     public void addSummonerEntry(final SummonerEntry entry){
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -60,8 +65,21 @@ public class LoLStatsRepository {
         });
     }
 
-    /*public LiveData<SummonerEntry> getSummonerById(){
+    public void addMatchStatsEntry(final MatchStatsEntry entry){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                matchStatsDao.insertMatchStats(entry);
+            }
+        });
+    }
 
-    }*/
+    public LiveData<List<MatchStatsEntry>> getMatchesStats(){
+        return matchStatsDao.loadAllMatches();
+    }
+
+    public LiveData<List<MatchStatsEntry>> getMatchesFromSummoner(int id){
+        return matchStatsDao.loadMatchesForSummoner(id);
+    }
 
 }

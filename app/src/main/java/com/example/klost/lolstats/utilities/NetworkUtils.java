@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-69e94621-c670-4ab0-8eff-3349a6240044";
+    private final static String RIOT_API_KEY = "RGAPI-8a569487-fcbc-48c3-ab22-3f51e46cc4fe";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -82,6 +82,11 @@ public class NetworkUtils {
     public final static int GET_DDRAGON_ITEM_IMAGE = 10;
 
     public final static int GET_CDRAGON_PERKS = 11;
+
+    public final static int GET_RANKED_MATCHLIST = 12;
+
+    final static String QUEUE_PARAM = "queue";
+    final static String SEASON_PARAM = "season";
 
     //TODO documentar los metodos
     //TODO buscar si path = X + Y es realmente la solucion
@@ -175,6 +180,15 @@ public class NetworkUtils {
                 builtUri = Uri.parse(path).buildUpon().build();
                 break;
 
+            case GET_RANKED_MATCHLIST:
+                path = RIOT_BASE_URL + RIOT_GET_MATCHLIST;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
+                        .appendQueryParameter(QUEUE_PARAM, "420")
+                        .appendQueryParameter(SEASON_PARAM, "11")
+                        .build();
+                break;
             default:
                 //Not supported yet
                 return null;
