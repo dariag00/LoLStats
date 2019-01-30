@@ -252,6 +252,8 @@ public class Match implements Serializable {
     public Map<Long, Integer> getGoldDifferentOfLanersOverTime(Summoner summoner){
         Player currentPlayer = getPlayer(summoner);
         Player oppositePlayer = getOppositePlayerBasedOnRole(currentPlayer);
+        Log.d("LOG", "PLAYER1: " + currentPlayer.getParticipantId());
+        Log.d("LOG", "PLAYER2: " + oppositePlayer.getParticipantId());
         return matchTimeline.getGoldDifferenceBetween2Players(currentPlayer.getParticipantId(), oppositePlayer.getParticipantId());
     }
 

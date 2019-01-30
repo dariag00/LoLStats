@@ -287,12 +287,14 @@ public class JsonUtils {
                     player.setWardsKilled(wardsKilled);
                     player.setLargestKillingSpree(largestKillingSpree);
 
-
-                    if(role.equals("NONE") || role.equals("SOLO")){
+                    Log.d(LOG_TAG, "Role: " + role);
+                    if(role.equals("NONE") || role.equals("SOLO") ){
+                        Log.d(LOG_TAG, "Entro con " + role);
                         player.setRole(lane);
                     }else{
                         player.setRole(role);
                     }
+                    Log.d(LOG_TAG, "El rol es: " + player.getRole() + " " +  match.getGameId());
 
                     player.setLane(lane);
 
@@ -327,8 +329,30 @@ public class JsonUtils {
 
                     //Determinamos el equipo del jugador
                     if(teamId == blueTeam.getTeamId()){
+                        if(role.equals("DUO") && blueTeam.hasCarryPlayer()){
+                            Player carryPlayer = blueTeam.getCarryPlayer();
+                            if(carryPlayer.getTotalMinionsKilled() < player.getTotalMinionsKilled()){
+                                player.setRole("DUO_CARRY");
+                                carryPlayer.setRole("DUO_SUPPORT");
+                            }else{
+                                player.setRole("DUO_SUPPORT");
+                            }
+                        }else if(role.equals("DUO")){
+                            player.setRole("DUO_CARRY");
+                        }
                         blueTeam.addPlayer(player);
                     }else if(teamId == redTeam.getTeamId()){
+                        if(role.equals("DUO") && redTeam.hasCarryPlayer()){
+                            Player carryPlayer = redTeam.getCarryPlayer();
+                            if(carryPlayer.getTotalMinionsKilled() < player.getTotalMinionsKilled()){
+                                player.setRole("DUO_CARRY");
+                                carryPlayer.setRole("DUO_SUPPORT");
+                            }else{
+                                player.setRole("DUO_SUPPORT");
+                            }
+                        }else if(role.equals("DUO")){
+                            player.setRole("DUO_CARRY");
+                        }
                         redTeam.addPlayer(player);
                     }else{
                         Log.d(LOG_TAG, "EL objeto es nulo");

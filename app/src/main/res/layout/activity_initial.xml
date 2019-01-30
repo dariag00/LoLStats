@@ -45,14 +45,35 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bt_search"
-            android:layout_width="75dp"
-            android:textSize="13sp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/primary_text_dark"
-            android:text="@string/search"/>
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/bt_search"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="13sp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/primary_text_dark"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:text="@string/search"/>
+            <Button
+                android:id="@+id/bt_live_game"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="13sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/primary_text_dark"
+                android:text="LIVE GAME"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/bt_test"

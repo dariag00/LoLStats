@@ -130,7 +130,6 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
 
         @Override
         public void onClick(View v) {
-            Log.d("LOG", "ENTRO en onClick");
             int elementId = summonerEntries.get(getAdapterPosition()).getId();
             String accountId = summonerEntries.get(getAdapterPosition()).getAccoundId();
             itemClickListener.onItemClickListener(elementId, accountId);

@@ -47,6 +47,19 @@ public class LoLStatsUtils {
 
     }
 
+    public static void setWinRateAndTextColorInView(double winRate, Context context, TextView textView){
+        String winRateString = String.format(Locale.ENGLISH, "%.1f", winRate).concat("%");
+        textView.setText(winRateString);
+
+        if(winRate>=60.0){
+            textView.setTextColor(ContextCompat.getColor(context, R.color.lowKdaColor));
+        }else if(winRate <= 40.0 && winRate>=30.0){
+            textView.setTextColor(ContextCompat.getColor(context, R.color.lightRed));
+        }else if(winRate<30.0){
+            textView.setTextColor(ContextCompat.getColor(context, R.color.deathsColor));
+        }
+    }
+
     public static double getDamagePercentOfGivenPlayer(List<Player> players, Player givenPlayer){
 
         double totalDamage = 0;
@@ -129,6 +142,9 @@ public class LoLStatsUtils {
                 break;
             case 470:
                 queueName = "3v3 Ranked Flex";
+                break;
+            case 900:
+                queueName = "ARURF";
                 break;
             case 1200:
                 queueName ="Nexus Blitz";

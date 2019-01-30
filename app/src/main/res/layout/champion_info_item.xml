@@ -20,7 +20,7 @@
             android:id="@+id/tv_list_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="35sp"
             android:layout_marginRight="5dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
@@ -58,19 +58,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
+                    android:textColor="#55ba30"
                     tools:text="150"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    tools:text="-"/>
+                    android:text="-"/>
 
                 <TextView
                     android:id="@+id/tv_losses"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
+                    android:textColor="@color/deathsColor"
                     tools:text="48"/>
 
             </LinearLayout>
@@ -114,33 +116,33 @@
                     android:layout_height="wrap_content"
                     tools:text="2"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/slash"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
                 <TextView
                     android:id="@+id/tv_deaths"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="5"
                     android:textColor="@color/deathsColor"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/slash"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
                 <TextView
                     android:id="@+id/tv_assists"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="12"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -161,14 +163,14 @@
                 android:id="@+id/tv_total_cs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="CS:220"/>
 
             <TextView
                 android:id="@+id/tv_cs_min"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="14.5/min"/>
 
         </LinearLayout>
@@ -176,7 +178,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Click for more details"
+            android:text="Click for more details"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/other_container"/>

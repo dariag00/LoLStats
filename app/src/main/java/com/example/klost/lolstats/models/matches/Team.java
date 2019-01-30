@@ -192,11 +192,33 @@ public class Team implements Serializable {
         return false;
     }
 
-    public Player getPlayerByRole(String role){
-        for(Player pl: players){
-            if(pl.getRole().equals(role))
-                return pl;
+    public boolean hasCarryPlayer(){
+        for(Player player:players){
+            if(player.getRole().equals("DUO_CARRY")){
+                return true;
+            }
         }
+        return false;
+    }
+
+    public Player getCarryPlayer(){
+        for(Player player:players){
+            if(player.getRole().equals("DUO_CARRY")){
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Player getPlayerByRole(String role){
+        Log.d("LOG", "Role: " + role);
+        for(Player pl: players){
+            Log.d("LOG", "ROL: " + role + " oppRole: " + pl.getRole());
+            if(pl.getRole().equals(role)) {
+                return pl;
+            }
+        }
+        Log.d("LOG", "Devuelvo null con rol" + role);
         return null;
     }
 

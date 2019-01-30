@@ -4,7 +4,7 @@ import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.utilities.StaticData;
 
-public class ChampionStats {
+public class ChampionStats{
 
     private Champion champion;
     private Summoner summoner;

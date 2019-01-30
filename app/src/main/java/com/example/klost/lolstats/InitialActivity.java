@@ -56,6 +56,14 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
             }
         });
 
+        Button liveButton = findViewById(R.id.bt_live_game);
+        liveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLiveGameSearch();
+            }
+        });
+
         Button testButton = findViewById(R.id.bt_test);
 
         testButton.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +151,16 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
 
     }
 
+    private void attemptLiveGameSearch(){
+        String summonerName = summonerNameView.getText().toString();
+        if(isValid(summonerName)) {
+            //Creamos un intent que iniciará la activity MainActivity y le pasamos el Summoner Name que hemos procesado
+            Intent intent = new Intent(this, LiveGameActivity.class);
+            intent.putExtra(EXTRA_SUMMONER_NAME, summonerName);
+            startActivity(intent);
+        }
+    }
+
     private void toTest(){
         Intent intent = new Intent(this, TestActivity.class);
         startActivity(intent);
@@ -158,11 +176,9 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         startActivity(intent);
     }
 
-    private void attemptSearch(){
-
+    private boolean isValid(String summonerName){
         summonerNameView.setError(null);
 
-        String summonerName = summonerNameView.getText().toString();
         if (BuildConfig.DEBUG) {
             Log.d("IA.summonerName", summonerName);
         }
@@ -189,7 +205,16 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         if(cancel){
             //Se ha producido un error y se ha de cancelar el proceso
             focusView.requestFocus();
-        }else{
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private void attemptSearch(){
+        String summonerName = summonerNameView.getText().toString();
+        if(isValid(summonerName)) {
             //Creamos un intent que iniciará la activity MainActivity y le pasamos el Summoner Name que hemos procesado
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(EXTRA_SUMMONER_NAME, summonerName);
@@ -212,8 +237,6 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
     @Override
     public void onItemClickListener(int id, String accountId) {
         Context context = this;
-        URL riotSearchUrl = NetworkUtils.buildUrl("ScJfpvZkwqgnXiyoQ52hFS5F0iLpaMuHvus_vJf79mDObQ", NetworkUtils.GET_RANKED_MATCHLIST);
-        Log.d(LOG_TAG, "URL: " + riotSearchUrl.toString());
         Toast.makeText(context, "Clicked " + accountId + " " + accountId, Toast.LENGTH_SHORT)
                 .show();
         Intent intent = new Intent(this, SavedProfileActivity.class);

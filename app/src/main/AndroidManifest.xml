@@ -12,10 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SavedProfileActivity"
-            android:parentActivityName=".InitialActivity"></activity>
-        <activity android:name=".SaveSummonerActivity"
-            android:parentActivityName=".InitialActivity"/>
+        <activity android:name=".ChampionDetailActivity"
+            android:parentActivityName=".SavedProfileActivity"></activity>
+        <activity
+            android:name=".LiveGameActivity"
+            android:parentActivityName=".InitialActivity" />
+        <activity
+            android:name=".SavedProfileActivity"
+            android:parentActivityName=".InitialActivity" />
+        <activity
+            android:name=".SaveSummonerActivity"
+            android:parentActivityName=".InitialActivity" />
         <activity
             android:name=".StartActivity"
             android:theme="@style/AppTheme.NoActionBar">

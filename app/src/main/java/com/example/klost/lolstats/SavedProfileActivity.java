@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
@@ -30,12 +33,14 @@ import com.google.common.util.concurrent.RateLimiter;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 
-public class SavedProfileActivity extends AppCompatActivity {
+public class SavedProfileActivity extends AppCompatActivity implements ChampionStatsAdapter.ItemClickListener{
 
     private RecyclerView recyclerView;
     private ChampionStatsAdapter adapter;
@@ -45,22 +50,26 @@ public class SavedProfileActivity extends AppCompatActivity {
     private static LoLStatsRepository repository;
     private static SummonerEntry summoner;
 
+    public static final String EXTRA_STATS_ITEM = "championStats";
+    private static final String LIFECYCLE_CALLBACKS_ENTRY_KEY = "callbacks";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        repository = LoLStatsRepository.getInstance(getApplication(), AppExecutors.getInstance());
-
         Intent previousIntent = getIntent();
         //TODO null
         int entryId  = previousIntent.getIntExtra(InitialActivity.EXTRA_ENTRY_ID, -1);
+
+        repository = LoLStatsRepository.getInstance(getApplication(), AppExecutors.getInstance());
+
         Log.d(LOG_TAG, "Account Id: " + entryId);
         //accountId = "ScJfpvZkwqgnXiyoQ52hFS5F0iLpaMuHvus_vJf79mDObQ";
         setContentView(R.layout.activity_saved_profile);
         recyclerView = findViewById(R.id.champions_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new ChampionStatsAdapter(this);
+        adapter = new ChampionStatsAdapter(this, this);
         recyclerView.setAdapter(adapter);
 
         LoLStatsRepository repository = LoLStatsRepository.getInstance(getApplication(), AppExecutors.getInstance());
@@ -75,7 +84,25 @@ public class SavedProfileActivity extends AppCompatActivity {
                     provisionalList.add(entry.getMatchId());
                 }
                 ChampionStatsList list = generateChampionStats(matchStatsEntries);
-                adapter.setEntries(list.getChampionStatsList());
+                List<ChampionStats> championStatsList = list.getChampionStatsList();
+                //Ordenamos la lista por numero de partidos jugados
+                Collections.sort(championStatsList, new Comparator<ChampionStats>() {
+                    @Override
+                    public int compare(ChampionStats o1, ChampionStats o2) {
+                        if (o1.getNumberOfGamesPlayed() < o2.getNumberOfGamesPlayed()){
+                            return 1;
+                        }else if(o1.getNumberOfGamesPlayed() > o2.getNumberOfGamesPlayed()) {
+                            return -1;
+                        }else{
+                            if(o1.getNumberOfGamesWon() < o2.getNumberOfGamesWon())
+                                return 1;
+                            if(o1.getNumberOfGamesWon() > o2.getNumberOfGamesWon())
+                                return -1;
+                            return 0;
+                        }
+                    }
+                });
+                adapter.setEntries(championStatsList);
             }
         });
 
@@ -111,6 +138,16 @@ public class SavedProfileActivity extends AppCompatActivity {
         return championStatsList;
     }
 
+    @Override
+    public void onItemClickListener(ChampionStats championStats) {
+        Context context = this;
+        Toast.makeText(context, "Clicked " + championStats.getChampion().getName(), Toast.LENGTH_SHORT)
+                .show();
+        Intent intent = new Intent(this, ChampionDetailActivity.class);
+        //intent.putExtra(EXTRA_STATS_ITEM, championStats);
+        //sstartActivity(intent);
+    }
+
     public class FetchSavedSummonerRankedMatchList extends AsyncTask<Void, Void, Match[]>{
 
         public FetchSavedSummonerRankedMatchList(){
@@ -121,7 +158,7 @@ public class SavedProfileActivity extends AppCompatActivity {
             String matchListSearchResults;
             String matchSearchResults;
             String matchTimelineSearchResults;
-            MatchList matchList = null;
+            MatchList matchList;
             RateLimiter throttler = RateLimiter.create(0.7);
             URL matchListURL = NetworkUtils.buildUrl(accountId, NetworkUtils.GET_RANKED_MATCHLIST);
             Match[] matches = null;
@@ -172,7 +209,6 @@ public class SavedProfileActivity extends AppCompatActivity {
                         }
                     }
 
-
                 }else{
                     return null;
                 }
@@ -218,7 +254,7 @@ public class SavedProfileActivity extends AppCompatActivity {
         entry.setTotalGold(player.getGoldEarned());
         entry.setDamagePercent(LoLStatsUtils.getDamagePercentOfGivenPlayer(match.getTeamOfGivenPlayer(player).getPlayers(), player));
         entry.setVictory(match.hasGivenPlayerWon(player));
-        //TODO todos los datos de dif
+
         Map<Long, Integer> goldDifferenceOverTime = match.getGoldDifferentOfLanersOverTime(sum);
 
         Iterator<Map.Entry<Long, Integer>> iterator = goldDifferenceOverTime.entrySet().iterator();

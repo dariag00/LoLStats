@@ -21,9 +21,15 @@ public class ChampionStatsAdapter  extends RecyclerView.Adapter<ChampionStatsAda
 
     private Context context;
     private List<ChampionStats> list;
+    final private ItemClickListener itemClickListener;
 
-    public ChampionStatsAdapter(Context context){
+    public ChampionStatsAdapter(Context context, ItemClickListener listener){
         this.context = context;
+        this.itemClickListener = listener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClickListener(ChampionStats championStats);
     }
 
 
@@ -44,12 +50,13 @@ public class ChampionStatsAdapter  extends RecyclerView.Adapter<ChampionStatsAda
         holder.losesView.setText(String.valueOf(stats.getNumberOfGamesPlayed()-stats.getNumberOfGamesWon()));
         //holder.totalCsView.setText("CS: " + String.valueOf(stats.getTotalCs()));
         holder.totalCsView.setText("CS: " + String.format(Locale.ENGLISH, "%.1f", stats.getMeanTotalCs()));
-        holder.killsView.setText(String.valueOf(stats.getTotalKills()));
-        holder.deathsView.setText(String.valueOf(stats.getTotalDeaths()));
-        holder.assistsView.setText(String.valueOf(stats.getTotalAssists()));
+        holder.killsView.setText(String.format(Locale.ENGLISH, "%.0f", stats.getMeanKills()));
+        holder.deathsView.setText(String.format(Locale.ENGLISH, "%.0f",stats.getMeanDeaths()));
+        holder.assistsView.setText(String.format(Locale.ENGLISH, "%.0f",stats.getMeanAssists()));
         //TODO meter en stats
         double winRate = ((double) stats.getNumberOfGamesWon() / (double) stats.getNumberOfGamesPlayed()) * 100;
-        holder.winRateView.setText(String.format(Locale.ENGLISH, "%.0f", winRate).concat("%"));
+        LoLStatsUtils.setWinRateAndTextColorInView(winRate, context, holder.winRateView);
+        //holder.winRateView.setText(String.format(Locale.ENGLISH, "%.0f", winRate).concat("%"));
 
         double kda = LoLStatsUtils.calculateKDA(stats.getMeanKills(), stats.getMeanAssists(), stats.getMeanDeaths());
         LoLStatsUtils.setKdaAndTextColorInView(holder.kdaView, kda, context);
@@ -71,7 +78,7 @@ public class ChampionStatsAdapter  extends RecyclerView.Adapter<ChampionStatsAda
         notifyDataSetChanged();
     }
 
-    class ChampionViewHolder extends RecyclerView.ViewHolder {
+    class ChampionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CircleImageView championIconView;
         TextView itemCountView;
@@ -100,6 +107,13 @@ public class ChampionStatsAdapter  extends RecyclerView.Adapter<ChampionStatsAda
             assistsView = itemView.findViewById(R.id.tv_assists);
             totalCsView = itemView.findViewById(R.id.tv_total_cs);
             csMinView = itemView.findViewById(R.id.tv_cs_min);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            ChampionStats stats = list.get(getAdapterPosition());
+            itemClickListener.onItemClickListener(stats);
         }
     }
 }
