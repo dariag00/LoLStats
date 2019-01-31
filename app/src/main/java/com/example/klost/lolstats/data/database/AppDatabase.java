@@ -3,6 +3,8 @@ package com.example.klost.lolstats.data.database;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -36,6 +38,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract SummonerDao summonerDao();
 
     public abstract MatchStatsDao matchStatsDao();
+
+   //public abstract LeaguePositionDao leaguePositionDao();
 
     /*static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override

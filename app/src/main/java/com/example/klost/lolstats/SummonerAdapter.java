@@ -42,30 +42,27 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         SummonerEntry summonerEntry = summonerEntries.get(position);
         String summonerName = summonerEntry.getSummonerName();
         long summonerLevel = summonerEntry.getSummonerLevel();
-        String rank = summonerEntry.getRank();
-        String tier = summonerEntry.getTier();
-        int leaguePoints = summonerEntry.getLeaguePoints();
-        int winRate = summonerEntry.getWinRate();
 
         summonerViewHolder.summonerNameView.setText(summonerName);
         summonerViewHolder.summonerLevelView.setText(String.valueOf(summonerLevel));
         summonerEntry.loadImageFromDDragon(summonerViewHolder.profileIconView);
 
-        if(rank == null || tier == null){
+        if(summonerEntry.getSoloQ() == null){
             showNoRankedData(summonerViewHolder);
             summonerViewHolder.rankView.setText("Unranked");
             summonerViewHolder.rankIconView.setImageResource(R.drawable.unranked);
         }else{
             showRankedData(summonerViewHolder);
-
-            String rankString = tier + " " + rank;
+            int leaguePoints = summonerEntry.getSoloQ().getLeaguePoints();
+            double winRate = (double) summonerEntry.getSoloQ().getWins() / ((double) summonerEntry.getSoloQ().getWins() + summonerEntry.getSoloQ().getLosses()) * 100;
+            String rankString = summonerEntry.getSoloQ().getTier() + " " + summonerEntry.getSoloQ().getRank();
             summonerViewHolder.rankView.setText(rankString);
-            String winRateString = String.valueOf(winRate) + "%";
+            String winRateString = String.valueOf(Math.round(winRate)) + "%";
             summonerViewHolder.winRateView.setText(winRateString);
             summonerViewHolder.leaguePointsView.setText(String.valueOf(leaguePoints).concat(" lps"));
             //TODO fix
             LeaguePosition leaguePosition = new LeaguePosition();
-            leaguePosition.setTier(tier);
+            leaguePosition.setTier(summonerEntry.getSoloQ().getTier());
             leaguePosition.setLeagueIconOnImageView(summonerViewHolder.rankIconView);
         }
     }

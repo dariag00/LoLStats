@@ -89,17 +89,18 @@ public class SaveSummonerActivity extends AppCompatActivity {
             entry.setSummonerName(summoner.getSummonerName());
 
             LeaguePositionList list = summoner.getPositionList();
-            //TODO metodo que devuelva tu rank mas alto
             LeaguePosition soloQ = list.getRankedSoloPosition();
+            LeaguePosition flexQ = list.getRankedFlexPosition();
+            LeaguePosition flexQTT = list.getRankedFlexTTPosition();
 
             if(soloQ != null) {
-                entry.setDivision(soloQ.getRank());
-                entry.setRank(soloQ.getRank());
-                entry.setTier(soloQ.getTier());
-                entry.setTotalRankedGames(soloQ.getWins() + soloQ.getLosses());
-                entry.setWinRate(52);
-                entry.setGamesWon(soloQ.getWins());
-                entry.setLeaguePoints(soloQ.getLeaguePoints());
+                entry.setSoloQ(soloQ);
+            }
+            if(flexQ != null) {
+                entry.setFlexQ(flexQ);
+            }
+            if(flexQTT != null) {
+                entry.setFlexQTT(flexQTT);
             }
 
             repository.addSummonerEntry(entry);

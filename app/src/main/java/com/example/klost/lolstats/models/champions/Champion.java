@@ -86,6 +86,12 @@ public class Champion implements Serializable {
         Picasso.get().load(url.toString()).into(imageView);
     }
 
+    public void loadSplashArtFromDDragon(ImageView imageView){
+        URL url = NetworkUtils.buildUrl(this.name + "_0.jpg", NetworkUtils.GET_DDRAGON_SPLASH_ART);
+        Log.d("Champion Splash", "URL: " + url.toString());
+        Picasso.get().load(url.toString()).into(imageView);
+    }
+
     public String toString(){
 
         StringBuilder builder = new StringBuilder();

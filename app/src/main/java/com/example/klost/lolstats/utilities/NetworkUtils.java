@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-5bd78d94-ba4e-4934-a1d3-a62daba3fef2";
+    private final static String RIOT_API_KEY = "RGAPI-d5b60cc4-10eb-4724-ae02-47bd71c59925";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -36,7 +36,6 @@ public class NetworkUtils {
     private final static String RIOT_GET_SUMMONER = "/lol/summoner/v4/summoners/by-name";
 
     private final static String RIOT_GET_LEAGUES_POSITIONS = "/lol/league/v4/positions/by-summoner";
-
 
     private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
 
@@ -56,6 +55,8 @@ public class NetworkUtils {
     private final static String DDRAGON_GET_ITEM_IMAGE = "/img/item/";
 
     private final static String DDRAGON_GET_PROFILE_ICON = "/img/profileicon/";
+
+    private final static String DDRAGON_GET_SPLASH_ART = "splash/";
 
     public final static String CDRAGON_GET_PERKS = "global/default/v1/perks.json";
 
@@ -84,6 +85,8 @@ public class NetworkUtils {
     public final static int GET_CDRAGON_PERKS = 11;
 
     public final static int GET_RANKED_MATCHLIST = 12;
+
+    public final static int GET_DDRAGON_SPLASH_ART = 13;
 
     final static String QUEUE_PARAM = "queue";
     final static String SEASON_PARAM = "season";
@@ -186,7 +189,14 @@ public class NetworkUtils {
                         .appendPath(riotSearchQuery)
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
                         .appendQueryParameter(QUEUE_PARAM, "420")
+                        //TODO temporal
                         .appendQueryParameter(SEASON_PARAM, "11")
+                        .build();
+                break;
+            case GET_DDRAGON_SPLASH_ART:
+                path = DDRAGON_BASE_URL + DDRAGON_GET_CHAMPION_IMAGE.substring(1) + DDRAGON_GET_SPLASH_ART;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
                         .build();
                 break;
             default:

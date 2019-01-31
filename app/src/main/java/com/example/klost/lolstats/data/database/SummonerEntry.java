@@ -4,11 +4,14 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -24,17 +27,18 @@ public class SummonerEntry{
     private String summonerId;
     private int profileIconId;
     private long summonerLevel;
-    private String division;
-    private String rank;
-    private String tier;
-    private int totalRankedGames;
-    private int gamesWon;
-    private int leaguePoints;
-    private int winRate;
+
+    @Embedded(prefix = "solo_")
+    private LeaguePosition soloQ;
+
+    @Embedded(prefix = "flex_")
+    private LeaguePosition flexQ;
+
+    @Embedded(prefix = "flexqtt_")
+    private LeaguePosition flexQTT;
 
     @Ignore
     public SummonerEntry(String puuid, String accoundId, String summonerId) {
-        this.id = id;
         this.puuid = puuid;
         this.accoundId = accoundId;
         this.summonerId = summonerId;
@@ -53,62 +57,6 @@ public class SummonerEntry{
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getDivision() {
-        return division;
-    }
-
-    public void setDivision(String division) {
-        this.division = division;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
-    public int getTotalRankedGames() {
-        return totalRankedGames;
-    }
-
-    public void setTotalRankedGames(int totalRankedGames) {
-        this.totalRankedGames = totalRankedGames;
-    }
-
-    public int getGamesWon() {
-        return gamesWon;
-    }
-
-    public void setGamesWon(int gamesWon) {
-        this.gamesWon = gamesWon;
-    }
-
-    public String getTier() {
-        return tier;
-    }
-
-    public void setTier(String tier) {
-        this.tier = tier;
-    }
-
-    public int getLeaguePoints() {
-        return leaguePoints;
-    }
-
-    public void setLeaguePoints(int leaguePoints) {
-        this.leaguePoints = leaguePoints;
-    }
-
-    public int getWinRate() {
-        return winRate;
-    }
-
-    public void setWinRate(int winRate) {
-        this.winRate = winRate;
     }
 
     public String getPuuid() {
@@ -157,6 +105,30 @@ public class SummonerEntry{
 
     public void setSummonerLevel(long summonerLevel) {
         this.summonerLevel = summonerLevel;
+    }
+
+    public LeaguePosition getSoloQ() {
+        return soloQ;
+    }
+
+    public void setSoloQ(LeaguePosition soloQ) {
+        this.soloQ = soloQ;
+    }
+
+    public LeaguePosition getFlexQ() {
+        return flexQ;
+    }
+
+    public void setFlexQ(LeaguePosition flexQ) {
+        this.flexQ = flexQ;
+    }
+
+    public LeaguePosition getFlexQTT() {
+        return flexQTT;
+    }
+
+    public void setFlexQTT(LeaguePosition flexQTT) {
+        this.flexQTT = flexQTT;
     }
 
     public void loadImageFromDDragon(ImageView imageView) {

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Room;
 
 import com.example.klost.lolstats.AppExecutors;
 import com.example.klost.lolstats.data.database.AppDatabase;
@@ -81,5 +80,6 @@ public class LoLStatsRepository {
     public LiveData<List<MatchStatsEntry>> getMatchesFromSummoner(int id){
         return matchStatsDao.loadMatchesForSummoner(id);
     }
+
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.example.klost.lolstats.utilities.StaticData;
+import com.google.android.material.tabs.TabLayout;
 import com.google.common.util.concurrent.RateLimiter;
 
 import java.net.URL;
@@ -40,113 +42,59 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SavedProfileActivity extends AppCompatActivity implements ChampionStatsAdapter.ItemClickListener{
+public class SavedProfileActivity extends AppCompatActivity{
 
-    private RecyclerView recyclerView;
-    private ChampionStatsAdapter adapter;
-    private static String accountId;
-    private static List<Long> provisionalList;
     private static final String LOG_TAG = SavedProfileActivity.class.getSimpleName();
-    private static LoLStatsRepository repository;
-    private static SummonerEntry summoner;
 
     public static final String EXTRA_STATS_ITEM = "championStats";
     private static final String LIFECYCLE_CALLBACKS_ENTRY_KEY = "callbacks";
 
+    private static SummonerEntry summoner;
+    private static LoLStatsRepository repository;
+    private static String accountId;
+    private static List<Long> provisionalList;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private SavedProfileViewPagerAdapter viewPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_saved_profile);
+
 
         Intent previousIntent = getIntent();
         //TODO null
         int entryId  = previousIntent.getIntExtra(InitialActivity.EXTRA_ENTRY_ID, -1);
-
+        viewPager =  findViewById(R.id.viewPager);
+        viewPagerAdapter = new SavedProfileViewPagerAdapter(getSupportFragmentManager(), entryId);
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout =  findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
         repository = LoLStatsRepository.getInstance(getApplication(), AppExecutors.getInstance());
-
-        Log.d(LOG_TAG, "Account Id: " + entryId);
-        //accountId = "ScJfpvZkwqgnXiyoQ52hFS5F0iLpaMuHvus_vJf79mDObQ";
-        setContentView(R.layout.activity_saved_profile);
-        recyclerView = findViewById(R.id.champions_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new ChampionStatsAdapter(this, this);
-        recyclerView.setAdapter(adapter);
-
-        LoLStatsRepository repository = LoLStatsRepository.getInstance(getApplication(), AppExecutors.getInstance());
         SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId);
         final SummonerProfileViewModel viewModel = ViewModelProviders.of(this, factory).get(SummonerProfileViewModel.class);
         viewModel.getEntries().observe(this, new Observer<List<MatchStatsEntry>>() {
             @Override
             public void onChanged(List<MatchStatsEntry> matchStatsEntries) {
-                //TODO llamar a un metodo que analice todo y cree una List de ChampionStats
+
                 provisionalList = new ArrayList<>();
                 for(MatchStatsEntry entry:matchStatsEntries){
                     provisionalList.add(entry.getMatchId());
                 }
-                ChampionStatsList list = generateChampionStats(matchStatsEntries);
-                List<ChampionStats> championStatsList = list.getChampionStatsList();
-                //Ordenamos la lista por numero de partidos jugados
-                Collections.sort(championStatsList, new Comparator<ChampionStats>() {
-                    @Override
-                    public int compare(ChampionStats o1, ChampionStats o2) {
-                        if (o1.getNumberOfGamesPlayed() < o2.getNumberOfGamesPlayed()){
-                            return 1;
-                        }else if(o1.getNumberOfGamesPlayed() > o2.getNumberOfGamesPlayed()) {
-                            return -1;
-                        }else{
-                            if(o1.getNumberOfGamesWon() < o2.getNumberOfGamesWon())
-                                return 1;
-                            if(o1.getNumberOfGamesWon() > o2.getNumberOfGamesWon())
-                                return -1;
-                            return 0;
-                        }
-                    }
-                });
-                adapter.setEntries(championStatsList);
             }
         });
-
         viewModel.getSummonerEntryLiveData().observe(this, new Observer<SummonerEntry>() {
             @Override
             public void onChanged(SummonerEntry summonerEntry) {
                 Log.d(LOG_TAG, "Cambios en el summonerEntry");
                 summoner = summonerEntry;
                 accountId = summoner.getAccoundId();
-                new FetchSavedSummonerRankedMatchList().execute();
+                new SavedProfileActivity.FetchSavedSummonerRankedMatchList().execute();
             }
         });
-
     }
 
-    public ChampionStatsList generateChampionStats(List<MatchStatsEntry> entries){
-
-        ChampionStatsList championStatsList = new ChampionStatsList();
-
-        for(MatchStatsEntry statsEntry : entries){
-            Champion champion = StaticData.getChampionList().getChampionById(statsEntry.getChampionId());
-            if(championStatsList.containsChampion(champion)){
-                Log.d(LOG_TAG, "Entro en stats de: " + champion.getName());
-                ChampionStats currentStats = championStatsList.getChampionStats(champion);
-                currentStats.addNewStat(statsEntry);
-            }else{
-                Log.d(LOG_TAG, "Nueva stats de: " + champion.getName());
-                ChampionStats newChampionStats = new ChampionStats(statsEntry);
-                championStatsList.addChampionStats(newChampionStats);
-            }
-        }
-
-        return championStatsList;
-    }
-
-    @Override
-    public void onItemClickListener(ChampionStats championStats) {
-        Context context = this;
-        Toast.makeText(context, "Clicked " + championStats.getChampion().getName(), Toast.LENGTH_SHORT)
-                .show();
-        Intent intent = new Intent(this, ChampionDetailActivity.class);
-        //intent.putExtra(EXTRA_STATS_ITEM, championStats);
-        //sstartActivity(intent);
-    }
 
     public class FetchSavedSummonerRankedMatchList extends AsyncTask<Void, Void, Match[]>{
 
@@ -171,16 +119,16 @@ public class SavedProfileActivity extends AppCompatActivity implements ChampionS
                     List<Match> matchListToProcess = new ArrayList<>();
                     //Log.d(LOG_TAG, matchList.toString());
                     for(Match match : matchList.getMatches()){
-                        Log.d(LOG_TAG,"Final stamp: " + 1548284400000L + " actual: " + match.getGameCreation().getTime());
+                        //Log.d(LOG_TAG,"Final stamp: " + 1548284400000L + " actual: " + match.getGameCreation().getTime());
                         if((match.getGameCreation().getTime() >= 1548284400000L) || match.getSeason() == 13){
-                            Log.d(LOG_TAG, "Entro");
+                            //Log.d(LOG_TAG, "Entro");
                             if(provisionalList != null){
                                 if(!provisionalList.contains(match.getGameId())){
-                                    Log.d(LOG_TAG, "Añado un game con id: " + match.getGameId());
+                                    //Log.d(LOG_TAG, "Añado un game con id: " + match.getGameId());
                                     matchListToProcess.add(match);
                                 }
                             }else{
-                                Log.d(LOG_TAG, "Es null asi que añado todo");
+                                //Log.d(LOG_TAG, "Es null asi que añado todo");
                                 matchListToProcess.add(match);
                             }
                         }
@@ -261,7 +209,7 @@ public class SavedProfileActivity extends AppCompatActivity implements ChampionS
         while (iterator.hasNext()) {
             Map.Entry<Long, Integer> mapEntry = iterator.next();
             int minute = (int) (mapEntry.getKey()/60000);
-            Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
+            //Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
             if(Math.round(minute) == 10)
                 entry.setGoldDiff10(mapEntry.getValue());
             if(Math.round(minute) == 15)
@@ -276,7 +224,7 @@ public class SavedProfileActivity extends AppCompatActivity implements ChampionS
         while (iterator.hasNext()) {
             Map.Entry<Long, Integer> mapEntry = iterator.next();
             int minute = (int) (mapEntry.getKey()/60000);
-            Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
+            //Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
             if(Math.round(minute) == 10)
                 entry.setCsDiffAt10(mapEntry.getValue());
             if(Math.round(minute) == 15)
@@ -291,7 +239,7 @@ public class SavedProfileActivity extends AppCompatActivity implements ChampionS
         while (iterator.hasNext()) {
             Map.Entry<Long, Integer> mapEntry = iterator.next();
             int minute = (int) (mapEntry.getKey()/60000);
-            Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
+            //Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
             if(Math.round(minute) == 10)
                 entry.setCsAt10(mapEntry.getValue());
             if(Math.round(minute) == 15)
@@ -306,7 +254,7 @@ public class SavedProfileActivity extends AppCompatActivity implements ChampionS
         while (iterator.hasNext()) {
             Map.Entry<Long, Integer> mapEntry = iterator.next();
             int minute = (int) (mapEntry.getKey()/60000);
-            Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
+            //Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
             if(Math.round(minute) == 10)
                 entry.setGoldAt10(mapEntry.getValue());
             if(Math.round(minute) == 15)
