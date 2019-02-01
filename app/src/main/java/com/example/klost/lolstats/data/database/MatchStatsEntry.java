@@ -43,10 +43,12 @@ public class MatchStatsEntry {
     private int goldDiff20;
     private int totalGold;
     private double damagePercent;
+    private double goldPercent;
     private long totalDamage;
     private long visionScore;
     private Date gameDate;
     private int seasonId;
+    private String role;
 
     public MatchStatsEntry(long matchId) {
         this.matchId = matchId;
@@ -266,5 +268,21 @@ public class MatchStatsEntry {
 
     public void setSeasonId(int seasonId) {
         this.seasonId = seasonId;
+    }
+
+    public double getGoldPercent() {
+        return goldPercent;
+    }
+
+    public void setGoldPercent(double goldPercent) {
+        this.goldPercent = goldPercent;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

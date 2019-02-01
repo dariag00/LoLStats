@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;
@@ -45,6 +46,17 @@ public class LoLStatsUtils {
         }
 
 
+    }
+
+    public static String formatDoubleValue(double value){
+        String stringValue = String.valueOf(Math.round(value));
+
+        if(stringValue.length()>3){
+            int number = stringValue.length() - 3;
+            return stringValue.substring(0,number).concat(".").concat(String.valueOf(stringValue.charAt(number))).concat("k");
+        }else{
+            return stringValue;
+        }
     }
 
     public static void setWinRateAndTextColorInView(double winRate, Context context, TextView textView){
@@ -614,6 +626,47 @@ public class LoLStatsUtils {
                 break;
         }
 
+    }
+
+    public static double[][] getWinRateAndPlayRateOfRoles(List<MatchStatsEntry> entries){
+        double[][] dataMatrix = new double[5][2];
+        for(MatchStatsEntry entry: entries){
+            Log.d(LOG_TAG, "Role: " + entry.getRole());
+            if(entry.getRole().equals("TOP")){
+                dataMatrix[0][0] =  dataMatrix[0][0] + 1;
+                if(entry.isVictory())
+                    dataMatrix[0][1] =  dataMatrix[0][1] + 1;
+            }else if(entry.getRole().equals("JUNGLE")){
+                dataMatrix[1][0] =  dataMatrix[1][0] + 1;
+                if(entry.isVictory())
+                    dataMatrix[1][1] =  dataMatrix[1][1] + 1;
+            }else if(entry.getRole().equals("MID")){
+                dataMatrix[2][0] =  dataMatrix[2][0] + 1;
+                if(entry.isVictory())
+                    dataMatrix[2][1] =  dataMatrix[2][1] + 1;
+            }else if(entry.getRole().equals("DUO_CARRY")){
+                dataMatrix[3][0] =  dataMatrix[3][0] + 1;
+                if(entry.isVictory()) {
+                    dataMatrix[3][1] = dataMatrix[3][1] + 1;
+                    Log.d(LOG_TAG, "Data: " +  dataMatrix[3][1]);
+                }
+            }else if(entry.getRole().equals("DUO_SUPPORT")){
+                dataMatrix[4][0] =  dataMatrix[4][0] + 1;
+                if(entry.isVictory())
+                    dataMatrix[4][1] =  dataMatrix[4][1] + 1;
+            }
+        }
+
+        for(int i = 0; i<dataMatrix.length; i++){
+            if(dataMatrix[i][0] != 0){
+                dataMatrix[i][1] = (dataMatrix[i][1] / dataMatrix[i][0])* 100;
+                dataMatrix[i][0] = (dataMatrix[i][0] / entries.size()) * 100;
+            }
+        }
+
+        Log.d(LOG_TAG, "Valor: " +  dataMatrix[4][0]);
+        Log.d(LOG_TAG, "Valor: " + dataMatrix[3][0]);
+        return dataMatrix;
     }
 
 

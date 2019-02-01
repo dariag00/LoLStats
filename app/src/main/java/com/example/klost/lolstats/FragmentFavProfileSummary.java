@@ -1,5 +1,6 @@
 package com.example.klost.lolstats;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +16,28 @@ import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionStats;
 import com.example.klost.lolstats.models.champions.ChampionStatsList;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.StaticData;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,15 +45,20 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
 public class FragmentFavProfileSummary extends Fragment {
 
     private static final String LOG_TAG = FragmentFavProfileSummary.class.getSimpleName();
     private final String SAVED_ENTRY = "SAVED_ENTRY_ID";
     ChampionStatsList list;
+    private static PieChart pieChart;
+    private RadarChart radarChart;
 
     @Nullable
     @Override
@@ -44,6 +70,8 @@ public class FragmentFavProfileSummary extends Fragment {
         LoLStatsRepository repository = LoLStatsRepository.getInstance(this.getActivity().getApplication(), AppExecutors.getInstance());
         SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId);
         final SummonerProfileViewModel viewModel = ViewModelProviders.of(this, factory).get(SummonerProfileViewModel.class);
+        pieChart = view.findViewById(R.id.pie_chart);
+        radarChart = view.findViewById(R.id.radar_chart);
         viewModel.getEntries().observe(this, new Observer<List<MatchStatsEntry>>() {
             @Override
             public void onChanged(List<MatchStatsEntry> matchStatsEntries) {
@@ -70,6 +98,65 @@ public class FragmentFavProfileSummary extends Fragment {
                     ImageView splashArt = view.findViewById(R.id.iv_splash_art);
                     Champion champion = list.getChampionStatsList().get(0).getChampion();
                     champion.loadSplashArtFromDDragon(splashArt);
+                    //TODO funcion
+                    TextView totalCs = view.findViewById(R.id.tv_total_cs);
+                    TextView totalDamage = view.findViewById(R.id.tv_total_damage);
+                    TextView totalGold = view.findViewById(R.id.tv_total_gold);
+                    TextView csPerMin = view.findViewById(R.id.tv_cs_min);
+                    TextView goldPerMin = view.findViewById(R.id.tv_gold_min);
+                    TextView damagePercent = view.findViewById(R.id.tv_dmg_percent);
+
+                    String totalCsString = "Cs: " + String.format(Locale.ENGLISH, "%.1f", list.getMeanCsData());
+                    String totalGoldString = "Gold: " + LoLStatsUtils.formatDoubleValue(list.getMeanGoldData());
+                    String totalDamageString = "Damage: " + LoLStatsUtils.formatDoubleValue(list.getMeanDamageData());
+                    //String totalDamageString = "Damage: " + LString.format(Locale.ENGLISH, "%.1f", list.getMeanDamageData());
+                    String csMinString = "Cs/min: " + String.format(Locale.ENGLISH, "%.1f", list.getCsPerMin());
+                    String goldMinString = "G/min: " + String.format(Locale.ENGLISH, "%.1f", list.getGoldPerMin());
+                    String dmgPercentString = "DMG%: " + String.format(Locale.ENGLISH, "%.1f", list.getMeanDamagePercentData());
+
+                    totalCs.setText(totalCsString);
+                    totalDamage.setText(totalDamageString);
+                    totalGold.setText(totalGoldString);
+                    csPerMin.setText(csMinString);
+                    goldPerMin.setText(goldMinString);
+                    damagePercent.setText(dmgPercentString);
+
+                    TextView topPlayRate = view.findViewById(R.id.tv_role_played1);
+                    TextView topWinRate = view.findViewById(R.id.tv_role_win_rate1);
+                    TextView jglePlayRate = view.findViewById(R.id.tv_role_played2);
+                    TextView jgleWinRate = view.findViewById(R.id.tv_role_win_rate2);
+                    TextView midPlayRate = view.findViewById(R.id.tv_role_played3);
+                    TextView midWinRate = view.findViewById(R.id.tv_role_win_rate3);
+                    TextView adcPlayRate = view.findViewById(R.id.tv_role_played4);
+                    TextView adcWinRate = view.findViewById(R.id.tv_role_win_rate4);
+                    TextView suppPlayRate = view.findViewById(R.id.tv_role_played5);
+                    TextView suppWinRate = view.findViewById(R.id.tv_role_win_rate5);
+
+                    double[][] roleData = LoLStatsUtils.getWinRateAndPlayRateOfRoles(matchStatsEntries);
+                    topPlayRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[0][0]).concat("%"));
+                    topWinRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[0][1]).concat("%"));
+                    jglePlayRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[1][0]).concat("%"));
+                    jgleWinRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[1][1]).concat("%"));
+                    midPlayRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[2][0]).concat("%"));
+                    midWinRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[2][1]).concat("%"));
+                    adcPlayRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[3][0]).concat("%"));
+                    adcWinRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[3][1]).concat("%"));
+                    suppPlayRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[4][0]).concat("%"));
+                    suppWinRate.setText(String.format(Locale.ENGLISH, "%.1f",  roleData[4][1]).concat("%"));
+
+                    TextView killsView = view.findViewById(R.id.tv_global_kills);
+                    TextView deathsView = view.findViewById(R.id.tv_global_deaths);
+                    TextView assistsView = view.findViewById(R.id.tv_global_assists);
+                    TextView kdaView = view.findViewById(R.id.tv_global_kda);
+
+                    killsView.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanKills()));
+                    deathsView.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanDeaths()));
+                    assistsView.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanAssists()));
+                    double kda = LoLStatsUtils.calculateKDA(list.getMeanKills(), list.getMeanAssists(), list.getMeanDeaths());
+                    LoLStatsUtils.setKdaAndTextColorInView(kdaView, kda, view.getContext());
+
+                    setChart(list.getNumberOfGamesWon(), list.getNumberOfGamesPlayed()-list.getNumberOfGamesWon());
+                    setRadarChart();
                 }
             }
 
@@ -77,6 +164,7 @@ public class FragmentFavProfileSummary extends Fragment {
         viewModel.getSummonerEntryLiveData().observe(this, new Observer<SummonerEntry>() {
             @Override
             public void onChanged(SummonerEntry entry) {
+                //TODO funcion
                 ImageView profileIcon = view.findViewById(R.id.iv_profile_icon);
                 TextView summonerLevel = view.findViewById(R.id.tv_summoner_level);
                 TextView summonerName = view.findViewById(R.id.tv_summoner_name);
@@ -170,6 +258,7 @@ public class FragmentFavProfileSummary extends Fragment {
         ChampionStatsList championStatsList = new ChampionStatsList();
 
         for(MatchStatsEntry statsEntry : entries){
+            Log.d(LOG_TAG, "%: " + statsEntry.getDamagePercent() + " " + statsEntry.getGoldPercent());
             Champion champion = StaticData.getChampionList().getChampionById(statsEntry.getChampionId());
             if(championStatsList.containsChampion(champion)){
                 Log.d(LOG_TAG, "Entro en stats de: " + champion.getName());
@@ -184,5 +273,180 @@ public class FragmentFavProfileSummary extends Fragment {
 
         return championStatsList;
     }
+
+    private void setChart(int victories, int losses){
+
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+
+        pieChart.setDrawHoleEnabled(true);
+
+        pieChart.setTransparentCircleColor(Color.WHITE);
+        pieChart.setTransparentCircleAlpha(110);
+
+        pieChart.setHoleRadius(5f);
+        pieChart.setTransparentCircleRadius(20f);
+
+        pieChart.setDrawCenterText(false);
+
+        pieChart.setRotationEnabled(false);
+        pieChart.setHighlightPerTapEnabled(true);
+
+        pieChart.setMaxAngle(360f);
+        pieChart.setRotationAngle(180f);
+
+        setData(victories, losses);
+
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
+
+        // entry label styling
+        pieChart.setEntryLabelColor(Color.WHITE);
+        pieChart.setEntryLabelTextSize(8f); //Tamaño del label de dentro
+
+        Legend legend = pieChart.getLegend();
+        legend.setEnabled(false);
+    }
+
+    private void setRadarChart(){
+
+        //radarChart.setBackgroundColor(Color.rgb(60, 65, 82));
+
+        radarChart.getDescription().setEnabled(false);
+
+        radarChart.setWebLineWidth(1f);
+        radarChart.setWebColor(Color.LTGRAY);
+        radarChart.setWebLineWidthInner(1f);
+        radarChart.setWebColorInner(Color.LTGRAY);
+        radarChart.setWebAlpha(100);
+
+        /*MarkerView mv = new RadarMarkerView(this, R.layout.radar_markerview);
+        mv.setChartView(radarChart); // For bounds control
+        radarChart.setMarker(mv); // Set the marker to the chart*/
+        setRadarChartData(list);
+
+        radarChart.animateXY(1400, 1400, Easing.EaseInOutQuad);
+
+        XAxis xAxis = radarChart.getXAxis();
+        //xAxis.setTypeface(tfLight);
+        xAxis.setTextSize(9f);
+        xAxis.setYOffset(0f);
+        xAxis.setXOffset(0f);
+        xAxis.setValueFormatter(new LargeValueFormatter() {
+            private final String[] mActivities = new String[]{"D%", "G%", "CS", "Obj", "Vision"};
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mActivities[(int) value % mActivities.length];
+            }
+
+            /*@Override
+            public String getFormattedValue(float value) {
+                return mActivities[(int) value % mActivities.length];
+            }*/
+        });
+
+        xAxis.setTextColor(Color.BLACK);
+
+        YAxis yAxis = radarChart.getYAxis();
+        //yAxis.setTypeface(tfLight);
+        yAxis.setLabelCount(5, false);
+        yAxis.setTextSize(9f);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(8f);
+        yAxis.setDrawLabels(false);
+
+        radarChart.getLegend().setEnabled(false);
+
+       /* Legend l = radarChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        //l.setTypeface(tfLight);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(5f);
+        l.setTextColor(Color.WHITE);*/
+    }
+
+    private void setData(int wins, int losses) {
+
+        ArrayList<PieEntry> values = new ArrayList<>();
+
+
+        values.add(new PieEntry(wins, "Victories"));
+        values.add(new PieEntry(losses, "Defeats"));
+
+        PieDataSet dataSet = new PieDataSet(values, "Win/Losses of last Games");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+
+        int[] colors = {
+                rgb("#4286f4"), rgb("#f44d41")};
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(7f);
+        data.setValueTextColor(Color.WHITE);
+        pieChart.setData(data);
+
+        pieChart.invalidate();
+    }
+
+    private void setRadarChartData(ChampionStatsList list) {
+
+        ArrayList<RadarEntry> entries1 = new ArrayList<>();
+        //ArrayList<RadarEntry> entries2 = new ArrayList<>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        /*for (int i = 0; i < cnt; i++) {
+            float val1 = (float) (Math.random() * mul) + min;
+            entries1.add(new RadarEntry(val1));
+
+            float val2 = (float) (Math.random() * mul) + min;
+            //entries2.add(new RadarEntry(val2));
+        }*/
+        float value = (float) list.getMeanDamagePercentData()/4;
+        entries1.add(new RadarEntry(value));
+        float value1 = (float) list.getMeanGoldPercentData()/4;
+        Log.d(LOG_TAG, "VALORES: " + value + " " + value1);
+        entries1.add(new RadarEntry(value1));
+        entries1.add(new RadarEntry((float) list.getCsPerMin()));
+        entries1.add(new RadarEntry((float)LoLStatsUtils.calculateKDA(list.getMeanKills(), list.getMeanAssists(), list.getMeanDeaths())));
+        entries1.add(new RadarEntry(5));
+
+        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
+        set1.setColor(ContextCompat.getColor(getView().getContext(), R.color.midKdaColor));
+        set1.setFillColor(ContextCompat.getColor(getView().getContext(), R.color.lightPurple));
+        set1.setDrawFilled(true);
+        set1.setFillAlpha(180);
+        set1.setLineWidth(2f);
+        set1.setDrawHighlightCircleEnabled(true);
+        set1.setDrawHighlightIndicators(false);
+
+        /*RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
+        set2.setColor(Color.rgb(121, 162, 175));
+        set2.setFillColor(Color.rgb(121, 162, 175));
+        set2.setDrawFilled(true);
+        set2.setFillAlpha(180);
+        set2.setLineWidth(2f);
+        set2.setDrawHighlightCircleEnabled(true);
+        set2.setDrawHighlightIndicators(false);*/
+
+        ArrayList<IRadarDataSet> sets = new ArrayList<>();
+        sets.add(set1);
+        //sets.add(set2);
+
+        RadarData data = new RadarData(sets);
+        //data.setValueTypeface(tfLight);
+        data.setValueTextSize(8f);
+        data.setDrawValues(false);
+        data.setValueTextColor(Color.WHITE);
+
+        radarChart.setData(data);
+        radarChart.invalidate();
+    }
+
 
 }

@@ -1,5 +1,7 @@
 package com.example.klost.lolstats.models.champions;
 
+import android.util.Log;
+
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.utilities.StaticData;
@@ -37,6 +39,12 @@ public class ChampionStats{
     private double meanAssists;
     private double visionScore;
     private long timePlaying;
+    private long timesPlayedTop;
+    private long timesPlayedJungle;
+    private long timesPlayedMid;
+    private long timesPlayedAdc;
+    private long timesPlayedSupp;
+    private double goldPercent;
 
     public ChampionStats(MatchStatsEntry entry) {
         this.champion = StaticData.getChampionList().getChampionById(entry.getChampionId());
@@ -72,6 +80,7 @@ public class ChampionStats{
         this.meanKills = entry.getKills();
         this.meanAssists = entry.getAssists();
         this.meanDeaths = entry.getDeaths();
+        this.goldPercent = entry.getGoldPercent();
     }
 
 
@@ -105,6 +114,14 @@ public class ChampionStats{
 
     public void setNumberOfGamesWon(int numberOfGamesWon) {
         this.numberOfGamesWon = numberOfGamesWon;
+    }
+
+    public double getGoldPercent() {
+        return goldPercent;
+    }
+
+    public void setGoldPercent(double goldPercent) {
+        this.goldPercent = goldPercent;
     }
 
     public int getTotalKills() {
@@ -328,6 +345,46 @@ public class ChampionStats{
         return (double) totalCs / minutes;
     }
 
+    public long getTimesPlayedTop() {
+        return timesPlayedTop;
+    }
+
+    public void setTimesPlayedTop(long timesPlayedTop) {
+        this.timesPlayedTop = timesPlayedTop;
+    }
+
+    public long getTimesPlayedJungle() {
+        return timesPlayedJungle;
+    }
+
+    public void setTimesPlayedJungle(long timesPlayedJungle) {
+        this.timesPlayedJungle = timesPlayedJungle;
+    }
+
+    public long getTimesPlayedMid() {
+        return timesPlayedMid;
+    }
+
+    public void setTimesPlayedMid(long timesPlayedMid) {
+        this.timesPlayedMid = timesPlayedMid;
+    }
+
+    public long getTimesPlayedAdc() {
+        return timesPlayedAdc;
+    }
+
+    public void setTimesPlayedAdc(long timesPlayedAdc) {
+        this.timesPlayedAdc = timesPlayedAdc;
+    }
+
+    public long getTimesPlayedSupp() {
+        return timesPlayedSupp;
+    }
+
+    public void setTimesPlayedSupp(long timesPlayedSupp) {
+        this.timesPlayedSupp = timesPlayedSupp;
+    }
+
     public void addNewStat(MatchStatsEntry newStat){
         if(newStat.getChampionId() == this.champion.getChampionId()){
             this.numberOfGamesPlayed++;
@@ -362,8 +419,10 @@ public class ChampionStats{
             this.meanCsDiffAt10 =  ((this.meanCsDiffAt10 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff10()) / (double) this.numberOfGamesPlayed;
             this.meanCsDiffAt15 =  ((this.meanCsDiffAt15 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff15()) / (double) this.numberOfGamesPlayed;
             this.meanCsDiffAt20 =  ((this.meanCsDiffAt20 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff20()) / (double) this.numberOfGamesPlayed;
-
+            Log.d("Test", "Antes DMG: " + this.damagePercent);
             this.damagePercent =  ((this.damagePercent * (this.numberOfGamesPlayed - 1)) + newStat.getDamagePercent()) / (double) this.numberOfGamesPlayed;
+            Log.d("Test", "DMG: " + this.damagePercent + " " + newStat.getDamagePercent());
+            this.goldPercent =  ((this.goldPercent * (this.numberOfGamesPlayed - 1)) + newStat.getGoldPercent()) / (double) this.numberOfGamesPlayed;
 
             this.meanKills =  ((this.meanKills * (this.numberOfGamesPlayed - 1)) + newStat.getKills()) / (double) this.numberOfGamesPlayed;
             this.meanDeaths =  ((this.meanDeaths * (this.numberOfGamesPlayed - 1)) + newStat.getDeaths()) / (double) this.numberOfGamesPlayed;

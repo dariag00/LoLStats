@@ -201,7 +201,9 @@ public class SavedProfileActivity extends AppCompatActivity{
         entry.setVisionScore(player.getVisionScore());
         entry.setTotalGold(player.getGoldEarned());
         entry.setDamagePercent(LoLStatsUtils.getDamagePercentOfGivenPlayer(match.getTeamOfGivenPlayer(player).getPlayers(), player));
+        entry.setGoldPercent(LoLStatsUtils.getGoldPercentOfGivenPlayer(match.getTeamOfGivenPlayer(player).getPlayers(), player));
         entry.setVictory(match.hasGivenPlayerWon(player));
+        entry.setRole(player.getRole());
 
         Map<Long, Integer> goldDifferenceOverTime = match.getGoldDifferentOfLanersOverTime(sum);
 
