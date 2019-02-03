@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.AppDatabase;
@@ -21,6 +22,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Date;
 
@@ -47,11 +49,17 @@ public class SaveSummonerActivity extends AppCompatActivity {
 
     public void onSaveButtonClicked() {
         String summoner = editText.getText().toString();
-        new SummonerQueryTask().execute(summoner);
+        new SummonerQueryTask(this).execute(summoner);
         finish();
     }
 
     public static class SummonerQueryTask extends AsyncTask<String, Void, Summoner>{
+
+        WeakReference<SaveSummonerActivity> weakActivity;
+
+        public SummonerQueryTask(SaveSummonerActivity context){
+            this.weakActivity = new WeakReference<>(context);
+        }
 
 
         @Override
@@ -83,27 +91,34 @@ public class SaveSummonerActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Summoner summoner) {
 
-            final SummonerEntry entry = new SummonerEntry(summoner.getPuuid(), summoner.getEncryptedAccountId(), summoner.getEncryptedSummonerId());
-            entry.setProfileIconId(summoner.getProfileIconId());
-            entry.setSummonerLevel(summoner.getSummonerLevel());
-            entry.setSummonerName(summoner.getSummonerName());
+            if(summoner != null) {
 
-            LeaguePositionList list = summoner.getPositionList();
-            LeaguePosition soloQ = list.getRankedSoloPosition();
-            LeaguePosition flexQ = list.getRankedFlexPosition();
-            LeaguePosition flexQTT = list.getRankedFlexTTPosition();
+                final SummonerEntry entry = new SummonerEntry(summoner.getPuuid(), summoner.getEncryptedAccountId(), summoner.getEncryptedSummonerId());
+                entry.setProfileIconId(summoner.getProfileIconId());
+                entry.setSummonerLevel(summoner.getSummonerLevel());
+                entry.setSummonerName(summoner.getSummonerName());
 
-            if(soloQ != null) {
-                entry.setSoloQ(soloQ);
-            }
-            if(flexQ != null) {
-                entry.setFlexQ(flexQ);
-            }
-            if(flexQTT != null) {
-                entry.setFlexQTT(flexQTT);
-            }
+                LeaguePositionList list = summoner.getPositionList();
+                LeaguePosition soloQ = list.getRankedSoloPosition();
+                LeaguePosition flexQ = list.getRankedFlexPosition();
+                LeaguePosition flexQTT = list.getRankedFlexTTPosition();
 
-            repository.addSummonerEntry(entry);
+                if (soloQ != null) {
+                    entry.setSoloQ(soloQ);
+                }
+                if (flexQ != null) {
+                    entry.setFlexQ(flexQ);
+                }
+                if (flexQTT != null) {
+                    entry.setFlexQTT(flexQTT);
+                }
+
+                repository.addSummonerEntry(entry);
+            }else{
+                SaveSummonerActivity activity = weakActivity.get();
+                Toast.makeText(activity, "A problem ocurred", Toast.LENGTH_SHORT)
+                        .show();
+            }
         }
     }
 }

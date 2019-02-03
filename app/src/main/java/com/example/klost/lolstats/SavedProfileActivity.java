@@ -3,15 +3,11 @@ package com.example.klost.lolstats;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,9 +15,6 @@ import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.data.database.SummonerEntry;
 import com.example.klost.lolstats.models.Summoner;
-import com.example.klost.lolstats.models.champions.Champion;
-import com.example.klost.lolstats.models.champions.ChampionStats;
-import com.example.klost.lolstats.models.champions.ChampionStatsList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.models.matches.Player;
@@ -29,14 +22,12 @@ import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
-import com.example.klost.lolstats.utilities.StaticData;
 import com.google.android.material.tabs.TabLayout;
 import com.google.common.util.concurrent.RateLimiter;
 
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,18 +53,18 @@ public class SavedProfileActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_profile);
 
-
         Intent previousIntent = getIntent();
-        //TODO null
-        int entryId  = previousIntent.getIntExtra(InitialActivity.EXTRA_ENTRY_ID, -1);
+        int entryId  = previousIntent.getIntExtra(InitialActivity.EXTRA_ENTRY_ID, 1);
+        Log.d(LOG_TAG, "Entry: " + entryId);
         viewPager =  findViewById(R.id.viewPager);
         viewPagerAdapter = new SavedProfileViewPagerAdapter(getSupportFragmentManager(), entryId);
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout =  findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         repository = LoLStatsRepository.getInstance(getApplication(), AppExecutors.getInstance());
-        SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId);
+        SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId, 0);
         final SummonerProfileViewModel viewModel = ViewModelProviders.of(this, factory).get(SummonerProfileViewModel.class);
+        final SavedProfileActivity context = this;
         viewModel.getEntries().observe(this, new Observer<List<MatchStatsEntry>>() {
             @Override
             public void onChanged(List<MatchStatsEntry> matchStatsEntries) {
@@ -90,7 +81,7 @@ public class SavedProfileActivity extends AppCompatActivity{
                 Log.d(LOG_TAG, "Cambios en el summonerEntry");
                 summoner = summonerEntry;
                 accountId = summoner.getAccoundId();
-                new SavedProfileActivity.FetchSavedSummonerRankedMatchList().execute();
+                new SavedProfileActivity.FetchSavedSummonerRankedMatchList(context).execute();
             }
         });
     }
@@ -98,7 +89,10 @@ public class SavedProfileActivity extends AppCompatActivity{
 
     public class FetchSavedSummonerRankedMatchList extends AsyncTask<Void, Void, Match[]>{
 
-        public FetchSavedSummonerRankedMatchList(){
+        WeakReference<SavedProfileActivity> weakActivity;
+
+        public FetchSavedSummonerRankedMatchList(SavedProfileActivity context){
+            this.weakActivity = new WeakReference<>(context);
         }
 
         @Override
@@ -171,12 +165,24 @@ public class SavedProfileActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(Match[] matchList) {
-            //TODO meter en la base de datos
-            for(int i = 0; i<matchList.length; i++){
-                Match match = matchList[i];
-                Log.d(LOG_TAG, match.toString());
-                MatchStatsEntry entry = matchToEntry(match);
-                repository.addMatchStatsEntry(entry);
+
+            SavedProfileActivity activity = weakActivity.get();
+
+            if(matchList != null) {
+                for (int i = 0; i < matchList.length; i++) {
+                    Match match = matchList[i];
+                    if(match != null) {
+                        Log.d(LOG_TAG, match.toString());
+                        MatchStatsEntry entry = matchToEntry(match);
+                        repository.addMatchStatsEntry(entry);
+                    }else{
+                        Toast.makeText(activity, "A problem ocurred while processing a match", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            }else{
+                Toast.makeText(activity, "A problem ocurred", Toast.LENGTH_SHORT)
+                        .show();
             }
         }
     }
@@ -190,7 +196,6 @@ public class SavedProfileActivity extends AppCompatActivity{
         entry.setKills(player.getKills());
         entry.setAssists(player.getAssists());
         entry.setDeaths(player.getDeaths());
-        entry.setChampionId(player.getChampionId());
         entry.setDuration(match.getGameDuration());
         entry.setGameDate(match.getGameCreation());
         //TODO temporal
@@ -203,7 +208,9 @@ public class SavedProfileActivity extends AppCompatActivity{
         entry.setDamagePercent(LoLStatsUtils.getDamagePercentOfGivenPlayer(match.getTeamOfGivenPlayer(player).getPlayers(), player));
         entry.setGoldPercent(LoLStatsUtils.getGoldPercentOfGivenPlayer(match.getTeamOfGivenPlayer(player).getPlayers(), player));
         entry.setVictory(match.hasGivenPlayerWon(player));
+        Log.d(LOG_TAG, "ROLE: " + player.getRole() + " mId " +match.getGameId() + " ch " + player.getChampion().getName());
         entry.setRole(player.getRole());
+        entry.setPlayedChampion(player.getChampion());
 
         Map<Long, Integer> goldDifferenceOverTime = match.getGoldDifferentOfLanersOverTime(sum);
 
@@ -226,9 +233,11 @@ public class SavedProfileActivity extends AppCompatActivity{
         while (iterator.hasNext()) {
             Map.Entry<Long, Integer> mapEntry = iterator.next();
             int minute = (int) (mapEntry.getKey()/60000);
-            //Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
-            if(Math.round(minute) == 10)
+
+            if(Math.round(minute) == 10) {
+                Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
                 entry.setCsDiffAt10(mapEntry.getValue());
+            }
             if(Math.round(minute) == 15)
                 entry.setCsDiffAt15(mapEntry.getValue());
             if(Math.round(minute) == 20)

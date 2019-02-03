@@ -29,6 +29,10 @@ public class SavedProfileViewPagerAdapter extends FragmentPagerAdapter {
                 FragmentFavProfileChampionsStats fragment2 = new FragmentFavProfileChampionsStats();
                 fragment2.setArguments(bundle);
                 return fragment2;
+            case 2:
+                FragmentFavProfileMatches fragment3 = new FragmentFavProfileMatches();
+                fragment3.setArguments(bundle);
+                return fragment3;
             default:
                 return null;
         }
@@ -36,7 +40,7 @@ public class SavedProfileViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -48,6 +52,9 @@ public class SavedProfileViewPagerAdapter extends FragmentPagerAdapter {
                 break;
             case 1:
                 title = "Champion Stats";
+                break;
+            case 2:
+                title = "Matches";
                 break;
         }
 

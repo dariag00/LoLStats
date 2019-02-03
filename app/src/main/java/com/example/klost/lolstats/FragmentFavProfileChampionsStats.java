@@ -11,13 +11,10 @@ import android.widget.Toast;
 
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
-import com.example.klost.lolstats.data.database.SummonerEntry;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionStats;
 import com.example.klost.lolstats.models.champions.ChampionStatsList;
-import com.example.klost.lolstats.utilities.StaticData;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +33,8 @@ public class FragmentFavProfileChampionsStats extends Fragment implements Champi
     private ChampionStatsAdapter adapter;
     private static final String LOG_TAG = FragmentFavProfileChampionsStats.class.getSimpleName();
     private final String SAVED_ENTRY = "SAVED_ENTRY_ID";
+    private final String SAVED_CHAMP = "CHAMPION_ID";
+    private int entryId;
 
     @Nullable
     @Override
@@ -43,7 +42,7 @@ public class FragmentFavProfileChampionsStats extends Fragment implements Champi
 
         View view = inflater.inflate(R.layout.fragment_fav_profile_champions, container, false);
 
-        int entryId = this.getArguments().getInt(SAVED_ENTRY);
+        entryId = this.getArguments().getInt(SAVED_ENTRY);
         Log.d(LOG_TAG, "ENTRY ID: " + entryId);
         recyclerView = view.findViewById(R.id.champions_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -52,7 +51,7 @@ public class FragmentFavProfileChampionsStats extends Fragment implements Champi
         recyclerView.setAdapter(adapter);
 
         LoLStatsRepository repository = LoLStatsRepository.getInstance(this.getActivity().getApplication(), AppExecutors.getInstance());
-        SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId);
+        SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId, 0);
         final SummonerProfileViewModel viewModel = ViewModelProviders.of(this, factory).get(SummonerProfileViewModel.class);
         viewModel.getEntries().observe(this, new Observer<List<MatchStatsEntry>>() {
             @Override
@@ -89,7 +88,8 @@ public class FragmentFavProfileChampionsStats extends Fragment implements Champi
         ChampionStatsList championStatsList = new ChampionStatsList();
 
         for(MatchStatsEntry statsEntry : entries){
-            Champion champion = StaticData.getChampionList().getChampionById(statsEntry.getChampionId());
+            Champion champion = statsEntry.getPlayedChampion();
+            Log.d(LOG_TAG, "CsDif: " + statsEntry.getCsDiffAt10());
             if(championStatsList.containsChampion(champion)){
                 Log.d(LOG_TAG, "Entro en stats de: " + champion.getName());
                 ChampionStats currentStats = championStatsList.getChampionStats(champion);
@@ -109,8 +109,9 @@ public class FragmentFavProfileChampionsStats extends Fragment implements Champi
         Context context = this.getContext();
         Toast.makeText(context, "Clicked " + championStats.getChampion().getName(), Toast.LENGTH_SHORT)
                 .show();
-        Intent intent = new Intent(this.getActivity(), ChampionDetailActivity.class);
-        //intent.putExtra(EXTRA_STATS_ITEM, championStats);
-        //startActivity(intent);
+        Intent intent = new Intent(this.getActivity(), ChampionDetailsActivity.class);
+        intent.putExtra(SAVED_ENTRY, entryId);
+        intent.putExtra(SAVED_CHAMP, championStats.getChampion().getChampionId());
+        startActivity(intent);
     }
 }

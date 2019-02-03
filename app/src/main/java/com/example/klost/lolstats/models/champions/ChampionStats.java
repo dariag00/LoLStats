@@ -47,7 +47,7 @@ public class ChampionStats{
     private double goldPercent;
 
     public ChampionStats(MatchStatsEntry entry) {
-        this.champion = StaticData.getChampionList().getChampionById(entry.getChampionId());
+        this.champion = entry.getPlayedChampion();
         //TODO summoner
         this.numberOfGamesPlayed = 1;
         if(entry.isVictory()){
@@ -386,7 +386,7 @@ public class ChampionStats{
     }
 
     public void addNewStat(MatchStatsEntry newStat){
-        if(newStat.getChampionId() == this.champion.getChampionId()){
+        if(newStat.getPlayedChampion().equals(this.champion)){
             this.numberOfGamesPlayed++;
             if(newStat.isVictory()){
                 this.numberOfGamesWon++;
@@ -416,9 +416,9 @@ public class ChampionStats{
             this.meanGoldDiff15 =  ((this.meanGoldDiff15 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff15()) / (double) this.numberOfGamesPlayed;
             this.meanGoldDiff20 =  ((this.meanGoldDiff20 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff20()) / (double) this.numberOfGamesPlayed;
 
-            this.meanCsDiffAt10 =  ((this.meanCsDiffAt10 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff10()) / (double) this.numberOfGamesPlayed;
-            this.meanCsDiffAt15 =  ((this.meanCsDiffAt15 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff15()) / (double) this.numberOfGamesPlayed;
-            this.meanCsDiffAt20 =  ((this.meanCsDiffAt20 * (this.numberOfGamesPlayed - 1)) + newStat.getGoldDiff20()) / (double) this.numberOfGamesPlayed;
+            this.meanCsDiffAt10 =  ((this.meanCsDiffAt10 * (this.numberOfGamesPlayed - 1)) + newStat.getCsDiffAt10()) / (double) this.numberOfGamesPlayed;
+            this.meanCsDiffAt15 =  ((this.meanCsDiffAt15 * (this.numberOfGamesPlayed - 1)) + newStat.getCsDiffAt15()) / (double) this.numberOfGamesPlayed;
+            this.meanCsDiffAt20 =  ((this.meanCsDiffAt20 * (this.numberOfGamesPlayed - 1)) + newStat.getCsDiffAt20()) / (double) this.numberOfGamesPlayed;
             Log.d("Test", "Antes DMG: " + this.damagePercent);
             this.damagePercent =  ((this.damagePercent * (this.numberOfGamesPlayed - 1)) + newStat.getDamagePercent()) / (double) this.numberOfGamesPlayed;
             Log.d("Test", "DMG: " + this.damagePercent + " " + newStat.getDamagePercent());

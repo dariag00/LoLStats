@@ -9,6 +9,8 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.net.URL;
 
+import androidx.room.Ignore;
+
 public class Champion implements Serializable {
 
     private int championId;
@@ -21,7 +23,7 @@ public class Champion implements Serializable {
     public Champion(int championId){
         this.championId = championId;
     }
-
+    @Ignore
     public Champion(int championId, String name){
         this.championId = championId;
         this.name = name;

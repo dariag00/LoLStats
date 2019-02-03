@@ -409,6 +409,12 @@
                                         android:text="Damage: 38"/>
 
                                     <TextView
+                                        android:id="@+id/tv_kill_percent"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Kill Percent: 38"/>
+
+                                    <TextView
                                         android:id="@+id/tv_total_cs"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -480,6 +486,12 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="DMG %: 38"/>
+
+                                    <TextView
+                                        android:id="@+id/tv_gold_percent"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Gold Percent: 38"/>
 
                                     <TextView
                                         android:id="@+id/tv_total_gold"
@@ -773,7 +785,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textSize="12sp"
-                                        tools:text="@string/support"/>
+                                        android:text="@string/support"/>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -808,106 +820,401 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/media_card_view"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                card_view:cardElevation="5dp"
-                card_view:cardUseCompatPadding="true"
-                card_view:cardBackgroundColor="@android:color/white">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <androidx.cardview.widget.CardView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="YOUR LANING PHASE"/>
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:cardBackgroundColor="@android:color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        android:layout_margin="3dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:text="Early Game"
+                            android:layout_gravity="center"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_cs_10"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="CsAt10: 38"/>
-                            <TextView
-                                android:id="@+id/tv_cs_15"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="CsAt15: 57"/>
-                            <TextView
-                                android:id="@+id/tv_cs_20"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="CsAt20: 42"/>
+                                android:text="Ahead in Cs@15:"/>
 
+                            <TextView
+                                android:id="@+id/tv_ahead_cs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="50%"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cs Diff @10:"/>
                             <TextView
                                 android:id="@+id/tv_cs_diff_10"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="CsDiff10: 38"/>
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="10"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cs Diff @15:"/>
+
                             <TextView
                                 android:id="@+id/tv_cs_diff_15"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="CsDiff15: 57"/>
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="10"/>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cs Diff @20:"/>
+
                             <TextView
                                 android:id="@+id/tv_cs_diff_20"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="CsDiff20: 42"/>
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="10"/>
 
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="GoldDiff10 Gold: 38"/>
+                                android:text="Ahead in Gold@15:"/>
+
+                            <TextView
+                                android:id="@+id/tv_ahead_gold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="10"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Gold/GoldDiff15: 38"/>
+                                android:text="Gold Diff @10:"/>
+
+                            <TextView
+                                android:id="@+id/tv_gold_diff_10"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="10"/>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="GoldDiff20: 38"/>
+                                android:text="Gold Diff @15:"/>
+
+                            <TextView
+                                android:id="@+id/tv_gold_diff_15"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="10"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="GoldAt10: 38"/>
+                                android:text="Gold Diff @20:"/>
+
                             <TextView
+                                android:id="@+id/tv_gold_diff_20"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="GoldAt15: 57"/>
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
+                                tools:text="10"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:cardBackgroundColor="@android:color/white">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Personal best"
+                            android:layout_gravity="center"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="0.5"
                                 android:layout_height="wrap_content"
-                                android:text="GoldAt20: 42"/>
+                                android:text="CS/min"/>
+
+                            <ImageView
+                                android:id="@+id/iv_best_champ1"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginLeft="3dp"
+                                android:src="@drawable/mock_champion"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_best_stat1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="7.5/min"/>
+
+                                <TextView
+                                    android:id="@+id/tv_best_date1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="19/10/1997"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="0.5"
+                                android:layout_height="wrap_content"
+                                android:text="KDA"/>
+
+                            <ImageView
+                                android:id="@+id/iv_best_champ2"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginLeft="3dp"
+                                android:src="@drawable/mock_champion"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_best_stat2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="7.5/min"/>
+
+                                <TextView
+                                    android:id="@+id/tv_best_date2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="19/10/1997"/>
+
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
-                    </LinearLayout>
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="0.5"
+                                android:layout_height="wrap_content"
+                                android:text="DMG%"/>
+
+                            <ImageView
+                                android:id="@+id/iv_best_champ3"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginLeft="3dp"
+                                android:src="@drawable/mock_champion"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_best_stat3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="7.5/min"/>
+
+                                <TextView
+                                    android:id="@+id/tv_best_date3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="19/10/1997"/>
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="0.5"
+                                android:layout_height="wrap_content"
+                                android:text="CS/min"/>
+
+                            <ImageView
+                                android:id="@+id/iv_best_champ4"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginLeft="3dp"
+                                android:src="@drawable/mock_champion"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_best_stat4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="7.5/min"/>
+
+                                <TextView
+                                    android:id="@+id/tv_best_date4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="19/10/1997"/>
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardBackgroundColor="@android:color/white">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/cs_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
             </androidx.cardview.widget.CardView>
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/media_card_view3"
@@ -1039,11 +1346,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_matches"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
 
         </LinearLayout>
     </LinearLayout>

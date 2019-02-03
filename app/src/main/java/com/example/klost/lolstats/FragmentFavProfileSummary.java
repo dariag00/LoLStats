@@ -19,29 +19,35 @@ import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.StaticData;
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +65,7 @@ public class FragmentFavProfileSummary extends Fragment {
     ChampionStatsList list;
     private static PieChart pieChart;
     private RadarChart radarChart;
+    private LineChart csChart;
 
     @Nullable
     @Override
@@ -66,12 +73,13 @@ public class FragmentFavProfileSummary extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_fav_profile_summary, container, false);
 
-        int entryId = this.getArguments().getInt(SAVED_ENTRY);
+        final int entryId = this.getArguments().getInt(SAVED_ENTRY);
         LoLStatsRepository repository = LoLStatsRepository.getInstance(this.getActivity().getApplication(), AppExecutors.getInstance());
-        SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId);
+        SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId, 0);
         final SummonerProfileViewModel viewModel = ViewModelProviders.of(this, factory).get(SummonerProfileViewModel.class);
         pieChart = view.findViewById(R.id.pie_chart);
         radarChart = view.findViewById(R.id.radar_chart);
+        csChart = view.findViewById(R.id.cs_chart);
         viewModel.getEntries().observe(this, new Observer<List<MatchStatsEntry>>() {
             @Override
             public void onChanged(List<MatchStatsEntry> matchStatsEntries) {
@@ -157,6 +165,62 @@ public class FragmentFavProfileSummary extends Fragment {
 
                     setChart(list.getNumberOfGamesWon(), list.getNumberOfGamesPlayed()-list.getNumberOfGamesWon());
                     setRadarChart();
+
+                    TextView statView1 = view.findViewById(R.id.tv_best_stat1);
+                    TextView dateView1 = view.findViewById(R.id.tv_best_date1);
+                    ImageView championView1 = view.findViewById(R.id.iv_best_champ1);
+
+                    MatchStatsEntry csEntry = LoLStatsUtils.getBestCsMinMatch(matchStatsEntries);
+                    double csMin = csEntry.getTotalCs()/(csEntry.getDuration()/60.0);
+                    statView1.setText(String.format(Locale.ENGLISH, "%.1f", csMin));
+                    dateView1.setText(LoLStatsUtils.formatDate(csEntry.getGameDate()));
+                    csEntry.getPlayedChampion().loadImageFromDDragon(championView1);
+
+                    TextView statView2 = view.findViewById(R.id.tv_best_stat2);
+                    TextView dateView2 = view.findViewById(R.id.tv_best_date2);
+                    ImageView championView2 = view.findViewById(R.id.iv_best_champ2);
+
+                    MatchStatsEntry kdaEntry = LoLStatsUtils.getBestKdaMatch(matchStatsEntries);
+                    LoLStatsUtils.setKdaAndTextColorInView(statView2, LoLStatsUtils.calculateKDA(kdaEntry.getKills(), kdaEntry.getAssists(), kdaEntry.getDeaths()), view.getContext());
+                    dateView2.setText(LoLStatsUtils.formatDate(csEntry.getGameDate()));
+                    kdaEntry.getPlayedChampion().loadImageFromDDragon(championView2);
+
+                    TextView statView3 = view.findViewById(R.id.tv_best_stat3);
+                    TextView dateView3 = view.findViewById(R.id.tv_best_date3);
+                    ImageView championView3 = view.findViewById(R.id.iv_best_champ3);
+
+                    MatchStatsEntry dmgEntry = LoLStatsUtils.getBestDmgPercentMatch(matchStatsEntries);
+                    statView3.setText(String.format(Locale.ENGLISH, "%.1f", dmgEntry.getDamagePercent()));
+                    dateView3.setText(LoLStatsUtils.formatDate(dmgEntry.getGameDate()));
+                    dmgEntry.getPlayedChampion().loadImageFromDDragon(championView3);
+
+                    TextView aheadCs = view.findViewById(R.id.tv_ahead_cs);
+                    double csPerc = LoLStatsUtils.getPercentageOfGamesCsAheadAt15(matchStatsEntries);
+                    aheadCs.setText(String.format(Locale.ENGLISH, "%.1f", csPerc).concat("%"));
+
+                    TextView aheadGold = view.findViewById(R.id.tv_ahead_gold);
+                    double goldPerc = LoLStatsUtils.getPercentageOfGamesGoldAheadAt15(matchStatsEntries);
+                    aheadGold.setText(String.format(Locale.ENGLISH, "%.1f", goldPerc).concat("%"));
+
+                    TextView csDiff10 = view.findViewById(R.id.tv_cs_diff_10);
+                    TextView csDiff15 = view.findViewById(R.id.tv_cs_diff_15);
+                    TextView csDiff20 = view.findViewById(R.id.tv_cs_diff_20);
+
+                    LoLStatsUtils.setDifferenceData(csDiff10, list.getMeanCsDiffAt10(), view.getContext());
+                    LoLStatsUtils.setDifferenceData(csDiff15, list.getMeanCsDiffAt15(), view.getContext());
+                    LoLStatsUtils.setDifferenceData(csDiff20, list.getMeanCsDiffAt20(), view.getContext());
+
+                    TextView goldDiff10 = view.findViewById(R.id.tv_gold_diff_10);
+                    TextView goldDiff15 = view.findViewById(R.id.tv_gold_diff_15);
+                    TextView goldDiff20 = view.findViewById(R.id.tv_gold_diff_20);
+
+                    LoLStatsUtils.setDifferenceData(goldDiff10, list.getMeanGoldDiffAt10(), view.getContext());
+                    LoLStatsUtils.setDifferenceData(goldDiff15, list.getMeanGoldDiffAt15(), view.getContext());
+                    LoLStatsUtils.setDifferenceData(goldDiff20, list.getMeanGoldDiffAt20(), view.getContext());
+
+                    LineData data = getData(matchStatsEntries);
+                    setupChart(csChart, data);
+
                 }
             }
 
@@ -259,7 +323,7 @@ public class FragmentFavProfileSummary extends Fragment {
 
         for(MatchStatsEntry statsEntry : entries){
             Log.d(LOG_TAG, "%: " + statsEntry.getDamagePercent() + " " + statsEntry.getGoldPercent());
-            Champion champion = StaticData.getChampionList().getChampionById(statsEntry.getChampionId());
+            Champion champion = statsEntry.getPlayedChampion();
             if(championStatsList.containsChampion(champion)){
                 Log.d(LOG_TAG, "Entro en stats de: " + champion.getName());
                 ChampionStats currentStats = championStatsList.getChampionStats(champion);
@@ -446,6 +510,85 @@ public class FragmentFavProfileSummary extends Fragment {
 
         radarChart.setData(data);
         radarChart.invalidate();
+    }
+
+    private void setupChart(LineChart chart, LineData data) {
+
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleHoleColor(Color.rgb(255, 255, 255));
+
+        chart.getDescription().setEnabled(false);
+        chart.setDrawGridBackground(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //xAxis.setTypeface(mTf);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        //leftAxis.setTypeface(mTf);
+        leftAxis.setLabelCount(5, false);
+
+        YAxis rightAxis = chart.getAxisRight();
+        //rightAxis.setTypeface(mTf);
+        rightAxis.setLabelCount(5, false);
+        rightAxis.setDrawGridLines(false);
+
+        // set data
+        chart.setData(data);
+
+        // do not forget to refresh the chart
+        // holder.chart.invalidate();
+        chart.animateX(2500);
+
+        /*Legend l = chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);*/
+    }
+
+    private LineData getData(List<MatchStatsEntry> entries) {
+
+        ArrayList<Entry> valuesEarly = new ArrayList<>();
+        ArrayList<Entry> meanValues = new ArrayList<>();
+        int contador = 0;
+
+        for(MatchStatsEntry entry:entries){
+            contador++;
+            double csMinAt15 = entry.getCsAt15()/15.0;
+            double csMin = entry.getTotalCs()/(entry.getDuration()/60.0);
+            valuesEarly.add(new Entry(contador, (float) csMinAt15));
+            meanValues.add(new Entry(contador, (float) csMin));
+        }
+
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(valuesEarly, "Cs/min at 15");
+
+        LineDataSet set2 = new LineDataSet(meanValues, "Cs/min");
+
+        set1.setLineWidth(2.5f);
+        set1.setCircleRadius(4.5f);
+        set1.setCircleHoleRadius(2.5f);
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setDrawValues(false);
+
+        set2.setLineWidth(2.5f);
+        set2.setCircleRadius(4.5f);
+        set2.setCircleHoleRadius(2.5f);
+        set2.setHighLightColor(Color.rgb(244, 117, 117));
+        set2.setDrawValues(false);
+        set2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        set2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+        sets.add(set1);
+        sets.add(set2);
+
+        return new LineData(sets);
     }
 
 

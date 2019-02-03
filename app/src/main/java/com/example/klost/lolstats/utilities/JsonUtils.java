@@ -110,7 +110,7 @@ public class JsonUtils {
         return matchList;
     }
 
-    public static void getMatchFromJSON(String requestJsonStr, Match match) throws JSONException {
+    public static Match getMatchFromJSON(String requestJsonStr, Match match) throws JSONException {
         //TODO revisar si es mejor no pasar match
 
 
@@ -365,6 +365,8 @@ public class JsonUtils {
         match.setBlueTeam(blueTeam);
         match.setRedTeam(redTeam);
         match.setAsProcessed();
+
+        return match;
     }
 
     public static String getDataTypeFromJSON(String requestJsonStr) throws JSONException {

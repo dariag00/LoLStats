@@ -1,13 +1,12 @@
 package com.example.klost.lolstats.data.database;
 
-import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.champions.Champion;
 
 import java.util.Date;
 
-import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -21,7 +20,6 @@ public class MatchStatsEntry {
 
     @PrimaryKey
     private long matchId;
-    private int championId;
     private int summonerId;
     private int kills;
     private int deaths;
@@ -49,6 +47,8 @@ public class MatchStatsEntry {
     private Date gameDate;
     private int seasonId;
     private String role;
+    @Embedded
+    private Champion playedChampion;
 
     public MatchStatsEntry(long matchId) {
         this.matchId = matchId;
@@ -68,14 +68,6 @@ public class MatchStatsEntry {
 
     public void setSummonerId(int summonerId) {
         this.summonerId = summonerId;
-    }
-
-    public int getChampionId() {
-        return championId;
-    }
-
-    public void setChampionId(int championId) {
-        this.championId = championId;
     }
 
     public int getKills() {
@@ -276,6 +268,14 @@ public class MatchStatsEntry {
 
     public void setGoldPercent(double goldPercent) {
         this.goldPercent = goldPercent;
+    }
+
+    public Champion getPlayedChampion() {
+        return playedChampion;
+    }
+
+    public void setPlayedChampion(Champion playedChampion) {
+        this.playedChampion = playedChampion;
     }
 
     public String getRole() {

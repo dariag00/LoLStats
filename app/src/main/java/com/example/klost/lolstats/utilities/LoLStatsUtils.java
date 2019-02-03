@@ -18,6 +18,7 @@ import com.example.klost.lolstats.models.matches.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,6 +88,15 @@ public class LoLStatsUtils {
             totalGold = totalGold + player.getGoldEarned();
         }
         return (givenPlayer.getGoldEarned() / totalGold) * 100;
+    }
+
+    public static String formatDate(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+        return String.valueOf(dayOfMonth).concat("/").concat(String.valueOf(month)).concat("/").concat(String.valueOf(year));
     }
 
     public static String getDaysAgo(Date date){
@@ -640,7 +650,7 @@ public class LoLStatsUtils {
                 dataMatrix[1][0] =  dataMatrix[1][0] + 1;
                 if(entry.isVictory())
                     dataMatrix[1][1] =  dataMatrix[1][1] + 1;
-            }else if(entry.getRole().equals("MID")){
+            }else if(entry.getRole().equals("MIDDLE")){
                 dataMatrix[2][0] =  dataMatrix[2][0] + 1;
                 if(entry.isVictory())
                     dataMatrix[2][1] =  dataMatrix[2][1] + 1;
@@ -669,9 +679,80 @@ public class LoLStatsUtils {
         return dataMatrix;
     }
 
+    public static MatchStatsEntry getBestKdaMatch(List<MatchStatsEntry> entries){
+        double bestKda = 0;
+        MatchStatsEntry bestKdaEntry = null;
+        for(MatchStatsEntry entry:entries){
+            double kda = LoLStatsUtils.calculateKDA(entry.getKills(), entry.getAssists(), entry.getDeaths());
+            if(kda > bestKda){
+                bestKda = kda;
+                bestKdaEntry = entry;
+            }
+        }
+        return bestKdaEntry;
+    }
 
+    public static MatchStatsEntry getBestCsMinMatch(List<MatchStatsEntry> entries){
+        double bestCs = 0;
+        MatchStatsEntry bestCsEntry = null;
+        for(MatchStatsEntry entry:entries){
+            double csMin = entry.getTotalCs()/(entry.getDuration()/60.0);
+            Log.d(LOG_TAG, "CS: " + csMin + " y " + bestCs);
+            if(csMin > bestCs){
+                bestCs = csMin;
+                bestCsEntry = entry;
+            }
+        }
+        return bestCsEntry;
+    }
 
-    //TODO añadir loadFromDDragon aqui?
+    public static MatchStatsEntry getBestDmgPercentMatch(List<MatchStatsEntry> entries){
+        double bestDmgPercent = 0;
+        MatchStatsEntry bestDmgEntry = null;
+        for(MatchStatsEntry entry:entries){
+            double dmgPercent = entry.getDamagePercent();
+            if(dmgPercent > bestDmgPercent){
+                bestDmgPercent = dmgPercent;
+                bestDmgEntry = entry;
+            }
+        }
+        return bestDmgEntry;
+    }
+
+    public static double getPercentageOfGamesGoldAheadAt15(List<MatchStatsEntry> entries){
+        int numberOfGamesAhead = 0;
+        for(MatchStatsEntry entry:entries){
+            Log.d(LOG_TAG, "ValueGold: " + entry.getGoldDiff15());
+            if(entry.getGoldDiff15()>0){
+                numberOfGamesAhead++;
+            }
+        }
+        return (numberOfGamesAhead/(double) entries.size()) * 100;
+    }
+
+    public static double getPercentageOfGamesCsAheadAt15(List<MatchStatsEntry> entries){
+        int numberOfGamesAhead = 0;
+        for(MatchStatsEntry entry:entries){
+            Log.d(LOG_TAG, "ValueCs: " + entry.getCsDiffAt15());
+            if(entry.getCsDiffAt15()>0){
+                numberOfGamesAhead++;
+            }
+        }
+        return (numberOfGamesAhead/(double) entries.size()) * 100;
+    }
+
+    public static void setDifferenceData(TextView textView, double value, Context context){
+        String valueString = String.format(Locale.ENGLISH, "%.1f", value);
+        if(value>0){
+            String string = "+" + valueString;
+            textView.setText(string);
+            textView.setTextColor(ContextCompat.getColor(context, R.color.positive));
+        }else{
+            textView.setText(valueString);
+            textView.setTextColor(ContextCompat.getColor(context, R.color.defeatColor));
+        }
+    }
+
 
 }
 

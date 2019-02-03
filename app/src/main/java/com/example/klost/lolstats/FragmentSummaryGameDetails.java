@@ -225,6 +225,7 @@ public class FragmentSummaryGameDetails  extends Fragment{
         secondaryPathRune2NameView.setText(rune6.getName());
 
         goldChart = view.findViewById(R.id.gold_chart);
+        Log.d("XD", "TimeLine: " + match.getMatchTimeline().toString());
         Map<Long, Integer> goldMap = match.getGoldDifferenceOverTime();
         LineData data = getData(goldMap);
         setupChart(goldChart, data);

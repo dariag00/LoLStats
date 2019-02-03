@@ -19,6 +19,9 @@ public interface MatchStatsDao {
     @Query("SELECT * FROM match_stats WHERE summonerId=:id")
     LiveData<List<MatchStatsEntry>> loadMatchesForSummoner(final int id);
 
+    @Query("SELECT * FROM match_stats WHERE championId=:id")
+    LiveData<List<MatchStatsEntry>> loadMatchesForChampion(final int id);
+
     @Insert
     void insertMatchStats(MatchStatsEntry matchStatsEntry);
 

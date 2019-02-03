@@ -13,10 +13,12 @@ public class SummonerProfileViewModel extends ViewModel {
 
     private LiveData<List<MatchStatsEntry>> entries;
     private LiveData<SummonerEntry> summonerEntryLiveData;
+    private LiveData<List<MatchStatsEntry>> championEntries;
 
-    public SummonerProfileViewModel(LoLStatsRepository repository, int summonerId){
+    public SummonerProfileViewModel(LoLStatsRepository repository, int summonerId, int championId){
         entries = repository.getMatchesFromSummoner(summonerId);
         summonerEntryLiveData = repository.getSummonerById(summonerId);
+        championEntries = repository.getChampionFromSummonerStats(championId);
     }
 
     public LiveData<List<MatchStatsEntry>> getEntries(){
@@ -25,6 +27,10 @@ public class SummonerProfileViewModel extends ViewModel {
 
     public LiveData<SummonerEntry> getSummonerEntryLiveData(){
         return summonerEntryLiveData;
+    }
+
+    public LiveData<List<MatchStatsEntry>> getChampionEntries(){
+        return championEntries;
     }
 
 }

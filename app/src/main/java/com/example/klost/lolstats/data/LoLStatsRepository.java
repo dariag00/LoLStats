@@ -81,5 +81,9 @@ public class LoLStatsRepository {
         return matchStatsDao.loadMatchesForSummoner(id);
     }
 
+    public LiveData<List<MatchStatsEntry>> getChampionFromSummonerStats(int id){
+        return matchStatsDao.loadMatchesForChampion(id);
+    }
+
 
 }

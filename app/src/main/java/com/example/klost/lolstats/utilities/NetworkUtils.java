@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-399bbd59-3d61-427e-a922-19c62714756c";
+    private final static String RIOT_API_KEY = "RGAPI-b32df815-fb59-4992-ae83-14e94b036555";
 
     private final static String PARAM_KEY = "api_key";
 

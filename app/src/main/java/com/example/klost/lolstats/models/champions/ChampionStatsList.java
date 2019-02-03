@@ -1,5 +1,7 @@
 package com.example.klost.lolstats.models.champions;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,6 +164,67 @@ public class ChampionStatsList {
         }
         totalTimePlayed = totalTimePlayed/60;
         return totalCs/totalTimePlayed;
+    }
+
+    public double getMeanCsDiffAt10(){
+        double total = 0;
+        double totalGames = 0;
+        for(ChampionStats stats : championStatsList){
+            Log.d("LOL", "Val: " + stats.getMeanCsDiffAt10());
+            total = total + stats.getMeanCsDiffAt10() * stats.getNumberOfGamesPlayed();
+            totalGames = totalGames + stats.getNumberOfGamesPlayed();
+        }
+        return total/totalGames;
+    }
+
+    public double getMeanCsDiffAt15(){
+        double total = 0;
+        double totalGames = 0;
+        for(ChampionStats stats : championStatsList){
+            total = total + stats.getMeanCsDiffAt15() * stats.getNumberOfGamesPlayed();
+            totalGames = totalGames + stats.getNumberOfGamesPlayed();
+        }
+        return total/totalGames;
+    }
+
+    public double getMeanCsDiffAt20(){
+        double total = 0;
+        double totalGames = 0;
+        for(ChampionStats stats : championStatsList){
+            total = total + stats.getMeanCsDiffAt20() * stats.getNumberOfGamesPlayed();
+            totalGames = totalGames + stats.getNumberOfGamesPlayed();
+        }
+        return total/totalGames;
+    }
+
+    public double getMeanGoldDiffAt10(){
+        double total = 0;
+        double totalGames = 0;
+        for(ChampionStats stats : championStatsList){
+            total = total + stats.getMeanGoldDiff10() * stats.getNumberOfGamesPlayed();
+            totalGames = totalGames + stats.getNumberOfGamesPlayed();
+        }
+        return total/totalGames;
+    }
+
+    public double getMeanGoldDiffAt15(){
+        double total = 0;
+        double totalGames = 0;
+        for(ChampionStats stats : championStatsList){
+            total = total + stats.getMeanGoldDiff15() * stats.getNumberOfGamesPlayed();
+            totalGames = totalGames + stats.getNumberOfGamesPlayed();
+        }
+        return total/totalGames;
+    }
+
+    public double getMeanGoldDiffAt20(){
+        double total = 0;
+        double totalGames = 0;
+        for(ChampionStats stats : championStatsList){
+            total = total + stats.getMeanGoldDiff20() * stats.getNumberOfGamesPlayed();
+            totalGames = totalGames + stats.getNumberOfGamesPlayed();
+        }
+        return total/totalGames;
     }
 
     public List<ChampionStats> getChampionStatsList() {
