@@ -5,6 +5,8 @@ import com.example.klost.lolstats.models.champions.Champion;
 
 import java.io.Serializable;
 
+import androidx.room.Ignore;
+
 public class Player implements Serializable {
 
     private int participantId;
@@ -13,27 +15,49 @@ public class Player implements Serializable {
     private String highestAchievedSeasoNTier;
     private int spell1Id;
     //TODO eliminar
+    @Ignore
     private int championId;
+    @Ignore
     private Champion champion;
-    private Summoner summoner;//TODO implementar
+    @Ignore
+    private Summoner summoner;
+    @Ignore//TODO implementar
     private long visionScore;
+    @Ignore
     private int assists;
+    @Ignore
     private int deaths;
+    @Ignore
     private int kills;
+    @Ignore
     private long totalDamageDealtToChampions;
+    @Ignore
     private int totalMinionsKilled;
+    @Ignore
     private int neutralMinionsKilled;
+    @Ignore
     private int goldEarned;
+    @Ignore
     private int goldSpent;
+    @Ignore
     private int championLevel;
+    @Ignore
     private int visionWardsBought;
+    @Ignore
     private int pentaKills;
+    @Ignore
     private int quadraKills;
+    @Ignore
     private int largestKillingSpree;
+    @Ignore
     private int wardsPlaced;
+    @Ignore
     private int largestMultiKill;
+    @Ignore
     private int wardsKilled;
+    @Ignore
     private String role;
+    @Ignore
     private String lane;
 
     //TEMPORAL
@@ -61,6 +85,7 @@ public class Player implements Serializable {
 
     }
 
+    @Ignore
     public Player(int participantId){
         this.participantId = participantId;
     }

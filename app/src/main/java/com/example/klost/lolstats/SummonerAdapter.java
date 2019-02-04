@@ -45,6 +45,7 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
 
         summonerViewHolder.summonerNameView.setText(summonerName);
         summonerViewHolder.summonerLevelView.setText(String.valueOf(summonerLevel));
+        Log.d("Test", "AQUI: " + summonerEntry.getProfileIconId());
         summonerEntry.loadImageFromDDragon(summonerViewHolder.profileIconView);
 
         if(summonerEntry.getSoloQ() == null){

@@ -31,8 +31,8 @@
 
                 <ImageView
                     android:id="@+id/iv_profile_icon"
-                    android:layout_width="118dp"
-                    android:layout_height="118dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     tools:src="@drawable/mock_champion"
                     android:background="@drawable/external_border"/>
 
@@ -46,7 +46,6 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:orientation="horizontal">
                         <TextView
                             android:id="@+id/tv_global_kills"
@@ -54,53 +53,33 @@
                             android:layout_height="wrap_content"
                             tools:text="2"
                             android:textColor="@android:color/white"
-                            android:textSize="30sp" />
+                            android:textSize="26sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/slash"
                             android:textColor="@android:color/white"
-                            android:textSize="30sp" />
+                            android:textSize="26sp" />
                         <TextView
                             android:id="@+id/tv_global_deaths"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="2"
                             android:textColor="@color/deathsColor"
-                            android:textSize="30sp" />
+                            android:textSize="26sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/slash"
                             android:textColor="@android:color/white"
-                            android:textSize="30sp" />
+                            android:textSize="26sp" />
                         <TextView
                             android:id="@+id/tv_global_assists"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="12"
                             android:textColor="@android:color/white"
-                            android:textSize="30sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:textSize="30sp"
-                            android:textColor="@android:color/white"
-                            android:text="@string/kda"/>
-
-                        <TextView
-                            android:id="@+id/tv_global_kda"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
-                            android:layout_marginLeft="3dp"
-                            android:layout_marginStart="3dp"
-                            android:textSize="30sp"
-                            tools:text="14,5"/>
+                            android:textSize="26sp" />
 
                     </LinearLayout>
 
@@ -112,26 +91,54 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="33sp"
+                            android:textSize="26sp"
+                            android:textColor="@android:color/white"
+                            android:text="@string/kda"/>
+
+                        <TextView
+                            android:id="@+id/tv_global_kda"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginStart="3dp"
+                            android:textSize="26sp"
+                            tools:text="14,5"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_wins"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="26sp"
                             android:textColor="@android:color/white"
                             android:text="14"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="33sp"
+                            android:textSize="26sp"
                             android:textColor="@android:color/white"
                             android:text="-"/>
                         <TextView
+                            android:id="@+id/tv_losses"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="33sp"
+                            android:textSize="26sp"
                             android:textColor="@android:color/white"
                             android:text="18"/>
 
                         <TextView
+                            android:id="@+id/tv_win_rate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="33sp"
+                            android:textSize="26sp"
                             android:textColor="@android:color/white"
                             android:text="(100%)"/>
 
@@ -149,6 +156,7 @@
                             android:textColor="@android:color/white"
                             android:text="Total Cs: 38"/>
                         <TextView
+                            android:id="@id/tv_cs_min"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
@@ -959,6 +967,20 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            card_view:cardElevation="5dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardBackgroundColor="@android:color/white">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/cs_chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </ScrollView>

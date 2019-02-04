@@ -1,6 +1,7 @@
 package com.example.klost.lolstats.data.database;
 
 import com.example.klost.lolstats.models.champions.Champion;
+import com.example.klost.lolstats.models.matches.Player;
 
 import java.util.Date;
 
@@ -49,6 +50,8 @@ public class MatchStatsEntry {
     private String role;
     @Embedded
     private Champion playedChampion;
+    @Embedded
+    Player player;
 
     public MatchStatsEntry(long matchId) {
         this.matchId = matchId;
@@ -284,5 +287,13 @@ public class MatchStatsEntry {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

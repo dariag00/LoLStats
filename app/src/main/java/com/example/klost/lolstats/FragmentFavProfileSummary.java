@@ -84,7 +84,7 @@ public class FragmentFavProfileSummary extends Fragment {
             @Override
             public void onChanged(List<MatchStatsEntry> matchStatsEntries) {
                 if (matchStatsEntries.size() > 0) {
-                    list = generateChampionStats(matchStatsEntries);
+                    list = LoLStatsUtils.generateChampionStats(matchStatsEntries);
                     List<ChampionStats> championStatsList = list.getChampionStatsList();
                     //Ordenamos la lista por numero de partidos jugados
                     Collections.sort(championStatsList, new Comparator<ChampionStats>() {
@@ -193,6 +193,15 @@ public class FragmentFavProfileSummary extends Fragment {
                     statView3.setText(String.format(Locale.ENGLISH, "%.1f", dmgEntry.getDamagePercent()));
                     dateView3.setText(LoLStatsUtils.formatDate(dmgEntry.getGameDate()));
                     dmgEntry.getPlayedChampion().loadImageFromDDragon(championView3);
+
+                    TextView statView4 = view.findViewById(R.id.tv_best_stat4);
+                    TextView dateView4 = view.findViewById(R.id.tv_best_date4);
+                    ImageView championView4 = view.findViewById(R.id.iv_best_champ4);
+
+                    MatchStatsEntry visionEntry = LoLStatsUtils.getBestDmgPercentMatch(matchStatsEntries);
+                    statView4.setText(String.valueOf(visionEntry.getVisionScore()));
+                    dateView4.setText(LoLStatsUtils.formatDate(visionEntry.getGameDate()));
+                    dmgEntry.getPlayedChampion().loadImageFromDDragon(championView4);
 
                     TextView aheadCs = view.findViewById(R.id.tv_ahead_cs);
                     double csPerc = LoLStatsUtils.getPercentageOfGamesCsAheadAt15(matchStatsEntries);
@@ -317,26 +326,6 @@ public class FragmentFavProfileSummary extends Fragment {
         return view;
     }
     ///TODO meter en championstatslist
-    public ChampionStatsList generateChampionStats(List<MatchStatsEntry> entries){
-
-        ChampionStatsList championStatsList = new ChampionStatsList();
-
-        for(MatchStatsEntry statsEntry : entries){
-            Log.d(LOG_TAG, "%: " + statsEntry.getDamagePercent() + " " + statsEntry.getGoldPercent());
-            Champion champion = statsEntry.getPlayedChampion();
-            if(championStatsList.containsChampion(champion)){
-                Log.d(LOG_TAG, "Entro en stats de: " + champion.getName());
-                ChampionStats currentStats = championStatsList.getChampionStats(champion);
-                currentStats.addNewStat(statsEntry);
-            }else{
-                Log.d(LOG_TAG, "Nueva stats de: " + champion.getName());
-                ChampionStats newChampionStats = new ChampionStats(statsEntry);
-                championStatsList.addChampionStats(newChampionStats);
-            }
-        }
-
-        return championStatsList;
-    }
 
     private void setChart(int victories, int losses){
 

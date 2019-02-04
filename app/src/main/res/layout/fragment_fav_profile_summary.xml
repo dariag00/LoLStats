@@ -406,25 +406,25 @@
                                         android:id="@+id/tv_total_damage"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Damage: 38"/>
+                                        tools:text="Damage: 38"/>
 
                                     <TextView
                                         android:id="@+id/tv_kill_percent"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Kill Percent: 38"/>
+                                        tools:text="Kill Percent: 38"/>
 
                                     <TextView
                                         android:id="@+id/tv_total_cs"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Total Cs: 38"/>
+                                        tools:text="Total Cs: 38"/>
 
                                     <TextView
                                         android:id="@+id/tv_cs_min"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Cs/min: 38"/>
+                                        tools:text="Cs/min: 38"/>
 
                                     <com.github.mikephil.charting.charts.PieChart
                                         android:id="@+id/pie_chart"
@@ -485,24 +485,24 @@
                                         android:id="@+id/tv_dmg_percent"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="DMG %: 38"/>
+                                        tools:text="DMG %: 38"/>
 
                                     <TextView
                                         android:id="@+id/tv_gold_percent"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Gold Percent: 38"/>
+                                        tools:text="Gold Percent: 38"/>
 
                                     <TextView
                                         android:id="@+id/tv_total_gold"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Total Gold: 38"/>
+                                        tools:text="Total Gold: 38"/>
                                     <TextView
                                         android:id="@+id/tv_gold_min"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Gold/min: 38"/>
+                                        tools:text="Gold/min: 38"/>
 
                                     <com.github.mikephil.charting.charts.RadarChart
                                         android:id="@+id/radar_chart"
@@ -1162,13 +1162,14 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="0.5"
                                 android:layout_height="wrap_content"
-                                android:text="CS/min"/>
+                                android:text="Vision score"/>
 
                             <ImageView
                                 android:id="@+id/iv_best_champ4"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_marginLeft="3dp"
+                                android:layout_marginStart="3dp"
                                 android:src="@drawable/mock_champion"/>
 
                             <LinearLayout
@@ -1176,19 +1177,20 @@
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:id="@+id/tv_best_stat4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="7.5/min"/>
+                                    tools:text="7.5/min"/>
 
                                 <TextView
                                     android:id="@+id/tv_best_date4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="19/10/1997"/>
+                                    tools:text="19/10/1997"/>
 
 
                             </LinearLayout>
@@ -1228,6 +1230,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout

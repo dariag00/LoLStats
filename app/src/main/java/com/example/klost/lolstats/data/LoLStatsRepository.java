@@ -64,6 +64,15 @@ public class LoLStatsRepository {
         });
     }
 
+    public void updateSummonerEntry(final SummonerEntry entry){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                summonerDao.updateSummoner(entry);
+            }
+        });
+    }
+
     public void addMatchStatsEntry(final MatchStatsEntry entry){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

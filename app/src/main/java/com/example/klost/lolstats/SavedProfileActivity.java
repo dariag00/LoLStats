@@ -54,7 +54,7 @@ public class SavedProfileActivity extends AppCompatActivity{
         setContentView(R.layout.activity_saved_profile);
 
         Intent previousIntent = getIntent();
-        int entryId  = previousIntent.getIntExtra(InitialActivity.EXTRA_ENTRY_ID, 1);
+        int entryId  = previousIntent.getIntExtra(InitialActivity.EXTRA_ENTRY_ID, -1);
         Log.d(LOG_TAG, "Entry: " + entryId);
         viewPager =  findViewById(R.id.viewPager);
         viewPagerAdapter = new SavedProfileViewPagerAdapter(getSupportFragmentManager(), entryId);
@@ -211,6 +211,7 @@ public class SavedProfileActivity extends AppCompatActivity{
         Log.d(LOG_TAG, "ROLE: " + player.getRole() + " mId " +match.getGameId() + " ch " + player.getChampion().getName());
         entry.setRole(player.getRole());
         entry.setPlayedChampion(player.getChampion());
+        entry.setPlayer(player);
 
         Map<Long, Integer> goldDifferenceOverTime = match.getGoldDifferentOfLanersOverTime(sum);
 

@@ -112,7 +112,6 @@ public class SaveSummonerActivity extends AppCompatActivity {
                 if (flexQTT != null) {
                     entry.setFlexQTT(flexQTT);
                 }
-
                 repository.addSummonerEntry(entry);
             }else{
                 SaveSummonerActivity activity = weakActivity.get();

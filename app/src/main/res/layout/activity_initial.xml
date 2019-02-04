@@ -84,24 +84,12 @@
             android:layout_marginStart="10dp"
             android:text="IR A LOS NUEVOS LAYOUTS"/>
 
-
-        <Button
-            android:id="@+id/bt_test3"
-            android:layout_width="wrap_content"
-            android:textSize="13sp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:text="IR A MATCH DETAILS"/>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewSummoners"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="80dp" />
-
-
 
     </LinearLayout>
 

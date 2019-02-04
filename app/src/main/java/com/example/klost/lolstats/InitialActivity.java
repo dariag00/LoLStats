@@ -2,6 +2,7 @@ package com.example.klost.lolstats;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -18,11 +19,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.AppDatabase;
 import com.example.klost.lolstats.data.database.SummonerEntry;
+import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
+import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
+import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.common.util.concurrent.RateLimiter;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,6 +51,8 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
 
     private static final String LOG_TAG = InitialActivity.class.getSimpleName();
     private String[] spinnerTitles;
+    private static LoLStatsRepository repository;
+    private boolean updated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,23 +86,7 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
             }
         });
 
-        /*Button testButton2 = findViewById(R.id.bt_test2);
-
-        testButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toTest2();
-            }
-        });*/
-
-        Button testButton3 = findViewById(R.id.bt_test3);
-
-        testButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toMatchDetail();
-            }
-        });
+        repository = LoLStatsRepository.getInstance(this.getApplication(), AppExecutors.getInstance());
 
         spinnerTitles = new String[]{"EUW", "EUNE", "NA", "KR", "OCE", "BR", "RU", "JP"};
         int flags[] = {R.drawable.eu_flag, R.drawable.eune_flag, R.drawable.na_flag, R.drawable.korea_flag, R.drawable.oceania_flag, R.drawable.brazil_flag, R.drawable.russia_flag, R.drawable.japan_flag};
@@ -105,7 +102,7 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         adapter = new SummonerAdapter(this, this);
         recyclerView.setAdapter(adapter);
 
-
+        updated = false;
         FloatingActionButton fabButton = findViewById(R.id.fab);
 
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -117,11 +114,21 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
             }
         });
 
+        final InitialActivity context = this;
+
         InitialViewModel viewModel = ViewModelProviders.of(this).get(InitialViewModel.class);
         viewModel.getSummoners().observe(this, new Observer<List<SummonerEntry>>() {
             @Override
             public void onChanged(List<SummonerEntry> summonerEntries) {
                 Log.d(LOG_TAG, "Updating list of tasks from LiveData in ViewModel");
+                if(!updated) {
+                    updated = true;
+                    for(SummonerEntry entry:summonerEntries){
+                            new SummonerQueryTask(context).execute(entry.getSummonerName());
+
+                    }
+                }
+
                 adapter.setSummonerEntries(summonerEntries);
             }
         });
@@ -166,10 +173,6 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         startActivity(intent);
     }
 
-    private void toTest2(){
-        Intent intent = new Intent(this, TestMainLayoutActivity.class);
-        startActivity(intent);
-    }
 
     private void toMatchDetail(){
         Intent intent = new Intent(this, GameDetailsActivity.class);
@@ -242,5 +245,75 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         Intent intent = new Intent(this, SavedProfileActivity.class);
         intent.putExtra(EXTRA_ENTRY_ID, id);
         startActivity(intent);
+    }
+
+    public static class SummonerQueryTask extends AsyncTask<String, Void, Summoner> {
+
+        WeakReference<InitialActivity> weakActivity;
+
+        public SummonerQueryTask(InitialActivity context){
+            this.weakActivity = new WeakReference<>(context);
+        }
+
+
+        @Override
+        protected Summoner doInBackground(String... strings) {
+            RateLimiter throttler = RateLimiter.create(0.7);
+            String summonerName = strings[0];
+            Summoner summoner = null;
+            String summonerSearchResults;
+            String leaguePositionList;
+            URL riotSearchUrl = NetworkUtils.buildUrl(summonerName, NetworkUtils.GET_SUMMONER);
+            try {
+                summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(riotSearchUrl, throttler);
+                summoner = JsonUtils.getSummonerFromJSON(summonerSearchResults);
+                URL leaguesURL = NetworkUtils.buildUrl(String.valueOf(summoner.getEncryptedSummonerId()), NetworkUtils.GET_LEAGUES_POSITIONS);
+                if(leaguesURL != null){
+                    String leaguesSearchResult = NetworkUtils.getResponseFromHttpUrl(leaguesURL, throttler);
+                    LeaguePositionList positionList = JsonUtils.getLeaguePositionListFromJSON(leaguesSearchResult);
+                    summoner.setPositionList(positionList);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return summoner;
+        }
+
+        @Override
+        protected void onPostExecute(Summoner summoner) {
+            Log.d(LOG_TAG, "EMTRO");
+            if(summoner != null) {
+                Log.d(LOG_TAG, "Entro 2");
+                final SummonerEntry entry = new SummonerEntry(summoner.getPuuid(), summoner.getEncryptedAccountId(), summoner.getEncryptedSummonerId());
+                entry.setProfileIconId(summoner.getProfileIconId());
+                Log.d(LOG_TAG, "ID: " + summoner.getProfileIconId());
+                entry.setSummonerLevel(summoner.getSummonerLevel());
+                entry.setSummonerName(summoner.getSummonerName());
+
+                LeaguePositionList list = summoner.getPositionList();
+                LeaguePosition soloQ = list.getRankedSoloPosition();
+                LeaguePosition flexQ = list.getRankedFlexPosition();
+                LeaguePosition flexQTT = list.getRankedFlexTTPosition();
+
+                if (soloQ != null) {
+                    entry.setSoloQ(soloQ);
+                }
+                if (flexQ != null) {
+                    entry.setFlexQ(flexQ);
+                }
+                if (flexQTT != null) {
+                    entry.setFlexQTT(flexQTT);
+                }
+                entry.setId(23);
+                repository.updateSummonerEntry(entry);
+            }else{
+                InitialActivity activity = weakActivity.get();
+                Toast.makeText(activity, "A problem ocurred", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
     }
 }

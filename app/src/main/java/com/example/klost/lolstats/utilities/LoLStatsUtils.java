@@ -12,6 +12,8 @@ import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;
+import com.example.klost.lolstats.models.champions.ChampionStats;
+import com.example.klost.lolstats.models.champions.ChampionStatsList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.models.matches.Team;
@@ -719,6 +721,19 @@ public class LoLStatsUtils {
         return bestDmgEntry;
     }
 
+    public static MatchStatsEntry getBestVisionScoreMatch(List<MatchStatsEntry> entries){
+        long bestScore = 0;
+        MatchStatsEntry besScoreEntry = null;
+        for(MatchStatsEntry entry:entries){
+            long visionScore = entry.getVisionScore();
+            if(visionScore > bestScore){
+                bestScore = visionScore;
+                besScoreEntry = entry;
+            }
+        }
+        return besScoreEntry;
+    }
+
     public static double getPercentageOfGamesGoldAheadAt15(List<MatchStatsEntry> entries){
         int numberOfGamesAhead = 0;
         for(MatchStatsEntry entry:entries){
@@ -751,6 +766,27 @@ public class LoLStatsUtils {
             textView.setText(valueString);
             textView.setTextColor(ContextCompat.getColor(context, R.color.defeatColor));
         }
+    }
+
+    public static ChampionStatsList generateChampionStats(List<MatchStatsEntry> entries){
+
+        ChampionStatsList championStatsList = new ChampionStatsList();
+
+        for(MatchStatsEntry statsEntry : entries){
+            Log.d(LOG_TAG, "%: " + statsEntry.getDamagePercent() + " " + statsEntry.getGoldPercent());
+            Champion champion = statsEntry.getPlayedChampion();
+            if(championStatsList.containsChampion(champion)){
+                Log.d(LOG_TAG, "Entro en stats de: " + champion.getName());
+                ChampionStats currentStats = championStatsList.getChampionStats(champion);
+                currentStats.addNewStat(statsEntry);
+            }else{
+                Log.d(LOG_TAG, "Nueva stats de: " + champion.getName());
+                ChampionStats newChampionStats = new ChampionStats(statsEntry);
+                championStatsList.addChampionStats(newChampionStats);
+            }
+        }
+
+        return championStatsList;
     }
 
 

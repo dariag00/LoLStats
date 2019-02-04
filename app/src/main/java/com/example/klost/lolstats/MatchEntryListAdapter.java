@@ -14,9 +14,14 @@ import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;
 import com.example.klost.lolstats.models.champions.ChampionStats;
+import com.example.klost.lolstats.models.items.Item;
 import com.example.klost.lolstats.models.items.ItemList;
 import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.matches.Player;
+import com.example.klost.lolstats.models.runes.Rune;
 import com.example.klost.lolstats.models.runes.RuneList;
+import com.example.klost.lolstats.models.runes.RunePath;
+import com.example.klost.lolstats.models.summoners.SummonerSpell;
 import com.example.klost.lolstats.models.summoners.SummonerSpellList;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.StaticData;
@@ -57,6 +62,7 @@ public class MatchEntryListAdapter  extends RecyclerView.Adapter<MatchEntryListA
     public void onBindViewHolder(@NonNull MatchEntryListAdapterViewHolder holder, int position) {
 
         MatchStatsEntry match = matches.get(position);
+        Player player = match.getPlayer();
         Log.d("Adapter", "Entro en " + match.getPlayedChampion().getName());
 
         ItemList itemList = StaticData.getItemList();
@@ -77,7 +83,7 @@ public class MatchEntryListAdapter  extends RecyclerView.Adapter<MatchEntryListA
             champion.loadImageFromDDragon(holder.championImageView);
 
             //Seteo de los hechizos de invocador jugados
-            /*SummonerSpell firstSummonerSpell = summonerSpellList.getSpellById(player.getSpell1Id());
+            SummonerSpell firstSummonerSpell = summonerSpellList.getSpellById(player.getSpell1Id());
             firstSummonerSpell.loadImageFromDDragon(holder.firstSummonerSpellIconView);
 
             SummonerSpell secondSummonerSpell = summonerSpellList.getSpellById(player.getSpell2Id());
@@ -88,7 +94,7 @@ public class MatchEntryListAdapter  extends RecyclerView.Adapter<MatchEntryListA
             mainRune.loadImageFromDDragon(holder.mainRuneView);
 
             RunePath secondaryRune = runeList.getRunePathById(player.getRuneSecondaryStyle());
-            secondaryRune.loadImageFromDDragon(holder.secondaryRuneView);*/
+            secondaryRune.loadImageFromDDragon(holder.secondaryRuneView);
 
             //Seteo del resultado del jugador
             holder.killsTextView.setText(String.valueOf(match.getKills()));
@@ -112,7 +118,7 @@ public class MatchEntryListAdapter  extends RecyclerView.Adapter<MatchEntryListA
             double kda = LoLStatsUtils.calculateKDA(match.getKills(), match.getAssists(), match.getDeaths());
             LoLStatsUtils.setKdaAndTextColorInView(holder.kdaTextView, kda, holder.itemView.getContext());
 
-            /*//Seteo de los items jugados
+            //Seteo de los items jugados
             Item firstItem = itemList.getItemById(player.getItem0());
             Item secondItem = itemList.getItemById(player.getItem1());
             Item thirdItem = itemList.getItemById(player.getItem2());
@@ -134,7 +140,7 @@ public class MatchEntryListAdapter  extends RecyclerView.Adapter<MatchEntryListA
             if (sixthItem != null)
                 sixthItem.loadImageFromDDragon(holder.sixthItemView);
             if (seventhItem != null)
-                seventhItem.loadImageFromDDragon(holder.trinketItemView);*/
+                seventhItem.loadImageFromDDragon(holder.trinketItemView);
 
             //Seteo del resto de datos
             //holder.gameDurationTextView.setText(match.getGameDurationInMinutesAndSeconds());
