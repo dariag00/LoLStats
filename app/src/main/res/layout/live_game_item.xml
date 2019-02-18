@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:padding="2dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_player_champion"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:src="@drawable/mock_champion"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        style="@style/match_details_champion_image"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_player_keystone"
+                android:src="@drawable/main_rune"
+                style="@style/match_details_top_icon" />
+
+            <ImageView
+                android:id="@+id/iv_player_secondary_rune"
+                android:src="@drawable/secondary_rune"
+                style="@style/match_details_bottom_icon" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/iv_player_first_summoner"
+                style="@style/match_details_top_icon"
+                android:src="@drawable/ignite" />
+
+            <ImageView
+                android:id="@+id/iv_player_second_summoner"
+                style="@style/match_details_bottom_icon"
+                android:src="@drawable/flash" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.75"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="I Am Klose"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="AKALI"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:text="LEVEL 15"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/bronze_mini"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_gravity="center"
+                android:text="BRONZE 2"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="54%WR:"/>
+
+    </LinearLayout>
+
+</LinearLayout>

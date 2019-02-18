@@ -1217,138 +1217,120 @@
 
             </androidx.cardview.widget.CardView>
 
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/media_card_view3"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                card_view:cardElevation="5dp"
-                card_view:cardUseCompatPadding="true"
-                card_view:cardBackgroundColor="@android:color/white">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Last Week Stats"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_margin="3dp"
+                            android:id="@+id/ly_no_data">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:src="@drawable/warning"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:text="No Data Available"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Recently played with"
-                            android:textSize="12sp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="I Am Klose"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="7-2 (50%)"/>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <View
-                            android:id="@+id/divider"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="I Am Klose"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="7-2 (50%)"/>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="I Am Klose"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="7-2 (50%)"/>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="I Am Klose"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="7-2 (50%)"/>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:cardBackgroundColor="@android:color/white">
 
                     <LinearLayout
                         android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Vision Stats"/>
+                            android:layout_gravity="center_horizontal"
+                            android:text="Aggression and Vision Stats"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DPM"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DPM"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="First Blood Participation"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="First Blood Victim"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vision Score"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wards per min"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wards bought"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wards cleared"/>
 
                     </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
