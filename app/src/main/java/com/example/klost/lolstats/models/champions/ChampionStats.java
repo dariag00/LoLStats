@@ -45,6 +45,7 @@ public class ChampionStats{
     private long timesPlayedAdc;
     private long timesPlayedSupp;
     private double goldPercent;
+    private double meanDpm;
 
     public ChampionStats(MatchStatsEntry entry) {
         this.champion = entry.getPlayedChampion();
@@ -385,6 +386,14 @@ public class ChampionStats{
         this.timesPlayedSupp = timesPlayedSupp;
     }
 
+    public double getMeanDpm() {
+        return meanDpm;
+    }
+
+    public void setMeanDpm(double meanDpm) {
+        this.meanDpm = meanDpm;
+    }
+
     public void addNewStat(MatchStatsEntry newStat){
         if(newStat.getPlayedChampion().equals(this.champion)){
             this.numberOfGamesPlayed++;
@@ -427,6 +436,8 @@ public class ChampionStats{
             this.meanKills =  ((this.meanKills * (this.numberOfGamesPlayed - 1)) + newStat.getKills()) / (double) this.numberOfGamesPlayed;
             this.meanDeaths =  ((this.meanDeaths * (this.numberOfGamesPlayed - 1)) + newStat.getDeaths()) / (double) this.numberOfGamesPlayed;
             this.meanAssists =  ((this.meanAssists * (this.numberOfGamesPlayed - 1)) + newStat.getAssists()) / (double) this.numberOfGamesPlayed;
+
+            this.meanDpm =  ((this.meanDpm * (this.numberOfGamesPlayed - 1)) + newStat.getDpm()) / (double) this.numberOfGamesPlayed;
 
         }
     }

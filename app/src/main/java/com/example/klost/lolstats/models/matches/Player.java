@@ -41,7 +41,7 @@ public class Player implements Serializable {
     private int goldSpent;
     @Ignore
     private int championLevel;
-    @Ignore
+
     private int visionWardsBought;
     @Ignore
     private int pentaKills;
@@ -49,11 +49,11 @@ public class Player implements Serializable {
     private int quadraKills;
     @Ignore
     private int largestKillingSpree;
-    @Ignore
+
     private int wardsPlaced;
     @Ignore
     private int largestMultiKill;
-    @Ignore
+
     private int wardsKilled;
     @Ignore
     private String role;

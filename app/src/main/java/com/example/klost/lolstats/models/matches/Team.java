@@ -209,9 +209,13 @@ public class Team implements Serializable {
         }
         return null;
     }
+    //TODO bug role BOTTOM
 
     public Player getPlayerByRole(String role){
         Log.d("LOG", "Role: " + role);
+        if(role.equals("BOTTOM")){
+            role = "DUO_CARRY";
+        }
         for(Player pl: players){
             Log.d("LOG", "ROL: " + role + " oppRole: " + pl.getRole());
             if(pl.getRole().equals(role)) {
@@ -219,6 +223,7 @@ public class Team implements Serializable {
             }
         }
         Log.d("LOG", "Devuelvo null con rol" + role);
+
         return null;
     }
 

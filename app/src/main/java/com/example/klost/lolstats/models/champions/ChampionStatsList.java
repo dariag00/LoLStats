@@ -227,6 +227,16 @@ public class ChampionStatsList {
         return total/totalGames;
     }
 
+    public double getMeanDpm(){
+        double total = 0;
+        double totalGames = 0;
+        for(ChampionStats stats : championStatsList){
+            total = total + stats.getMeanDpm() * stats.getNumberOfGamesPlayed();
+            totalGames = totalGames + stats.getNumberOfGamesPlayed();
+        }
+        return total/totalGames;
+    }
+
     public List<ChampionStats> getChampionStatsList() {
         return championStatsList;
     }

@@ -210,11 +210,9 @@ public class Match implements Serializable {
 
         long uptime = this.gameDuration;
 
-        Log.d("MATCH", "upTime " + String.valueOf(uptime));
         long minutes = TimeUnit.SECONDS
                 .toMinutes(uptime);
         uptime -= TimeUnit.MINUTES.toSeconds(minutes);
-        Log.d("MATCH", "upTime " + String.valueOf(uptime) + " " + " mins " + String.valueOf(minutes));
 
         return String.valueOf(minutes) + "m " + String.valueOf(uptime) + "s";
     }

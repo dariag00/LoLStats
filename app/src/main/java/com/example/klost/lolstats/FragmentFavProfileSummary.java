@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.klost.lolstats.data.LoLStatsRepository;
@@ -55,10 +56,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
-public class FragmentFavProfileSummary extends Fragment {
+public class FragmentFavProfileSummary extends Fragment implements LastGamesAdapter.ItemClickListener{
 
     private static final String LOG_TAG = FragmentFavProfileSummary.class.getSimpleName();
     private final String SAVED_ENTRY = "SAVED_ENTRY_ID";
@@ -66,6 +69,9 @@ public class FragmentFavProfileSummary extends Fragment {
     private static PieChart pieChart;
     private RadarChart radarChart;
     private LineChart csChart;
+    private RecyclerView lastGamesRecyclerView;
+    private LastGamesAdapter adapter;
+    private LinearLayout alertLayout;
 
     @Nullable
     @Override
@@ -80,6 +86,17 @@ public class FragmentFavProfileSummary extends Fragment {
         pieChart = view.findViewById(R.id.pie_chart);
         radarChart = view.findViewById(R.id.radar_chart);
         csChart = view.findViewById(R.id.cs_chart);
+
+
+        lastGamesRecyclerView = view.findViewById(R.id.last_games_recyclerView);
+
+        lastGamesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        adapter = new LastGamesAdapter(this.getContext(), this);
+        lastGamesRecyclerView.setAdapter(adapter);
+
+        alertLayout = view.findViewById(R.id.ly_no_data);
+
         viewModel.getEntries().observe(this, new Observer<List<MatchStatsEntry>>() {
             @Override
             public void onChanged(List<MatchStatsEntry> matchStatsEntries) {
@@ -103,6 +120,20 @@ public class FragmentFavProfileSummary extends Fragment {
                             }
                         }
                     });
+
+                    List<MatchStatsEntry> lastEntries = LoLStatsUtils.getLast7DaysMatches(matchStatsEntries);
+                    ChampionStatsList lastGamesPlayedList = LoLStatsUtils.generateChampionStats(lastEntries);
+                    Log.d(LOG_TAG, "Sizee: " + lastGamesPlayedList.getChampionStatsList().size());
+                    Log.d(LOG_TAG, "Sizee: 2" + adapter.getItemCount());
+                    if(lastGamesPlayedList.getChampionStatsList().size()>0){
+                        alertLayout.setVisibility(View.GONE);
+                        adapter.setData(lastGamesPlayedList);
+                        Log.d(LOG_TAG, "Sizee: " + adapter.getItemCount());
+                    }else{
+                        alertLayout.setVisibility(View.VISIBLE);
+                    }
+
+
                     ImageView splashArt = view.findViewById(R.id.iv_splash_art);
                     Champion champion = list.getChampionStatsList().get(0).getChampion();
                     champion.loadSplashArtFromDDragon(splashArt);
@@ -182,7 +213,7 @@ public class FragmentFavProfileSummary extends Fragment {
 
                     MatchStatsEntry kdaEntry = LoLStatsUtils.getBestKdaMatch(matchStatsEntries);
                     LoLStatsUtils.setKdaAndTextColorInView(statView2, LoLStatsUtils.calculateKDA(kdaEntry.getKills(), kdaEntry.getAssists(), kdaEntry.getDeaths()), view.getContext());
-                    dateView2.setText(LoLStatsUtils.formatDate(csEntry.getGameDate()));
+                    dateView2.setText(LoLStatsUtils.formatDate(kdaEntry.getGameDate()));
                     kdaEntry.getPlayedChampion().loadImageFromDDragon(championView2);
 
                     TextView statView3 = view.findViewById(R.id.tv_best_stat3);
@@ -198,10 +229,19 @@ public class FragmentFavProfileSummary extends Fragment {
                     TextView dateView4 = view.findViewById(R.id.tv_best_date4);
                     ImageView championView4 = view.findViewById(R.id.iv_best_champ4);
 
-                    MatchStatsEntry visionEntry = LoLStatsUtils.getBestDmgPercentMatch(matchStatsEntries);
+                    MatchStatsEntry visionEntry = LoLStatsUtils.getBestVisionScoreMatch(matchStatsEntries);
                     statView4.setText(String.valueOf(visionEntry.getVisionScore()));
                     dateView4.setText(LoLStatsUtils.formatDate(visionEntry.getGameDate()));
-                    dmgEntry.getPlayedChampion().loadImageFromDDragon(championView4);
+                    visionEntry.getPlayedChampion().loadImageFromDDragon(championView4);
+
+                    TextView statView5 = view.findViewById(R.id.tv_best_stat5);
+                    TextView dateView5 = view.findViewById(R.id.tv_best_date5);
+                    ImageView championView5 = view.findViewById(R.id.iv_best_champ5);
+
+                    MatchStatsEntry longestEntry = LoLStatsUtils.getLongestMatch(matchStatsEntries);
+                    statView5.setText(longestEntry.getGameDurationInMinutesAndSeconds());
+                    dateView5.setText(LoLStatsUtils.formatDate(longestEntry.getGameDate()));
+                    longestEntry.getPlayedChampion().loadImageFromDDragon(championView5);
 
                     TextView aheadCs = view.findViewById(R.id.tv_ahead_cs);
                     double csPerc = LoLStatsUtils.getPercentageOfGamesCsAheadAt15(matchStatsEntries);
@@ -229,6 +269,13 @@ public class FragmentFavProfileSummary extends Fragment {
 
                     LineData data = getData(matchStatsEntries);
                     setupChart(csChart, data);
+
+                    //TODO añadir restantes
+                    TextView dpmView = view.findViewById(R.id.tv_dpm);
+                    TextView visionScore = view.findViewById(R.id.tv_vision_score);
+
+                    dpmView.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanDpm()));
+                    visionScore.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanVisionScore()));
 
                 }
             }
@@ -581,4 +628,8 @@ public class FragmentFavProfileSummary extends Fragment {
     }
 
 
+    @Override
+    public void onItemClickListener(String championName, long championId) {
+
+    }
 }

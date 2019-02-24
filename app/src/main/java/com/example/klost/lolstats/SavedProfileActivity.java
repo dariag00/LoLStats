@@ -212,6 +212,8 @@ public class SavedProfileActivity extends AppCompatActivity{
         entry.setRole(player.getRole());
         entry.setPlayedChampion(player.getChampion());
         entry.setPlayer(player);
+        double dpm = LoLStatsUtils.calculateDPM(match.getGameDuration(), player.getTotalDamageDealtToChampions());
+        entry.setDpm(dpm);
 
         Map<Long, Integer> goldDifferenceOverTime = match.getGoldDifferentOfLanersOverTime(sum);
 

@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-1775921f-78a6-4a16-90e9-201da6f27e58";
+    private final static String RIOT_API_KEY = "RGAPI-b98dbcb9-73ff-4d19-b58b-545140fdc659";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -190,7 +190,7 @@ public class NetworkUtils {
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
                         .appendQueryParameter(QUEUE_PARAM, "420")
                         //TODO temporal
-                        .appendQueryParameter(SEASON_PARAM, "11")
+                        .appendQueryParameter(SEASON_PARAM, "13")
                         .build();
                 break;
             case GET_DDRAGON_SPLASH_ART:

@@ -85,12 +85,12 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         notifyDataSetChanged();
     }
 
-    public void showRankedData(SummonerViewHolder summonerViewHolder){
+    private void showRankedData(SummonerViewHolder summonerViewHolder){
         summonerViewHolder.noRankedDataView.setVisibility(View.INVISIBLE);
         summonerViewHolder.rankedDataContainer.setVisibility(View.VISIBLE);
     }
 
-    public void showNoRankedData(SummonerViewHolder summonerViewHolder) {
+    private void showNoRankedData(SummonerViewHolder summonerViewHolder) {
         summonerViewHolder.noRankedDataView.setVisibility(View.VISIBLE);
         summonerViewHolder.rankedDataContainer.setVisibility(View.INVISIBLE);
     }
@@ -111,7 +111,7 @@ public class SummonerAdapter extends RecyclerView.Adapter<SummonerAdapter.Summon
         LinearLayout rankedDataContainer;
         TextView noRankedDataView;
 
-        public SummonerViewHolder(View itemView){
+        SummonerViewHolder(View itemView){
             super(itemView);
 
             profileIconView = itemView.findViewById(R.id.iv_summoner_icon);

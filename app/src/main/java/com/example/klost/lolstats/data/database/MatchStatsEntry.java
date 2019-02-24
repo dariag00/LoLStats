@@ -4,6 +4,7 @@ import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.matches.Player;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -48,6 +49,7 @@ public class MatchStatsEntry {
     private Date gameDate;
     private int seasonId;
     private String role;
+    private double dpm;
     @Embedded
     private Champion playedChampion;
     @Embedded
@@ -293,7 +295,26 @@ public class MatchStatsEntry {
         return player;
     }
 
+    public double getDpm() {
+        return dpm;
+    }
+
+    public void setDpm(double dpm) {
+        this.dpm = dpm;
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public String getGameDurationInMinutesAndSeconds(){
+
+        long uptime = this.duration;
+
+        long minutes = TimeUnit.SECONDS
+                .toMinutes(uptime);
+        uptime -= TimeUnit.MINUTES.toSeconds(minutes);
+
+        return String.valueOf(minutes) + "m " + String.valueOf(uptime) + "s";
     }
 }

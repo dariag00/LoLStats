@@ -18,6 +18,9 @@ import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.models.matches.Team;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -734,6 +737,19 @@ public class LoLStatsUtils {
         return besScoreEntry;
     }
 
+    public static MatchStatsEntry getLongestMatch(List<MatchStatsEntry> entries){
+        long longestGameTimeStamp = 0;
+        MatchStatsEntry longestEntry = null;
+        for(MatchStatsEntry entry:entries){
+            long duration = entry.getDuration();
+            if(duration>longestGameTimeStamp){
+                longestGameTimeStamp = duration;
+                longestEntry = entry;
+            }
+        }
+        return longestEntry;
+    }
+
     public static double getPercentageOfGamesGoldAheadAt15(List<MatchStatsEntry> entries){
         int numberOfGamesAhead = 0;
         for(MatchStatsEntry entry:entries){
@@ -787,6 +803,27 @@ public class LoLStatsUtils {
         }
 
         return championStatsList;
+    }
+
+    public static List<MatchStatsEntry> getLast7DaysMatches(List<MatchStatsEntry> entries){
+        Date todayDate = new Date();
+        List<MatchStatsEntry> lastGamesEntries = new ArrayList<>();
+        for(MatchStatsEntry entry:entries){
+            Date gameDate = entry.getGameDate();
+            long diff = todayDate.getTime() - gameDate.getTime();
+            Log.d(LOG_TAG, "Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+            long numberOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            if(numberOfDays<=7){
+                lastGamesEntries.add(entry);
+            }
+        }
+        Log.d(LOG_TAG, "Size: " + lastGamesEntries.size());
+        return lastGamesEntries;
+    }
+
+    public static double calculateDPM(long duration, long totalDamage){
+        double durationInMinutes = duration / 60.0;
+        return totalDamage / durationInMinutes;
     }
 
 

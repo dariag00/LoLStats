@@ -72,7 +72,7 @@
                     android:src="@drawable/mock_champion"/>
 
                 <TextView
-                    android:id="@+id/tv_mean_win_rate"
+                    android:id="@+id/tv_mean_win_rate_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -81,11 +81,11 @@
                     tools:text="45%"/>
 
                 <TextView
-                    android:id="@+id/tv_mean_division"
+                    android:id="@+id/tv_mean_division_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/tv_mean_win_rate"
+                    android:layout_toLeftOf="@id/tv_mean_win_rate_blue"
                     tools:text="GOLD IV"/>
             </RelativeLayout>
 
