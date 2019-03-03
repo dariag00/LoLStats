@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -46,6 +47,7 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
 
     private EditText summonerNameView;
     private RecyclerView recyclerView;
+    private CardView noDataView;
     private SummonerAdapter adapter;
     public static final String EXTRA_ENTRY_ID = "com.example.klost.lolstats.ENTRY_ID";
 
@@ -88,6 +90,8 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
 
         repository = LoLStatsRepository.getInstance(this.getApplication(), AppExecutors.getInstance());
 
+        noDataView = findViewById(R.id.no_data_card_view);
+
         spinnerTitles = new String[]{"EUW", "EUNE", "NA", "KR", "OCE", "BR", "RU", "JP"};
         int flags[] = {R.drawable.eu_flag, R.drawable.eune_flag, R.drawable.na_flag, R.drawable.korea_flag, R.drawable.oceania_flag, R.drawable.brazil_flag, R.drawable.russia_flag, R.drawable.japan_flag};
         //int flags[] = {R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini, R.drawable.bronze_mini};
@@ -121,15 +125,23 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
             @Override
             public void onChanged(List<SummonerEntry> summonerEntries) {
                 Log.d(LOG_TAG, "Updating list of tasks from LiveData in ViewModel");
-                if(!updated) {
-                    updated = true;
-                    for(SummonerEntry entry:summonerEntries){
+
+                if (!summonerEntries.isEmpty()){
+
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataView.setVisibility(View.GONE);
+
+                    if (!updated) {
+                        updated = true;
+                        for (SummonerEntry entry : summonerEntries) {
                             new SummonerQueryTask(context).execute(entry.getSummonerName());
-
+                        }
                     }
+                    adapter.setSummonerEntries(summonerEntries);
+                }else{
+                    recyclerView.setVisibility(View.GONE);
+                    noDataView.setVisibility(View.VISIBLE);
                 }
-
-                adapter.setSummonerEntries(summonerEntries);
             }
         });
 
@@ -155,6 +167,14 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
                 });
             }
         }).attachToRecyclerView(recyclerView);
+
+        noDataView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addTaskIntent = new Intent(InitialActivity.this, SaveSummonerActivity.class);
+                startActivity(addTaskIntent);
+            }
+        });
 
     }
 
