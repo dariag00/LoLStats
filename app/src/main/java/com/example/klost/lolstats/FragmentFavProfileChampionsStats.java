@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.activities.ChampionDetailsActivity;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.models.champions.Champion;

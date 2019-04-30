@@ -674,6 +674,62 @@ public class JsonUtils {
         return matchTimeline;
     }
 
+    //TODO testear
+    public static Match getLiveGameFromJson(String requestJsonStr) throws JSONException {
+
+        JSONObject jsonObject = new JSONObject(requestJsonStr);
+        long gameId = jsonObject.getLong("gameId");
+        long gameStartTime = jsonObject.getLong("gameStartTime");
+        String gameMode = jsonObject.getString("gameMode");
+        int mapId = jsonObject.getInt("mapId");
+        String gameType = jsonObject.getString("gameType");
+        int gameQueue = jsonObject.getInt("gameQueueConfigId");
+
+        JSONArray participantsArray = jsonObject.getJSONArray("participants");
+        Match match = new Match();
+        match.setGameId(gameId);
+        match.setGameCreation(gameStartTime);
+        match.setQueue(gameQueue);
+        match.setGameType(gameType);
+
+        Team blueTeam = new Team(100);
+        Team redTeam = new Team(200);
+
+        for(int i = 0; i<participantsArray.length(); i++){
+            JSONObject participantJson = participantsArray.getJSONObject(i);
+            int profileIconId = participantJson.getInt("profileIconId");
+            int championId = participantJson.getInt("championId");
+            String summonerName = participantJson.getString("summonerName");
+            boolean bot = participantJson.getBoolean("bot");
+            int spell1Id = participantJson.getInt("spell1Id");
+            int spell2Id = participantJson.getInt("spell2Id");
+            int teamId = participantJson.getInt("teamId");
+            String summonerId = participantJson.getString("summonerId");
+
+            Champion champion = new Champion(championId);
+            Summoner summoner = new Summoner();
+            summoner.setEncryptedSummonerId(summonerId);
+            summoner.setProfileIconId(profileIconId);
+            summoner.setSummonerName(summonerName);
+            Player player = new Player();
+            player.setChampion(champion);
+            player.setSummoner(summoner);
+            player.setSpell1Id(spell1Id);
+            player.setSpell2Id(spell2Id);
+            //TODO añadir is bot a player
+            if(teamId == 100)
+                blueTeam.addPlayer(player);
+            else if(teamId == 200)
+                redTeam.addPlayer(player);
+        }
+
+        match.setBlueTeam(blueTeam);
+        match.setRedTeam(redTeam);
+
+        return match;
+
+    }
+
 
 
 

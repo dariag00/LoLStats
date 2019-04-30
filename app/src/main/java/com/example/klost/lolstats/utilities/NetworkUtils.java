@@ -42,7 +42,7 @@ public class NetworkUtils {
     private final static String CDRAGON_BASE_URL = "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/";
 
     //TODO sacarlo de la url: https://ddragon.leagueoflegends.com/api/versions.json
-    private final static String DDRAGON_VERSION = "9.2.1";
+    private final static String DDRAGON_VERSION = "9.9";
 
     private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
 

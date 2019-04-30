@@ -20,7 +20,6 @@ public class InitialViewModel extends AndroidViewModel {
 
     public InitialViewModel(Application application){
         super(application);
-        //TODO fix this
         AppExecutors executors = AppExecutors.getInstance();
         repository = LoLStatsRepository.getInstance(application, executors);
         Log.d(LOG_TAG, "Actively retrieving the summoners from the DataBase");

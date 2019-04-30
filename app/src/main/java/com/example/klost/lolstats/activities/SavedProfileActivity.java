@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -11,6 +11,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.SavedProfileViewPagerAdapter;
+import com.example.klost.lolstats.SummonerProfileViewModel;
+import com.example.klost.lolstats.SummonerProfileViewModelFactory;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.data.database.SummonerEntry;

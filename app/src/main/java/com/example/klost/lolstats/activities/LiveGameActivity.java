@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.klost.lolstats.R;
 
 public class LiveGameActivity extends AppCompatActivity {
 

@@ -6,6 +6,7 @@ import java.util.List;
 public class RuneList {
 
     private List<RunePath> runePathList;
+    private List<Rune> auxiliaryRunes;
 
     public RuneList(){
         runePathList = new ArrayList<>();
@@ -48,6 +49,14 @@ public class RuneList {
         }
         return null;
 
+    }
+
+    public List<Rune> getAuxiliaryRunes(){
+        return this.auxiliaryRunes;
+    }
+
+    public void setAuxiliaryRunes(List<Rune> auxiliaryRunes){
+        this.auxiliaryRunes = auxiliaryRunes;
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import com.example.klost.lolstats.OnTaskCompleted;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.activities.InitialActivity;
 import com.example.klost.lolstats.models.champions.ChampionList;
 import com.example.klost.lolstats.models.items.ItemList;
 import com.example.klost.lolstats.models.runes.RuneList;
@@ -22,7 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class StartActivity extends AppCompatActivity implements OnTaskCompleted{
+public class StartActivity extends AppCompatActivity implements OnTaskCompleted {
 
     static ChampionList championList;
     static SummonerSpellList summonerSpellList;

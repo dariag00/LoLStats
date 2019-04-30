@@ -1,21 +1,15 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,14 +20,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.GameDetailsActivity;
+import com.example.klost.lolstats.MainViewModel;
+import com.example.klost.lolstats.MainViewModelFactory;
+import com.example.klost.lolstats.R;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.MatchList;
-import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
-import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.example.klost.lolstats.utilities.StaticData;
@@ -44,9 +40,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.google.common.util.concurrent.RateLimiter;
 
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +48,7 @@ import java.util.Locale;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
-public class MainActivity extends AppCompatActivity implements RiotAdapter.RiotAdapterOnClickHandler{
+public class MainActivity extends AppCompatActivity implements RiotAdapter.RiotAdapterOnClickHandler {
 
     //TODO comprobar conexión a internet
     //TODO crear clase que ejecute todas las requests de datos estaticos

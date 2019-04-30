@@ -12,19 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChampionDetailsActivity"
-            android:parentActivityName=".SavedProfileActivity"></activity>
+        <activity android:name=".activities.ChampionDetailsActivity"
+            android:parentActivityName=".activities.SavedProfileActivity"></activity>
         <activity
-            android:name=".LiveGameActivity"
-            android:parentActivityName=".InitialActivity" />
+            android:name=".activities.LiveGameActivity"
+            android:parentActivityName=".activities.InitialActivity" />
         <activity
-            android:name=".SavedProfileActivity"
-            android:parentActivityName=".InitialActivity" />
+            android:name=".activities.SavedProfileActivity"
+            android:parentActivityName=".activities.InitialActivity" />
         <activity
             android:name=".SaveSummonerActivity"
-            android:parentActivityName=".InitialActivity" />
+            android:parentActivityName=".activities.InitialActivity" />
         <activity
-            android:name=".StartActivity"
+            android:name=".activities.StartActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,21 +33,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".InitialActivity" />
+            android:parentActivityName=".activities.InitialActivity" />
         <activity
-            android:name=".InitialActivity"
+            android:name=".activities.InitialActivity"
             android:label="@string/app_name" />
         <activity
             android:name=".TestActivity"
-            android:parentActivityName=".InitialActivity" />
+            android:parentActivityName=".activities.InitialActivity" />
         <activity
             android:name=".TestMainLayoutActivity"
-            android:parentActivityName=".InitialActivity" />
+            android:parentActivityName=".activities.InitialActivity" />
         <activity
             android:name=".GameDetailsActivity"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" />
     </application>
 

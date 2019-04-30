@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -14,6 +14,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.SummonerProfileViewModel;
+import com.example.klost.lolstats.SummonerProfileViewModelFactory;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.models.champions.Champion;

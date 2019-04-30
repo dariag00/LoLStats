@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.klost.lolstats.R;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;

@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +19,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.BuildConfig;
+import com.example.klost.lolstats.CustomSpinnerAdapter;
+import com.example.klost.lolstats.GameDetailsActivity;
+import com.example.klost.lolstats.InitialViewModel;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.SaveSummonerActivity;
+import com.example.klost.lolstats.SummonerAdapter;
+import com.example.klost.lolstats.TestActivity;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.AppDatabase;
 import com.example.klost.lolstats.data.database.SummonerEntry;
@@ -181,7 +189,7 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
     private void attemptLiveGameSearch(){
         String summonerName = summonerNameView.getText().toString();
         if(isValid(summonerName)) {
-            //Creamos un intent que iniciará la activity MainActivity y le pasamos el Summoner Name que hemos procesado
+
             Intent intent = new Intent(this, LiveGameActivity.class);
             intent.putExtra(EXTRA_SUMMONER_NAME, summonerName);
             startActivity(intent);
