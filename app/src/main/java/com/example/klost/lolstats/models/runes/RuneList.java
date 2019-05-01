@@ -10,6 +10,7 @@ public class RuneList {
 
     public RuneList(){
         runePathList = new ArrayList<>();
+        auxiliaryRunes = new ArrayList<>();
     }
 
     public void addRunePath(RunePath runePath){
@@ -47,6 +48,11 @@ public class RuneList {
             if(r.containsId(id))
                 return r.getRuneById(id);
         }
+
+        for(Rune rune: auxiliaryRunes)
+            if(rune.getId() == id)
+                return rune;
+
         return null;
 
     }
@@ -59,5 +65,19 @@ public class RuneList {
         this.auxiliaryRunes = auxiliaryRunes;
     }
 
+    public boolean contains(int runeId){
+        boolean contained = false;
+        for(RunePath path : runePathList){
+            if(path.containsId(runeId))
+                contained = true;
+        }
+
+        return contained;
+    }
+
+
+    public void addAuxiliaryRune(Rune rune){
+        this.auxiliaryRunes.add(rune);
+    }
 
 }

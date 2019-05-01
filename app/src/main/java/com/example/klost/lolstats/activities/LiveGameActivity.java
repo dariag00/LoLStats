@@ -16,6 +16,8 @@ public class LiveGameActivity extends AppCompatActivity {
     TextView meanRankBlue, meanRankRed, meanWinRateBlue, meanWinRateRed;
     RecyclerView bluePlayersRecyclerView, redPlayersRecyclerView;
 
+    public static final String EXTRA_LIVE_MATCH = "com.example.klost.lolstats.LIVE_MATCH";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

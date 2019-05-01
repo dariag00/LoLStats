@@ -22,6 +22,7 @@ import com.example.klost.lolstats.models.runes.Rune;
 import com.example.klost.lolstats.models.runes.RuneList;
 import com.example.klost.lolstats.models.runes.RunePath;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
+import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.example.klost.lolstats.utilities.StaticData;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -229,6 +230,33 @@ public class FragmentSummaryGameDetails  extends Fragment{
         Map<Long, Integer> goldMap = match.getGoldDifferenceOverTime();
         LineData data = getData(goldMap);
         setupChart(goldChart, data);
+
+
+        CircleImageView perkRuneImage0 = view.findViewById(R.id.cv_rune_stat1);
+        CircleImageView perkRuneImage1 = view.findViewById(R.id.cv_rune_stat2);
+        CircleImageView perkRuneImage2 = view.findViewById(R.id.cv_rune_stat3);
+        CircleImageView perkRuneImage3 = view.findViewById(R.id.cv_rune_stat4);
+        CircleImageView perkRuneImage4 = view.findViewById(R.id.cv_rune_stat5);
+        CircleImageView perkRuneImage5 = view.findViewById(R.id.cv_rune_stat6);
+        CircleImageView perkRuneImage6 = view.findViewById(R.id.cv_rune_stat7);
+        CircleImageView perkRuneImage7 = view.findViewById(R.id.cv_rune_stat8);
+        CircleImageView perkRuneImage8 = view.findViewById(R.id.cv_rune_stat9);
+
+        Rune perk1 = StaticData.getRuneList().getRuneById(currentPlayer.getStatRune0());
+        Rune perk2 = StaticData.getRuneList().getRuneById(currentPlayer.getStatRune1());
+        Rune perk3 = StaticData.getRuneList().getRuneById(currentPlayer.getStatRune2());
+        Log.d("SUMM", "LLego aqui " + NetworkUtils.buildUrl(perk1.getIconPath(), NetworkUtils.GET_CDRAGON_PERK_IMAGE));
+        perk1.loadImageFromCDragon(perkRuneImage0);
+        perk1.loadImageFromCDragon(perkRuneImage1);
+        perk1.loadImageFromCDragon(perkRuneImage2);
+
+        perk2.loadImageFromCDragon(perkRuneImage3);
+        perk2.loadImageFromCDragon(perkRuneImage4);
+        perk2.loadImageFromCDragon(perkRuneImage5);
+
+        perk3.loadImageFromCDragon(perkRuneImage7);
+        perk3.loadImageFromCDragon(perkRuneImage8);
+        perk3.loadImageFromCDragon(perkRuneImage6);
 
         return view;
     }

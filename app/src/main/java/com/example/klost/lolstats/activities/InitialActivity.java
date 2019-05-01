@@ -24,6 +24,7 @@ import com.example.klost.lolstats.BuildConfig;
 import com.example.klost.lolstats.CustomSpinnerAdapter;
 import com.example.klost.lolstats.GameDetailsActivity;
 import com.example.klost.lolstats.InitialViewModel;
+import com.example.klost.lolstats.OnLiveGameTaskCompleted;
 import com.example.klost.lolstats.R;
 import com.example.klost.lolstats.SaveSummonerActivity;
 import com.example.klost.lolstats.SummonerAdapter;
@@ -34,6 +35,7 @@ import com.example.klost.lolstats.data.database.SummonerEntry;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
+import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,10 +50,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InitialActivity extends AppCompatActivity implements SummonerAdapter.ItemClickListener {
+public class InitialActivity extends AppCompatActivity implements SummonerAdapter.ItemClickListener, OnLiveGameTaskCompleted{
 
 
     public static final String EXTRA_SUMMONER_NAME = "com.example.klost.lolstats.SUMMONER_NAME";
+    public static final String EXTRA_LIVE_MATCH = "com.example.klost.lolstats.LIVE_MATCH";
 
     private EditText summonerNameView;
     private RecyclerView recyclerView;
@@ -186,13 +189,23 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
 
     }
 
+    @Override
+    public void onTaskCompleted(Match result) {
+        if(result == null){
+            summonerNameView.setError("El usuario no está jugando ahorita mismo");
+        }else{
+            Intent intent = new Intent(this, LiveGameActivity.class);
+            intent.putExtra(EXTRA_SUMMONER_NAME, result);
+            startActivity(intent);
+        }
+    }
+
     private void attemptLiveGameSearch(){
         String summonerName = summonerNameView.getText().toString();
         if(isValid(summonerName)) {
-
-            Intent intent = new Intent(this, LiveGameActivity.class);
-            intent.putExtra(EXTRA_SUMMONER_NAME, summonerName);
-            startActivity(intent);
+            LiveGameTaks task = new LiveGameTaks(this);
+            URL liveGameUrl = NetworkUtils.buildUrl(summonerName, NetworkUtils.GET_LIVE_GAME);
+            task.execute(liveGameUrl);
         }
     }
 
@@ -343,5 +356,38 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
                         .show();
             }
         }
+    }
+
+    private static class LiveGameTaks extends AsyncTask<URL, Void, Match> {
+
+        OnLiveGameTaskCompleted listener;
+
+        LiveGameTaks(OnLiveGameTaskCompleted listener){
+            this.listener=listener;
+        }
+
+        @Override
+        protected Match doInBackground(URL... urls) {
+            String liveGameResults;
+            RateLimiter throttler = RateLimiter.create(0.7);
+            Match match = null;
+
+            try {
+                liveGameResults = NetworkUtils.getResponseFromHttpUrl(urls[0] , throttler);
+                match = JsonUtils.getLiveGameFromJson(liveGameResults);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return match;
+        }
+
+        @Override
+        protected void onPostExecute(Match result) {
+            listener.onTaskCompleted(result);
+        }
+
     }
 }

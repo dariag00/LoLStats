@@ -47,10 +47,9 @@ public class FragmentFavProfileMatches extends Fragment implements MatchEntryLis
         final int entryId = this.getArguments().getInt(SAVED_ENTRY);
         Log.d(LOG_TAG, "ENTRY ID: " + entryId);
         recyclerView = view.findViewById(R.id.recyclerview_matches);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
         adapter = new MatchEntryListAdapter(this);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         LoLStatsRepository repository = LoLStatsRepository.getInstance(this.getActivity().getApplication(), AppExecutors.getInstance());
         SummonerProfileViewModelFactory factory = new SummonerProfileViewModelFactory(repository, entryId, 0);
@@ -59,7 +58,10 @@ public class FragmentFavProfileMatches extends Fragment implements MatchEntryLis
             @Override
             public void onChanged(List<MatchStatsEntry> entries) {
                 Log.d(LOG_TAG, "Setteo el data " + entries.size());
+                if(entries.size() >=1)
+                    Log.d(LOG_TAG, "DATA: " + entries.get(0).getMatchId());
                 adapter.setData(entries);
+                Log.d(LOG_TAG, "COUNT: " + adapter.getItemCount());
             }
         });
 

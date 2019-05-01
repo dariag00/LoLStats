@@ -49,10 +49,11 @@ public class MatchEntryListAdapter  extends RecyclerView.Adapter<MatchEntryListA
     @NonNull
     @Override
     public MatchEntryListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d("Adapter", "Entro en viewHolder1");
         Context context =  parent.getContext();
         int layoutIdForListItem = R.layout.match_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-
+        Log.d("Adapter", "Entro en viewHolder " + context.toString());
         View view = inflater.inflate(layoutIdForListItem, parent, false);
 
         return new MatchEntryListAdapter.MatchEntryListAdapterViewHolder(view);
@@ -156,8 +157,10 @@ public class MatchEntryListAdapter  extends RecyclerView.Adapter<MatchEntryListA
     @Override
     public int getItemCount() {
         if(matches != null){
+            Log.d("Adapter", "Voy a devolver el size");
             return matches.size();
         }
+        Log.d("Adapter", "Voy a devolver 0");
         return 0;
     }
 

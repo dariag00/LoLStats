@@ -81,6 +81,11 @@ public class Player implements Serializable {
     private int item5;
     private int item6;
 
+    private int statRune0;
+    private int statRune1;
+    private int statRune2;
+
+
     public Player(){
 
     }
@@ -425,6 +430,30 @@ public class Player implements Serializable {
 
     public void setChampionLevel(int championLevel) {
         this.championLevel = championLevel;
+    }
+
+    public int getStatRune0() {
+        return statRune0;
+    }
+
+    public void setStatRune0(int statRune0) {
+        this.statRune0 = statRune0;
+    }
+
+    public int getStatRune1() {
+        return statRune1;
+    }
+
+    public void setStatRune1(int statRune1) {
+        this.statRune1 = statRune1;
+    }
+
+    public int getStatRune2() {
+        return statRune2;
+    }
+
+    public void setStatRune2(int statRune2) {
+        this.statRune2 = statRune2;
     }
 
     @Override

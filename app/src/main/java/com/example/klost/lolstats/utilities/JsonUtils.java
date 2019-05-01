@@ -218,15 +218,20 @@ public class JsonUtils {
 
             //Rune Data
             int runePrimaryStyle = statsJSON.getInt("perkPrimaryStyle");
-            int runeSecondaryStyle = statsJSON.getInt("perkSubStyle");
+            int runeSecondaryStyle = -1;
+            //if(statsJSON.has("perkSubStyle"))
+                runeSecondaryStyle = statsJSON.getInt("perkSubStyle");
 
             int rune0 = statsJSON.getInt("perk0");
             int rune1 = statsJSON.getInt("perk1");
             int rune2 = statsJSON.getInt("perk2");
             int rune3 = statsJSON.getInt("perk3");
-
             int rune4 = statsJSON.getInt("perk4");
             int rune5 = statsJSON.getInt("perk5");
+
+            int statRune0 = statsJSON.getInt("statPerk0");
+            int statRune1 = statsJSON.getInt("statPerk1");
+            int statRune2 = statsJSON.getInt("statPerk2");
 
             int item0 = statsJSON.getInt("item0");
             int item1 = statsJSON.getInt("item1");
@@ -309,6 +314,11 @@ public class JsonUtils {
                     player.setRune3(rune3);
                     player.setRune4(rune4);
                     player.setRune5(rune5);
+
+                    player.setStatRune0(statRune0);
+                    player.setStatRune1(statRune1);
+                    player.setStatRune2(statRune2);
+                    Log.d(LOG_TAG, "RUNESTAT: " + statRune0 + " " + statRune1 + " " + statRune2);
 
                     player.setRunePrimaryStyle(runePrimaryStyle);
                     player.setRuneSecondaryStyle(runeSecondaryStyle);
@@ -678,6 +688,18 @@ public class JsonUtils {
     public static Match getLiveGameFromJson(String requestJsonStr) throws JSONException {
 
         JSONObject jsonObject = new JSONObject(requestJsonStr);
+
+        if(jsonObject.has("status")) {
+            JSONObject status = jsonObject.getJSONObject("status");
+            if(status.has("status_code")){
+                String code = status.getString("status_code");
+                if(code.equals("404"))
+                    return null;
+            }
+
+        }
+
+
         long gameId = jsonObject.getLong("gameId");
         long gameStartTime = jsonObject.getLong("gameStartTime");
         String gameMode = jsonObject.getString("gameMode");
@@ -728,6 +750,32 @@ public class JsonUtils {
 
         return match;
 
+    }
+
+    public static RuneList addSmallRunes(RuneList currentList, String jsonString) throws JSONException {
+        JSONArray jsonArray = new JSONArray(jsonString);
+
+        for(int i = 0; i<jsonArray.length(); i++){
+            JSONObject runeObject = jsonArray.getJSONObject(i);
+            int runeId = runeObject.getInt("id");
+            Log.d(LOG_TAG, "ID: " + runeId);
+            if(!currentList.contains(runeId)){
+                Log.d(LOG_TAG, "NO TENIA Y AÑADO: " + runeId);
+                String name = runeObject.getString("name");
+                String iconPath = runeObject.getString("iconPath");
+                String tooltip = runeObject.getString("tooltip");
+
+                Rune rune = new Rune();
+                rune.setId(runeId);
+                rune.setName(name);
+                rune.setIconPath(iconPath);
+                rune.setShortDesc(tooltip);
+
+                currentList.addAuxiliaryRune(rune);
+            }
+        }
+
+        return currentList;
     }
 
 

@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-b98dbcb9-73ff-4d19-b58b-545140fdc659";
+    private final static String RIOT_API_KEY = "RGAPI-171a347c-5537-48e3-bb93-80fbaa9a26d7";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -37,12 +37,14 @@ public class NetworkUtils {
 
     private final static String RIOT_GET_LEAGUES_POSITIONS = "/lol/league/v4/positions/by-summoner";
 
+    private final static String RIOT_GET_LIVE_GAME = "/lol/spectator/v4/active-games/by-summoner";
+
     private final static String DDRAGON_BASE_URL = "http://ddragon.leagueoflegends.com/cdn/"; //URL utilizada para sacar datos estaticos
 
     private final static String CDRAGON_BASE_URL = "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/";
 
     //TODO sacarlo de la url: https://ddragon.leagueoflegends.com/api/versions.json
-    private final static String DDRAGON_VERSION = "9.9";
+    private final static String DDRAGON_VERSION = "9.8.1";
 
     private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
 
@@ -59,6 +61,8 @@ public class NetworkUtils {
     private final static String DDRAGON_GET_SPLASH_ART = "splash/";
 
     public final static String CDRAGON_GET_PERKS = "global/default/v1/perks.json";
+
+    public final static String CDRAGON_GET_IMAGES_BASE = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/";
 
     public final static int GET_SUMMONER = 0;
 
@@ -87,6 +91,10 @@ public class NetworkUtils {
     public final static int GET_RANKED_MATCHLIST = 12;
 
     public final static int GET_DDRAGON_SPLASH_ART = 13;
+
+    public final static int GET_CDRAGON_PERK_IMAGE = 14;
+
+    public final static int GET_LIVE_GAME = 15;
 
     final static String QUEUE_PARAM = "queue";
     final static String SEASON_PARAM = "season";
@@ -195,6 +203,22 @@ public class NetworkUtils {
                 break;
             case GET_DDRAGON_SPLASH_ART:
                 path = DDRAGON_BASE_URL + DDRAGON_GET_CHAMPION_IMAGE.substring(1) + DDRAGON_GET_SPLASH_ART;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .build();
+                break;
+
+            case GET_LIVE_GAME:
+                path = RIOT_BASE_URL + RIOT_GET_LEAGUES_POSITIONS;
+                builtUri = Uri.parse(path).buildUpon()
+                        .appendPath(riotSearchQuery)
+                        .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
+                        .build();
+                break;
+
+            case GET_CDRAGON_PERK_IMAGE:
+                path = CDRAGON_GET_IMAGES_BASE;
+                riotSearchQuery = riotSearchQuery.substring(riotSearchQuery.indexOf("v1/")).toLowerCase();
                 builtUri = Uri.parse(path).buildUpon()
                         .appendPath(riotSearchQuery)
                         .build();

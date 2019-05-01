@@ -1,5 +1,7 @@
 package com.example.klost.lolstats;
 
+import com.example.klost.lolstats.utilities.ReadTaskToken;
+
 public interface OnTaskCompleted {
-        void onTaskCompleted(String result, String dataType);
+        void onTaskCompleted(ReadTaskToken resultToken);
 }

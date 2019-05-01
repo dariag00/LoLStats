@@ -76,10 +76,15 @@ public class Rune {
 
     public void loadImageFromDDragon(ImageView imageView) {
         URL url = NetworkUtils.buildUrl(this.iconPath, NetworkUtils.GET_DDRAGON_RUNE_IMAGE);
-        Log.d("SummonerSpell", "URL: " + url.toString());
+        Log.d("Rune", "URL: " + url.toString());
         Picasso.get().load(url.toString()).into(imageView);
     }
 
+    public void loadImageFromCDragon(ImageView imageView) {
+        URL url = NetworkUtils.buildUrl(this.iconPath, NetworkUtils.GET_CDRAGON_PERK_IMAGE);
+        Log.d("Perk Rune", "URL: " + url.toString());
+        Picasso.get().load(url.toString()).into(imageView);
+    }
 
     public String toString(){
 
