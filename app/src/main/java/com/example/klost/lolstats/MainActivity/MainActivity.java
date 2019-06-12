@@ -1,4 +1,4 @@
-package com.example.klost.lolstats.activities;
+package com.example.klost.lolstats.MainActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.klost.lolstats.GameDetailsActivity;
-import com.example.klost.lolstats.MainViewModel;
-import com.example.klost.lolstats.MainViewModelFactory;
 import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.activities.GameDetailsActivity;
+import com.example.klost.lolstats.activities.InitialActivity;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;

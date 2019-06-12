@@ -1,7 +1,6 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.MainActivity;
 
-import android.app.Application;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -48,6 +47,7 @@ public class MainViewModel extends ViewModel {
             loadData();
         }
 
+        @SuppressLint("StaticFieldLeak")
         private void loadData(){
             new AsyncTask<URL, Void, Summoner>(){
 
@@ -63,17 +63,13 @@ public class MainViewModel extends ViewModel {
                     try {
                         summonerSearchResults = NetworkUtils.getResponseFromHttpUrl(searchURL, throttler);
                         Log.d(LOG_TAG, "summonerSearchResults: " + summonerSearchResults);
-
                         if(summonerSearchResults.charAt(0) != '{'){
                             //Entonces significa que la respuesta no es un JSON y getResponseFromHttpUrl ha devuelto un Error.
                             Log.e(LOG_TAG, "Error: La respuesta no es un JSON y getResponseFromHttpUrl ha devuelto un Error");
-                            //TODO conseguir diferenciar los errores
                             return null;
                         }
 
-                        //TODO Multiple async task
                         summoner = JsonUtils.getSummonerFromJSON(summonerSearchResults);
-
                         URL leaguesURL = NetworkUtils.buildUrl(String.valueOf(summoner.getEncryptedSummonerId()), NetworkUtils.GET_LEAGUES_POSITIONS);
                         if(leaguesURL != null){
                             String leaguesSearchResult = NetworkUtils.getResponseFromHttpUrl(leaguesURL, throttler);
@@ -94,7 +90,7 @@ public class MainViewModel extends ViewModel {
                                 URL getMatchURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH);
                                 if(getMatchURL != null){
                                     matchSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchURL, throttler);
-                                    JsonUtils.getMatchFromJSON(matchSearchResults, match);//TODO revisar esto
+                                    JsonUtils.getMatchFromJSON(matchSearchResults, match);
 
                                     URL getMatchTimelineURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH_TIMELINE);
                                     if(getMatchTimelineURL != null){
@@ -108,17 +104,12 @@ public class MainViewModel extends ViewModel {
                                     return null;
                                 }
                             }
-
-
                         }else{
                             return null;
                         }
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     if(summoner != null)
                         return summoner;
                     else

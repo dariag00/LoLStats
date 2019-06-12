@@ -91,8 +91,8 @@ public class FragmentSummaryGameDetails  extends Fragment{
 
         CircleImageView championImageView = view.findViewById(R.id.iv_champion_played);
 
-        ChampionList championList = StaticData.getChampionList();
-        Champion championPlayed = championList.getChampionById(currentPlayer.getChampionId());
+        Champion championPlayed = currentPlayer.getChampion();
+        System.out.println(currentPlayer.getChampionId());
         championPlayed.loadImageFromDDragon(championImageView);
 
         TextView killsView = view.findViewById(R.id.tv_kills);

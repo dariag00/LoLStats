@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#f9c7c7"
     android:paddingBottom="8dp"
-    tools:context=".activities.MainActivity">
+    tools:context=".MainActivity.MainActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/media_card_view"

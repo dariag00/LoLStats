@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,8 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.R;
 import com.example.klost.lolstats.data.LoLStatsRepository;
-import com.example.klost.lolstats.data.database.AppDatabase;
 import com.example.klost.lolstats.data.database.SummonerEntry;
 import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
@@ -24,7 +25,6 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
-import java.util.Date;
 
 public class SaveSummonerActivity extends AppCompatActivity {
 

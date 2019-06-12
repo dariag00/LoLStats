@@ -1,10 +1,12 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.MainActivity;
 
 
 import java.net.URL;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.klost.lolstats.MainActivity.MainViewModel;
 
 public class MainViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 

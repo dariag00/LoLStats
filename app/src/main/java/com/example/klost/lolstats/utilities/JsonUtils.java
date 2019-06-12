@@ -274,7 +274,6 @@ public class JsonUtils {
                     player.setSpell1Id(spell1Id);
                     player.setSpell2Id(spell2Id);
                     //TODO eliminar
-                    player.setChampionId(championId);
                     Champion playedChampion = StaticData.getChampionList().getChampionById(championId);
                     player.setChampion(playedChampion);
                     player.setTeamId(teamId);

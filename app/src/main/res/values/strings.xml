@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">LoLStats</string>
     <string name="error_message">Error, prueba otra vez.</string>
-    <string name="search">Buscar</string>
+    <string name="search">Search</string>
     <string name="refresh">Refresh</string>
     <string name="summoner_name">Introduce a Summoner Name</string>
 

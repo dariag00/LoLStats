@@ -149,7 +149,8 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         Summoner currentSummoner = player.getSummoner();
         //Miramos si el player es nuestro summoner
         Log.d("DetailAdapter", "SUMM: " + summoner.getEncryptedAccountId() +" otro id: " + summoner.getEncryptedSummonerId() + " y comp: " + player.getSummoner().getEncryptedAccountId());
-        if(summoner.getEncryptedAccountId() == player.getSummoner().getEncryptedAccountId()){
+        if(summoner.getEncryptedAccountId().equals(player.getSummoner().getEncryptedAccountId())){
+            System.out.println("entroas");
             matchDetailAdapterViewHolder.playerContainer.setBackgroundColor(Color.parseColor("#d6ffe7"));
         }
 
@@ -168,9 +169,8 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         //Setteo de los valores del summoner
 
         //Setteo de las imagenes iniciales
-        int championId = player.getChampionId();
-        Champion champion = StaticData.getChampionList().getChampionById(championId);
-        Log.d("LOG", "ChampionID: " + championId + " y champ " + champion);
+        Champion champion = player.getChampion();
+        Log.d("LOG", "ChampionID: " + champion.getChampionId() + " y champ " + champion);
         champion.loadImageFromDDragon(matchDetailAdapterViewHolder.championView);
 
         SummonerSpell firstSummonerSpell = StaticData.getSpellList().getSpellById(player.getSpell1Id());

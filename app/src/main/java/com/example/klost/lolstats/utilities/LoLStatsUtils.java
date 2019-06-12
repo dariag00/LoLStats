@@ -511,7 +511,6 @@ public class LoLStatsUtils {
         for (int i = 0; i < 20; i++) {
             Match match = listOfGames.get(i);
             if (match.isProcessed()) {
-                Log.d(LOG_TAG, "Uno procesado ");
                 usedChampions.add(match.getChampionId());
             }
         }
@@ -524,7 +523,6 @@ public class LoLStatsUtils {
                 map.put(s, 1);
             }
         }
-        //TODO error cuando no hay sufucientes campeones
 
         Object[] a = map.entrySet().toArray();
         Arrays.sort(a, new Comparator() {
@@ -542,16 +540,14 @@ public class LoLStatsUtils {
         Champion champion2 = null;
         Champion champion3 = null;
 
+        //Comprobación para el caso en el que haya jugado partidas solo con 1 2 o 3 personajes
         if (usedChampions.size() >= 1) {
-            Log.d(LOG_TAG, "Entro en size 1" + usedChampions.size());
             champion1 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[0]).getKey());
         }
         if (usedChampions.size() >= 2) {
-            Log.d(LOG_TAG, "Entro en size 2");
             champion2 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[1]).getKey());
         }
         if (usedChampions.size() >= 3){
-            Log.d(LOG_TAG, "Entro en size 3");
             champion3 = championList.getChampionById(((Map.Entry<Integer, Integer>) a[2]).getKey());
         }
 
@@ -647,25 +643,25 @@ public class LoLStatsUtils {
         double[][] dataMatrix = new double[5][2];
         for(MatchStatsEntry entry: entries){
             Log.d(LOG_TAG, "Role: " + entry.getRole());
-            if(entry.getRole().equals("TOP")){
+            if(entry.getRole().equals(Constants.ROLE_TOP)){
                 dataMatrix[0][0] =  dataMatrix[0][0] + 1;
                 if(entry.isVictory())
                     dataMatrix[0][1] =  dataMatrix[0][1] + 1;
-            }else if(entry.getRole().equals("JUNGLE")){
+            }else if(entry.getRole().equals(Constants.ROLE_JUNGLER)){
                 dataMatrix[1][0] =  dataMatrix[1][0] + 1;
                 if(entry.isVictory())
                     dataMatrix[1][1] =  dataMatrix[1][1] + 1;
-            }else if(entry.getRole().equals("MIDDLE")){
+            }else if(entry.getRole().equals(Constants.ROLE_MID)){
                 dataMatrix[2][0] =  dataMatrix[2][0] + 1;
                 if(entry.isVictory())
                     dataMatrix[2][1] =  dataMatrix[2][1] + 1;
-            }else if(entry.getRole().equals("DUO_CARRY")){
+            }else if(entry.getRole().equals(Constants.ROLE_ADC)){
                 dataMatrix[3][0] =  dataMatrix[3][0] + 1;
                 if(entry.isVictory()) {
                     dataMatrix[3][1] = dataMatrix[3][1] + 1;
                     Log.d(LOG_TAG, "Data: " +  dataMatrix[3][1]);
                 }
-            }else if(entry.getRole().equals("DUO_SUPPORT")){
+            }else if(entry.getRole().equals(Constants.ROLE_SUPPORT)){
                 dataMatrix[4][0] =  dataMatrix[4][0] + 1;
                 if(entry.isVictory())
                     dataMatrix[4][1] =  dataMatrix[4][1] + 1;

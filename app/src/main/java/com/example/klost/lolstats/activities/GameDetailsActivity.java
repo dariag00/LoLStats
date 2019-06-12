@@ -1,12 +1,15 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities;
 
-import android.content.Context;
 import android.content.Intent;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.SummonerProfileViewModel;
+import com.example.klost.lolstats.SummonerProfileViewModelFactory;
+import com.example.klost.lolstats.ViewPagerAdapter;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.SummonerEntry;
 import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
-import com.example.klost.lolstats.models.summoners.SummonerSpell;
 import com.example.klost.lolstats.utilities.JsonUtils;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.google.android.material.tabs.TabLayout;
@@ -26,9 +29,6 @@ import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 import com.google.common.util.concurrent.RateLimiter;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 

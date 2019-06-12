@@ -22,11 +22,10 @@ import android.widget.Toast;
 import com.example.klost.lolstats.AppExecutors;
 import com.example.klost.lolstats.BuildConfig;
 import com.example.klost.lolstats.CustomSpinnerAdapter;
-import com.example.klost.lolstats.GameDetailsActivity;
 import com.example.klost.lolstats.InitialViewModel;
+import com.example.klost.lolstats.MainActivity.MainActivity;
 import com.example.klost.lolstats.OnLiveGameTaskCompleted;
 import com.example.klost.lolstats.R;
-import com.example.klost.lolstats.SaveSummonerActivity;
 import com.example.klost.lolstats.SummonerAdapter;
 import com.example.klost.lolstats.TestActivity;
 import com.example.klost.lolstats.data.LoLStatsRepository;
@@ -90,14 +89,14 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
             }
         });
 
-        Button testButton = findViewById(R.id.bt_test);
+        /*Button testButton = findViewById(R.id.bt_test);
 
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toTest();
             }
-        });
+        });*/
 
         repository = LoLStatsRepository.getInstance(this.getApplication(), AppExecutors.getInstance());
 

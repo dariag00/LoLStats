@@ -1018,7 +1018,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
                                 android:layout_marginStart="3dp"
-                                tools:text="10"/>
+                                android:text="18%"/>
 
                         </LinearLayout>
 
@@ -1038,7 +1038,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
                                 android:layout_marginStart="3dp"
-                                tools:text="10"/>
+                                android:text="10.5%"/>
                         </LinearLayout>
 
                     </LinearLayout>

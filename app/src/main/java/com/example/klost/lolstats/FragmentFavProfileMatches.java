@@ -2,7 +2,6 @@ package com.example.klost.lolstats;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,16 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.klost.lolstats.AppExecutors;
-import com.example.klost.lolstats.FragmentFavProfileChampionsStats;
-import com.example.klost.lolstats.MatchEntryListAdapter;
-import com.example.klost.lolstats.R;
-import com.example.klost.lolstats.SummonerProfileViewModel;
-import com.example.klost.lolstats.SummonerProfileViewModelFactory;
+import com.example.klost.lolstats.activities.GameDetailsActivity;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.data.database.SummonerEntry;
-import com.example.klost.lolstats.models.matches.Match;
 
 import java.util.List;
 

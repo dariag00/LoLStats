@@ -1,4 +1,4 @@
-package com.example.klost.lolstats.activities;
+package com.example.klost.lolstats.MainActivity;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -190,10 +190,9 @@ public class RiotAdapter extends RecyclerView.Adapter<RiotAdapter.RiotAdapterVie
             }
 
             Player player = match.getPlayer(summoner);
-            int championId = player.getChampionId();
 
             //Seteo de la imagen del campeon jugado
-            Champion champion = championList.getChampionById(championId);
+            Champion champion = player.getChampion();
             champion.loadImageFromDDragon(riotAdapterViewHolder.championImageView);
 
             //Seteo de los hechizos de invocador jugados

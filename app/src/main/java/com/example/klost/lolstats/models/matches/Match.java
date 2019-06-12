@@ -241,18 +241,24 @@ public class Match implements Serializable {
         return matchTimeline.getGoldDifferenceFrames(participantIdsBlueTeam, participantIdsRedTeam );
     }
 
-    public Map<Long, Integer> getCsDifferentOfLanersOverTime(Summoner summoner){
+    public Map<Long, Integer> getCsDifferenceOfLanersOverTime(Summoner summoner){
         Player currentPlayer = getPlayer(summoner);
         Player oppositePlayer = getOppositePlayerBasedOnRole(currentPlayer);
-        return matchTimeline.getCsDifferenceBetween2Players(currentPlayer.getParticipantId(), oppositePlayer.getParticipantId());
+        if(oppositePlayer != null)
+            return matchTimeline.getCsDifferenceBetween2Players(currentPlayer.getParticipantId(), oppositePlayer.getParticipantId());
+        return null;
     }
 
-    public Map<Long, Integer> getGoldDifferentOfLanersOverTime(Summoner summoner){
+    public Map<Long, Integer> getGoldDifferenceOfLanersOverTime(Summoner summoner){
         Player currentPlayer = getPlayer(summoner);
         Player oppositePlayer = getOppositePlayerBasedOnRole(currentPlayer);
         Log.d("LOG", "PLAYER1: " + currentPlayer.getParticipantId());
-        Log.d("LOG", "PLAYER2: " + oppositePlayer.getParticipantId());
-        return matchTimeline.getGoldDifferenceBetween2Players(currentPlayer.getParticipantId(), oppositePlayer.getParticipantId());
+        if(oppositePlayer != null) {
+            Log.d("LOG", "PLAYER2: " + oppositePlayer.getParticipantId());
+            return matchTimeline.getGoldDifferenceBetween2Players(currentPlayer.getParticipantId(), oppositePlayer.getParticipantId());
+        }
+
+        return null;
     }
 
     private int[] getTeamPlayerIds(Team team){

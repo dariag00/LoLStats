@@ -192,7 +192,7 @@ public class SavedProfileActivity extends AppCompatActivity{
         }
     }
 
-    public MatchStatsEntry matchToEntry(Match match){
+    public MatchStatsEntry matchToEntry(Match match) {
         MatchStatsEntry entry = new MatchStatsEntry(match.getGameId());
 
         Summoner sum = new Summoner(summoner);
@@ -213,43 +213,50 @@ public class SavedProfileActivity extends AppCompatActivity{
         entry.setDamagePercent(LoLStatsUtils.getDamagePercentOfGivenPlayer(match.getTeamOfGivenPlayer(player).getPlayers(), player));
         entry.setGoldPercent(LoLStatsUtils.getGoldPercentOfGivenPlayer(match.getTeamOfGivenPlayer(player).getPlayers(), player));
         entry.setVictory(match.hasGivenPlayerWon(player));
-        Log.d(LOG_TAG, "ROLE: " + player.getRole() + " mId " +match.getGameId() + " ch " + player.getChampion().getName());
+        Log.d(LOG_TAG, "ROLE: " + player.getRole() + " mId " + match.getGameId() + " ch " + player.getChampion().getName());
         entry.setRole(player.getRole());
         entry.setPlayedChampion(player.getChampion());
         entry.setPlayer(player);
         double dpm = LoLStatsUtils.calculateDPM(match.getGameDuration(), player.getTotalDamageDealtToChampions());
         entry.setDpm(dpm);
 
-        Map<Long, Integer> goldDifferenceOverTime = match.getGoldDifferentOfLanersOverTime(sum);
+        Map<Long, Integer> goldDifferenceOverTime = match.getGoldDifferenceOfLanersOverTime(sum);
+        Iterator<Map.Entry<Long, Integer>> iterator;
 
-        Iterator<Map.Entry<Long, Integer>> iterator = goldDifferenceOverTime.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Long, Integer> mapEntry = iterator.next();
-            int minute = (int) (mapEntry.getKey()/60000);
-            //Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
-            if(Math.round(minute) == 10)
-                entry.setGoldDiff10(mapEntry.getValue());
-            if(Math.round(minute) == 15)
-                entry.setGoldDiff15(mapEntry.getValue());
-            if(Math.round(minute) == 20)
-                entry.setGoldDiff20(mapEntry.getValue());
+        if (goldDifferenceOverTime != null) {
+
+            iterator = goldDifferenceOverTime.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Long, Integer> mapEntry = iterator.next();
+                int minute = (int) (mapEntry.getKey() / 60000);
+                //Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
+                if (Math.round(minute) == 10)
+                    entry.setGoldDiff10(mapEntry.getValue());
+                if (Math.round(minute) == 15)
+                    entry.setGoldDiff15(mapEntry.getValue());
+                if (Math.round(minute) == 20)
+                    entry.setGoldDiff20(mapEntry.getValue());
+            }
         }
 
-        Map<Long, Integer> csDifferenceOverTime = match.getCsDifferentOfLanersOverTime(sum);
 
-        iterator = csDifferenceOverTime.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Long, Integer> mapEntry = iterator.next();
-            int minute = (int) (mapEntry.getKey()/60000);
+        Map<Long, Integer> csDifferenceOverTime = match.getCsDifferenceOfLanersOverTime(sum);
+        if (csDifferenceOverTime != null){
+            iterator = csDifferenceOverTime.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Long, Integer> mapEntry = iterator.next();
+                int minute = (int) (mapEntry.getKey() / 60000);
 
-            if(Math.round(minute) == 10) {
-                Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
-                entry.setCsDiffAt10(mapEntry.getValue());
+                if (Math.round(minute) == 10) {
+                    Log.d(LOG_TAG, "Rounded: " + Math.round(minute) + " " + mapEntry.getValue());
+                    entry.setCsDiffAt10(mapEntry.getValue());
+                }
+                if (Math.round(minute) == 15)
+                    entry.setCsDiffAt15(mapEntry.getValue());
+                if (Math.round(minute) == 20)
+                    entry.setCsDiffAt20(mapEntry.getValue());
             }
-            if(Math.round(minute) == 15)
-                entry.setCsDiffAt15(mapEntry.getValue());
-            if(Math.round(minute) == 20)
-                entry.setCsDiffAt20(mapEntry.getValue());
+
         }
 
         Map<Long, Integer> getCsOverTime = match.getParticipantCs(player.getParticipantId());

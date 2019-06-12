@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-171a347c-5537-48e3-bb93-80fbaa9a26d7";
+    private final static String RIOT_API_KEY = "RGAPI-0c1d9f0b-4866-414a-8a2c-0488b7245852";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -197,7 +197,6 @@ public class NetworkUtils {
                         .appendPath(riotSearchQuery)
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
                         .appendQueryParameter(QUEUE_PARAM, "420")
-                        //TODO temporal
                         .appendQueryParameter(SEASON_PARAM, "13")
                         .build();
                 break;

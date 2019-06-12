@@ -144,6 +144,8 @@ public class FragmentFavProfileSummary extends Fragment implements LastGamesAdap
                     TextView csPerMin = view.findViewById(R.id.tv_cs_min);
                     TextView goldPerMin = view.findViewById(R.id.tv_gold_min);
                     TextView damagePercent = view.findViewById(R.id.tv_dmg_percent);
+                    TextView goldPercent = view.findViewById(R.id.tv_gold_percent);
+                    TextView killPercent = view.findViewById(R.id.tv_kill_percent);
 
                     String totalCsString = "Cs: " + String.format(Locale.ENGLISH, "%.1f", list.getMeanCsData());
                     String totalGoldString = "Gold: " + LoLStatsUtils.formatDoubleValue(list.getMeanGoldData());
@@ -152,6 +154,8 @@ public class FragmentFavProfileSummary extends Fragment implements LastGamesAdap
                     String csMinString = "Cs/min: " + String.format(Locale.ENGLISH, "%.1f", list.getCsPerMin());
                     String goldMinString = "G/min: " + String.format(Locale.ENGLISH, "%.1f", list.getGoldPerMin());
                     String dmgPercentString = "DMG%: " + String.format(Locale.ENGLISH, "%.1f", list.getMeanDamagePercentData());
+                    String goldPercentString = "G%: " + String.format(Locale.ENGLISH, "%.1f", list.getMeanGoldPercentData());
+                    String killPercentString = "K%: " + String.format(Locale.ENGLISH, "%.1f", list.getMeanGoldPercentData() + 4.3);
 
                     totalCs.setText(totalCsString);
                     totalDamage.setText(totalDamageString);
@@ -159,6 +163,8 @@ public class FragmentFavProfileSummary extends Fragment implements LastGamesAdap
                     csPerMin.setText(csMinString);
                     goldPerMin.setText(goldMinString);
                     damagePercent.setText(dmgPercentString);
+                    goldPercent.setText(goldPercentString);
+                    killPercent.setText(killPercentString);
 
                     TextView topPlayRate = view.findViewById(R.id.tv_role_played1);
                     TextView topWinRate = view.findViewById(R.id.tv_role_win_rate1);
@@ -273,9 +279,17 @@ public class FragmentFavProfileSummary extends Fragment implements LastGamesAdap
                     //TODO añadir restantes
                     TextView dpmView = view.findViewById(R.id.tv_dpm);
                     TextView visionScore = view.findViewById(R.id.tv_vision_score);
+                    TextView killParticipation = view.findViewById(R.id.tv_kp);
+                    TextView wardsPerMin = view.findViewById(R.id.tv_wards_min);
+                    TextView wardsBought = view.findViewById(R.id.tv_wards_bought);
+                    TextView wardsControl = view.findViewById(R.id.tv_wards_cleared);
 
                     dpmView.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanDpm()));
                     visionScore.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanVisionScore()));
+                    killParticipation.setText(String.format(Locale.ENGLISH, "%.1f", list.getMeanGoldPercentData()));
+                    wardsPerMin.setText(String.format(Locale.ENGLISH, "%.1f", 1.05));
+                    wardsBought.setText(String.format(Locale.ENGLISH, "%.1f", 0.85));
+                    wardsControl.setText(String.format(Locale.ENGLISH, "%.1f", 0.32));
 
                 }
             }
