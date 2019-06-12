@@ -129,12 +129,12 @@ public class LoLStatsUtils {
                 }
             }else{
                 //Si se jugó hace menos de 1 hora la unidad pasa a ser minutos
-                long minutes = TimeUnit.MINUTES.convert(diff, TimeUnit.MINUTES);
+                long minutes = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
                 if(minutes>=1){
                     timeAgo = timeAgo + String.valueOf(minutes) + " minutos";
                 }else{
                     //Si se jugó hace menos de 1 minuto la unidad pasa a ser segundos
-                    long seconds = TimeUnit.SECONDS.convert(diff, TimeUnit.SECONDS);
+                    long seconds = TimeUnit.SECONDS.convert(diff, TimeUnit.MILLISECONDS);
                     timeAgo = timeAgo + String.valueOf(seconds) +   " segundos";
                 }
             }
