@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-0c1d9f0b-4866-414a-8a2c-0488b7245852";
+    private final static String RIOT_API_KEY = "RGAPI-31327657-e148-49de-b97e-86097db1a766";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -44,7 +44,7 @@ public class NetworkUtils {
     private final static String CDRAGON_BASE_URL = "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/";
 
     //TODO sacarlo de la url: https://ddragon.leagueoflegends.com/api/versions.json
-    private final static String DDRAGON_VERSION = "9.8.1";
+    private final static String DDRAGON_VERSION = "9.12.1";
 
     private final static String DDRAGON_GET_CHAMPION_IMAGE = "/img/champion/";
 
@@ -208,7 +208,7 @@ public class NetworkUtils {
                 break;
 
             case GET_LIVE_GAME:
-                path = RIOT_BASE_URL + RIOT_GET_LEAGUES_POSITIONS;
+                path = RIOT_BASE_URL + RIOT_GET_LIVE_GAME;
                 builtUri = Uri.parse(path).buildUpon()
                         .appendPath(riotSearchQuery)
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)

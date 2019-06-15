@@ -11,6 +11,7 @@ import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.MatchList;
 import com.example.klost.lolstats.models.matches.Player;
+import com.example.klost.lolstats.models.matches.livegame.Ban;
 import com.example.klost.lolstats.models.matches.matchtimeline.MatchEvent;
 import com.example.klost.lolstats.models.matches.matchtimeline.MatchFrame;
 import com.example.klost.lolstats.models.matches.matchtimeline.MatchTimeline;
@@ -685,7 +686,6 @@ public class JsonUtils {
 
     //TODO testear
     public static Match getLiveGameFromJson(String requestJsonStr) throws JSONException {
-
         JSONObject jsonObject = new JSONObject(requestJsonStr);
 
         if(jsonObject.has("status")) {
@@ -697,7 +697,6 @@ public class JsonUtils {
             }
 
         }
-
 
         long gameId = jsonObject.getLong("gameId");
         long gameStartTime = jsonObject.getLong("gameStartTime");
@@ -716,6 +715,27 @@ public class JsonUtils {
         Team blueTeam = new Team(100);
         Team redTeam = new Team(200);
 
+        JSONArray bansArray = jsonObject.getJSONArray("bannedChampions");
+
+        for(int j = 0; j<bansArray.length(); j++){
+            JSONObject banObject = bansArray.getJSONObject(j);
+            int teamId = banObject.getInt("teamId");
+            int championId = banObject.getInt("championId");
+            int pickTurn = banObject.getInt("pickTurn");
+
+            Ban ban = new Ban();
+            ban.setChampion(StaticData.getChampionList().getChampionById(championId));
+
+            if(teamId == 100)
+                blueTeam.addBan(ban);
+            else
+                redTeam.addBan(ban);
+
+            ban.setPickTurn(pickTurn);
+
+
+        }
+
         for(int i = 0; i<participantsArray.length(); i++){
             JSONObject participantJson = participantsArray.getJSONObject(i);
             int profileIconId = participantJson.getInt("profileIconId");
@@ -727,7 +747,7 @@ public class JsonUtils {
             int teamId = participantJson.getInt("teamId");
             String summonerId = participantJson.getString("summonerId");
 
-            Champion champion = new Champion(championId);
+            Champion champion = StaticData.getChampionList().getChampionById(championId);
             Summoner summoner = new Summoner();
             summoner.setEncryptedSummonerId(summonerId);
             summoner.setProfileIconId(profileIconId);
@@ -742,6 +762,30 @@ public class JsonUtils {
                 blueTeam.addPlayer(player);
             else if(teamId == 200)
                 redTeam.addPlayer(player);
+
+            JSONObject perksObject = participantJson.getJSONObject("perks");
+            JSONArray perksArray = perksObject.getJSONArray("perkIds");
+
+            int runePrimaryStyle = perksObject.getInt("perkStyle");
+            int runeSecondaryStyle = perksObject.getInt("perkSubStyle");
+
+            player.setRunePrimaryStyle(runePrimaryStyle);
+            player.setRuneSecondaryStyle(runeSecondaryStyle);
+
+            int rune0 = perksArray.getInt(0);
+            int rune1 = perksArray.getInt(1);
+            int rune2 = perksArray.getInt(2);
+            int rune3 = perksArray.getInt(3);
+            int rune4 = perksArray.getInt(4);
+            int rune5 = perksArray.getInt(5);
+
+            player.setRune0(rune0);
+            player.setRune1(rune1);
+            player.setRune2(rune2);
+            player.setRune3(rune3);
+            player.setRune4(rune4);
+            player.setRune5(rune5);
+
         }
 
         match.setBlueTeam(blueTeam);

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/item_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="3dp"
+    android:background="@android:color/white"
     android:padding="2dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -27,8 +29,9 @@
 
             <ImageView
                 android:id="@+id/iv_player_keystone"
-                android:src="@drawable/main_rune"
-                style="@style/match_details_top_icon" />
+                style="@style/match_details_top_icon"
+                android:layout_width="19dp"
+                android:src="@drawable/main_rune" />
 
             <ImageView
                 android:id="@+id/iv_player_secondary_rune"
@@ -61,7 +64,7 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="0.75"
+        android:layout_weight="1"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:orientation="vertical">
@@ -82,14 +85,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_summoner_level"
-        android:layout_width="0dp"
-        android:layout_weight="0.5"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:text="LEVEL 15"/>
 
     <LinearLayout
         android:layout_width="0dp"

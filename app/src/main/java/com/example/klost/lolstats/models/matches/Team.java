@@ -3,6 +3,7 @@ package com.example.klost.lolstats.models.matches;
 import android.util.Log;
 
 import com.example.klost.lolstats.models.Summoner;
+import com.example.klost.lolstats.models.matches.livegame.Ban;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Team implements Serializable {
     private String win; //Legal Values Fail, Win
     private int dragonKills; //Number of times the team killed Dragon
     private List<Player> players;
+    private List<Ban> bannedChampions;
 
     public Team(){
         players = new ArrayList<>();
@@ -151,6 +153,18 @@ public class Team implements Serializable {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public List<Ban> getBannedChampions() {
+        return bannedChampions;
+    }
+
+    public void setBannedChampions(List<Ban> bannedChampions) {
+        this.bannedChampions = bannedChampions;
+    }
+
+    public void addBan(Ban ban){
+        this.bannedChampions.add(ban);
     }
 
     public void addPlayer(Player player){

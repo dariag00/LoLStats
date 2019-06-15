@@ -14,6 +14,7 @@ import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.champions.ChampionList;
 import com.example.klost.lolstats.models.champions.ChampionStats;
 import com.example.klost.lolstats.models.champions.ChampionStatsList;
+import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.models.matches.Match;
 import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.models.matches.Team;
@@ -822,6 +823,112 @@ public class LoLStatsUtils {
         return totalDamage / durationInMinutes;
     }
 
+
+    public static double getAverageDivisionOfTeam(List<Player> playerList){
+
+        int totalValue = 0;
+
+        for(Player player:playerList){
+            totalValue += getNumericalValueOfLeaguePosition(player.getSummoner().getPositionList().getHighestRankingPosition());
+        }
+
+        return totalValue / (double) playerList.size();
+    }
+
+    public static String getStringValueOfDivision(int value){
+
+        int rank = value % 4;
+
+        String rankString = "", tierString  = "";
+
+        if(rank == 0){
+            rankString = "IV";
+        }else if(rank == 1){
+            rankString = "III";
+        }else if(rank == 2){
+            rankString = "II";
+        }else if(rank == 3){
+            rankString = "I";
+        }
+
+        int tier = value / 4;
+
+        if(tier == 0){
+            tierString = "Iron";
+        }else if(tier == 1){
+            tierString = "Bronze";
+        }else if(tier == 2){
+            tierString = "Silver";
+        }else if(tier == 3){
+            tierString = "Gold";
+        }else if(tier == 4){
+            tierString = "Platinum";
+        }else if(tier == 5){
+            tierString = "Diamond";
+        }else if(tier == 6){
+            tierString = "Master";
+        }else if(tier == 7){
+            tierString = "GrandMaster";
+        }else if(tier == 8){
+            tierString = "Challenger";
+        }
+
+        return tierString + " " + rankString;
+
+    }
+
+    public static int getNumericalValueOfLeaguePosition(LeaguePosition position){
+
+        int numero = 0;
+        Log.d(LOG_TAG, "RANK: " + position.getRank() + " " + position.getTier());
+        switch(position.getTier()){
+            case "IRON":
+                numero = 0;
+                break;
+            case "BRONZE":
+                numero = 4;
+                break;
+            case "SILVER":
+                numero = 8;
+                break;
+            case "GOLD":
+                numero = 12;
+                break;
+            case "PLATINUM":
+                numero = 16;
+                break;
+            case "DIAMOND":
+                numero = 20;
+                break;
+            case "MASTER":
+                numero = 24;
+                break;
+            case "GRANDMASTER":
+                numero = 28;
+                break;
+            case "CHALLENGER":
+                numero = 32;
+                break;
+        }
+
+        switch(position.getRank()){
+            case "IV":
+                numero += 0;
+                break;
+            case "III":
+                numero += 1;
+                break;
+            case "II":
+                numero += 2;
+                break;
+            case "I":
+                numero += 3;
+                break;
+
+        }
+
+        return numero;
+    }
 
 }
 

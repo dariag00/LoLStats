@@ -35,7 +35,9 @@ import com.example.klost.lolstats.models.Summoner;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.models.leagueposition.LeaguePositionList;
 import com.example.klost.lolstats.models.matches.Match;
+import com.example.klost.lolstats.models.matches.Player;
 import com.example.klost.lolstats.utilities.JsonUtils;
+import com.example.klost.lolstats.utilities.LiveGameBean;
 import com.example.klost.lolstats.utilities.NetworkUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.RateLimiter;
@@ -189,12 +191,13 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
     }
 
     @Override
-    public void onTaskCompleted(Match result) {
-        if(result == null){
+    public void onTaskCompleted(LiveGameBean bean) {
+        if(bean == null){
             summonerNameView.setError("El usuario no está jugando ahorita mismo");
         }else{
             Intent intent = new Intent(this, LiveGameActivity.class);
-            intent.putExtra(EXTRA_SUMMONER_NAME, result);
+            intent.putExtra(EXTRA_LIVE_MATCH, bean.getMatch());
+            intent.putExtra(EXTRA_SUMMONER_NAME, bean.getSummoner());
             startActivity(intent);
         }
     }
@@ -203,7 +206,7 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         String summonerName = summonerNameView.getText().toString();
         if(isValid(summonerName)) {
             LiveGameTaks task = new LiveGameTaks(this);
-            URL liveGameUrl = NetworkUtils.buildUrl(summonerName, NetworkUtils.GET_LIVE_GAME);
+            URL liveGameUrl = NetworkUtils.buildUrl(summonerName, NetworkUtils.GET_SUMMONER);
             task.execute(liveGameUrl);
         }
     }
@@ -357,7 +360,7 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         }
     }
 
-    private static class LiveGameTaks extends AsyncTask<URL, Void, Match> {
+    private static class LiveGameTaks extends AsyncTask<URL, Void, LiveGameBean> {
 
         OnLiveGameTaskCompleted listener;
 
@@ -366,26 +369,52 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
         }
 
         @Override
-        protected Match doInBackground(URL... urls) {
-            String liveGameResults;
+        protected LiveGameBean doInBackground(URL... urls) {
+            String liveGameResults, summonerResults, leaguesSearchResult;
             RateLimiter throttler = RateLimiter.create(0.7);
             Match match = null;
-
+            Summoner summoner = null;
             try {
-                liveGameResults = NetworkUtils.getResponseFromHttpUrl(urls[0] , throttler);
-                match = JsonUtils.getLiveGameFromJson(liveGameResults);
+                summonerResults =  NetworkUtils.getResponseFromHttpUrl(urls[0] , throttler);
+                summoner = JsonUtils.getSummonerFromJSON(summonerResults);
+                URL liveGameUrl = NetworkUtils.buildUrl(summoner.getEncryptedSummonerId(), NetworkUtils.GET_LIVE_GAME);
+                if(liveGameUrl != null) {
+                    liveGameResults = NetworkUtils.getResponseFromHttpUrl(liveGameUrl, throttler);
+                    match = JsonUtils.getLiveGameFromJson(liveGameResults);
+                }
+                for(Player player: match.getBlueTeam().getPlayers()){
+                    URL url = NetworkUtils.buildUrl(player.getSummoner().getEncryptedSummonerId(), NetworkUtils.GET_LEAGUES_POSITIONS);
+                    if(url != null) {
+                        leaguesSearchResult = NetworkUtils.getResponseFromHttpUrl(url, throttler);
+                        LeaguePositionList positionList = JsonUtils.getLeaguePositionListFromJSON(leaguesSearchResult);
+                        player.getSummoner().setPositionList(positionList);
+                    }
+                }
+                for(Player player: match.getRedTeam().getPlayers()){
+                    URL url = NetworkUtils.buildUrl(player.getSummoner().getEncryptedSummonerId(), NetworkUtils.GET_LEAGUES_POSITIONS);
+                    if(url != null) {
+                        leaguesSearchResult = NetworkUtils.getResponseFromHttpUrl(url, throttler);
+                        LeaguePositionList positionList = JsonUtils.getLeaguePositionListFromJSON(leaguesSearchResult);
+                        player.getSummoner().setPositionList(positionList);
+                    }
+                }
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            LiveGameBean bean = new LiveGameBean();
+            bean.setMatch(match);
+            bean.setSummoner(summoner);
 
-            return match;
+            return bean;
         }
 
         @Override
-        protected void onPostExecute(Match result) {
-            listener.onTaskCompleted(result);
+        protected void onPostExecute(LiveGameBean bean) {
+            listener.onTaskCompleted(bean);
         }
 
     }

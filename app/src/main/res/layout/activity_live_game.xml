@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardElevation="3dp"
+        card_view:cardBackgroundColor="@color/lightBlue"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -106,6 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardElevation="3dp"
+        card_view:cardBackgroundColor="@color/lightRed"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout

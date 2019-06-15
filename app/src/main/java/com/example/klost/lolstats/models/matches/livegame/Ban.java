@@ -14,6 +14,10 @@ public class Ban {
         this.team = team;
     }
 
+    public Ban(){
+
+    }
+
     public int getPickTurn() {
         return pickTurn;
     }
