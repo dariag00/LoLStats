@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities.savedprofile;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.LastGamesAdapter;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.SummonerProfileViewModel;
+import com.example.klost.lolstats.SummonerProfileViewModelFactory;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
 import com.example.klost.lolstats.data.database.SummonerEntry;
@@ -18,7 +23,6 @@ import com.example.klost.lolstats.models.champions.ChampionStats;
 import com.example.klost.lolstats.models.champions.ChampionStatsList;
 import com.example.klost.lolstats.models.leagueposition.LeaguePosition;
 import com.example.klost.lolstats.utilities.LoLStatsUtils;
-import com.example.klost.lolstats.utilities.StaticData;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -45,10 +49,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,7 +63,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
-public class FragmentFavProfileSummary extends Fragment implements LastGamesAdapter.ItemClickListener{
+public class FragmentFavProfileSummary extends Fragment implements LastGamesAdapter.ItemClickListener {
 
     private static final String LOG_TAG = FragmentFavProfileSummary.class.getSimpleName();
     private final String SAVED_ENTRY = "SAVED_ENTRY_ID";

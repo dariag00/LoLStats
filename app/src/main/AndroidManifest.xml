@@ -13,12 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.ChampionDetailsActivity"
-            android:parentActivityName=".activities.SavedProfileActivity"></activity>
+            android:parentActivityName=".activities.savedprofile.SavedProfileActivity"></activity>
         <activity
             android:name=".activities.LiveGameActivity"
             android:parentActivityName=".activities.InitialActivity" />
         <activity
-            android:name=".activities.SavedProfileActivity"
+            android:name=".activities.savedprofile.SavedProfileActivity"
             android:parentActivityName=".activities.InitialActivity" />
         <activity
             android:name=".activities.SaveSummonerActivity"

@@ -1,10 +1,14 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities.savedprofile;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.klost.lolstats.activities.savedprofile.FragmentFavProfileChampionsStats;
+import com.example.klost.lolstats.activities.savedprofile.FragmentFavProfileMatches;
+import com.example.klost.lolstats.activities.savedprofile.FragmentFavProfileSummary;
 
 public class SavedProfileViewPagerAdapter extends FragmentPagerAdapter {
 

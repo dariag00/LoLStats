@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities.savedprofile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.ChampionStatsAdapter;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.SummonerProfileViewModel;
+import com.example.klost.lolstats.SummonerProfileViewModelFactory;
 import com.example.klost.lolstats.activities.ChampionDetailsActivity;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
@@ -28,7 +33,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FragmentFavProfileChampionsStats extends Fragment implements ChampionStatsAdapter.ItemClickListener{
+public class FragmentFavProfileChampionsStats extends Fragment implements ChampionStatsAdapter.ItemClickListener {
 
     private RecyclerView recyclerView;
     private ChampionStatsAdapter adapter;

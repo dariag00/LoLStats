@@ -1,4 +1,4 @@
-package com.example.klost.lolstats;
+package com.example.klost.lolstats.activities.savedprofile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.klost.lolstats.AppExecutors;
+import com.example.klost.lolstats.MatchEntryListAdapter;
+import com.example.klost.lolstats.R;
+import com.example.klost.lolstats.SummonerProfileViewModel;
+import com.example.klost.lolstats.SummonerProfileViewModelFactory;
 import com.example.klost.lolstats.activities.GameDetailsActivity;
 import com.example.klost.lolstats.data.LoLStatsRepository;
 import com.example.klost.lolstats.data.database.MatchStatsEntry;
@@ -24,7 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FragmentFavProfileMatches extends Fragment implements MatchEntryListAdapter.ItemClickListener{
+public class FragmentFavProfileMatches extends Fragment implements MatchEntryListAdapter.ItemClickListener {
 
     private static final String LOG_TAG = FragmentFavProfileMatches.class.getSimpleName();
     private final String SAVED_ENTRY = "SAVED_ENTRY_ID";

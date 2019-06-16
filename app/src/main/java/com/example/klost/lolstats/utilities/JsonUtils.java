@@ -684,8 +684,12 @@ public class JsonUtils {
         return matchTimeline;
     }
 
-    //TODO testear
+
     public static Match getLiveGameFromJson(String requestJsonStr) throws JSONException {
+
+        if(requestJsonStr.equals("Error 404: Not Found"))
+            return null;
+
         JSONObject jsonObject = new JSONObject(requestJsonStr);
 
         if(jsonObject.has("status")) {

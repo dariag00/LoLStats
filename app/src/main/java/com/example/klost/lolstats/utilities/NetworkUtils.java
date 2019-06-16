@@ -197,6 +197,7 @@ public class NetworkUtils {
                         .appendPath(riotSearchQuery)
                         .appendQueryParameter(PARAM_KEY, RIOT_API_KEY)
                         .appendQueryParameter(QUEUE_PARAM, "420")
+                        .appendQueryParameter(QUEUE_PARAM, "440")
                         .appendQueryParameter(SEASON_PARAM, "13")
                         .build();
                 break;
