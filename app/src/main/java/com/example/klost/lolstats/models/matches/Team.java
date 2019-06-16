@@ -37,6 +37,7 @@ public class Team implements Serializable {
     public Team(int teamId){
         this.teamId = teamId;
         players = new ArrayList<>();
+        bannedChampions = new ArrayList<>();
     }
 
     public boolean isBlueTeam(){

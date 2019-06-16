@@ -880,51 +880,55 @@ public class LoLStatsUtils {
     public static int getNumericalValueOfLeaguePosition(LeaguePosition position){
 
         int numero = 0;
-        Log.d(LOG_TAG, "RANK: " + position.getRank() + " " + position.getTier());
-        switch(position.getTier()){
-            case "IRON":
-                numero = 0;
-                break;
-            case "BRONZE":
-                numero = 4;
-                break;
-            case "SILVER":
-                numero = 8;
-                break;
-            case "GOLD":
-                numero = 12;
-                break;
-            case "PLATINUM":
-                numero = 16;
-                break;
-            case "DIAMOND":
-                numero = 20;
-                break;
-            case "MASTER":
-                numero = 24;
-                break;
-            case "GRANDMASTER":
-                numero = 28;
-                break;
-            case "CHALLENGER":
-                numero = 32;
-                break;
-        }
+        if(position != null) {
+            Log.d(LOG_TAG, "RANK: " + position.getRank() + " " + position.getTier());
+            switch (position.getTier()) {
+                case "IRON":
+                    numero = 0;
+                    break;
+                case "BRONZE":
+                    numero = 4;
+                    break;
+                case "SILVER":
+                    numero = 8;
+                    break;
+                case "GOLD":
+                    numero = 12;
+                    break;
+                case "PLATINUM":
+                    numero = 16;
+                    break;
+                case "DIAMOND":
+                    numero = 20;
+                    break;
+                case "MASTER":
+                    numero = 24;
+                    break;
+                case "GRANDMASTER":
+                    numero = 28;
+                    break;
+                case "CHALLENGER":
+                    numero = 32;
+                    break;
+            }
 
-        switch(position.getRank()){
-            case "IV":
-                numero += 0;
-                break;
-            case "III":
-                numero += 1;
-                break;
-            case "II":
-                numero += 2;
-                break;
-            case "I":
-                numero += 3;
-                break;
+            switch (position.getRank()) {
+                case "IV":
+                    numero += 0;
+                    break;
+                case "III":
+                    numero += 1;
+                    break;
+                case "II":
+                    numero += 2;
+                    break;
+                case "I":
+                    numero += 3;
+                    break;
 
+            }
+        }else{
+            numero = 8;
         }
 
         return numero;

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/item_container"
+<LinearLayout android:id="@+id/item_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="3dp"
     android:background="@android:color/white"
-    android:padding="2dp">
+    android:padding="2dp"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_player_champion"
@@ -67,6 +67,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:orientation="vertical">
 
         <TextView
@@ -74,14 +75,14 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="I Am Klose"/>
+            tools:text="I Am Klose"/>
 
         <TextView
             android:id="@+id/tv_champion_name"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="AKALI"/>
+            tools:text="AKALI"/>
 
     </LinearLayout>
 
@@ -110,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_gravity="center"
-                android:text="BRONZE 2"/>
+                tools:text="BRONZE 2"/>
 
         </LinearLayout>
 
@@ -119,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="54%WR:"/>
+            tools:text="54%WR:" />
 
     </LinearLayout>
 

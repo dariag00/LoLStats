@@ -377,9 +377,13 @@ public class InitialActivity extends AppCompatActivity implements SummonerAdapte
             try {
                 summonerResults =  NetworkUtils.getResponseFromHttpUrl(urls[0] , throttler);
                 summoner = JsonUtils.getSummonerFromJSON(summonerResults);
+                if(summoner == null)
+                    return null;
                 URL liveGameUrl = NetworkUtils.buildUrl(summoner.getEncryptedSummonerId(), NetworkUtils.GET_LIVE_GAME);
                 if(liveGameUrl != null) {
                     liveGameResults = NetworkUtils.getResponseFromHttpUrl(liveGameUrl, throttler);
+                    if(liveGameResults == null)
+                        return null;
                     match = JsonUtils.getLiveGameFromJson(liveGameResults);
                 }
                 for(Player player: match.getBlueTeam().getPlayers()){

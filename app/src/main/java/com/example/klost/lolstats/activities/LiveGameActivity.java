@@ -120,15 +120,18 @@ public class LiveGameActivity extends AppCompatActivity implements LiveGameAdapt
     private double calculateMeanWinrate(List<Player> playerList){
         double totalWinrate = 0;
         double winrate;
+        int nPlayers = playerList.size();
         for(Player player: playerList){
             LeaguePositionList list = player.getSummoner().getPositionList();
             if(list != null && list.getHighestRankingPosition() != null)
                 winrate = list.getHighestRankingPosition().getWins() / (double) (list.getHighestRankingPosition().getWins() + list.getHighestRankingPosition().getLosses());
-            else
+            else {
+                nPlayers--;
                 winrate = 0;
+            }
             totalWinrate += winrate;
         }
-        return (totalWinrate / playerList.size() ) * 100;
+        return (totalWinrate / nPlayers ) * 100;
     }
 
     private void populateViews(){

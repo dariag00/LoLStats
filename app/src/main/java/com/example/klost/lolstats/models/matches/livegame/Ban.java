@@ -3,7 +3,9 @@ package com.example.klost.lolstats.models.matches.livegame;
 import com.example.klost.lolstats.models.champions.Champion;
 import com.example.klost.lolstats.models.matches.Team;
 
-public class Ban {
+import java.io.Serializable;
+
+public class Ban implements Serializable {
     private int pickTurn;
     private Champion champion;
     private Team team;

@@ -504,14 +504,6 @@
                             android:layout_alignTop="@id/iv_rune1"
                             android:layout_toRightOf="@id/iv_rune1"
                             android:text="Rune Name" />
-                        <TextView
-                            android:id="@+id/tv_rune1_stat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_rune1_name"
-                            android:layout_toRightOf="@id/iv_rune1"
-                            android:textSize="12sp"
-                            android:text="2512" />
 
                         <TextView
                             android:id="@+id/tv_rune2_name"
@@ -522,15 +514,6 @@
                             android:layout_marginLeft="3dp"
                             android:text="Rune Name" />
 
-                        <TextView
-                            android:id="@+id/tv_rune2_stat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_rune2_name"
-                            android:layout_toRightOf="@id/iv_rune2"
-                            android:layout_marginLeft="3dp"
-                            android:textSize="12sp"
-                            android:text="Rune Name" />
 
                         <TextView
                             android:id="@+id/tv_rune3_name"
@@ -541,15 +524,6 @@
                             android:layout_toRightOf="@id/iv_rune3"
                             android:text="Rune Name" />
 
-                        <TextView
-                            android:id="@+id/tv_rune3_stat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_rune3_name"
-                            android:layout_toRightOf="@id/iv_rune3"
-                            android:layout_marginLeft="3dp"
-                            android:textSize="12sp"
-                            android:text="Rune Name" />
 
                         <TextView
                             android:id="@+id/tv_rune4_name"
@@ -560,15 +534,6 @@
                             android:layout_marginLeft="3dp"
                             android:text="Rune Name" />
 
-                        <TextView
-                            android:id="@+id/tv_rune4_stat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_rune4_name"
-                            android:layout_toRightOf="@id/iv_rune4"
-                            android:layout_marginLeft="3dp"
-                            android:textSize="12sp"
-                            android:text="Rune Name" />
 
                     </RelativeLayout>
 
@@ -627,15 +592,7 @@
                             android:layout_toRightOf="@id/iv_rune2_1"
                             android:layout_marginLeft="3dp"
                             android:text="Rune Name" />
-                        <TextView
-                            android:id="@+id/tv_rune2_1_stat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_rune2_1_name"
-                            android:layout_marginLeft="3dp"
-                            android:layout_toRightOf="@id/iv_rune2_1"
-                            android:textSize="12sp"
-                            android:text="Rune Name" />
+
 
                         <TextView
                             android:id="@+id/tv_rune2_2_name"
@@ -644,15 +601,6 @@
                             android:layout_alignTop="@id/iv_rune2_2"
                             android:layout_toRightOf="@id/iv_rune2_2"
                             android:layout_marginLeft="3dp"
-                            android:text="Rune Name" />
-                        <TextView
-                            android:id="@+id/tv_rune2_2_stat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_rune2_2_name"
-                            android:layout_toRightOf="@id/iv_rune2_2"
-                            android:layout_marginLeft="3dp"
-                            android:textSize="12sp"
                             android:text="Rune Name" />
 
                         <View
