@@ -147,8 +147,10 @@ public class SavedProfileActivity extends AppCompatActivity{
                                 matchTimelineSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchTimelineURL, throttler);
                                 MatchTimeline matchTimeline = JsonUtils.getMatchTimeLine(matchTimelineSearchResults);
                                 match.setMatchTimeline(matchTimeline);
-                                Log.d(LOG_TAG, "Procesado con exito");
+                                Log.d(LOG_TAG, "Procesado con exito:" + i);
                                 matches[i] = match;
+                                MatchStatsEntry entry = matchToEntry(match);
+                                repository.addMatchStatsEntry(entry);
                             }
                         }else{
                             Log.d(LOG_TAG, "Devuelvo null en getMatchURL");
@@ -173,7 +175,7 @@ public class SavedProfileActivity extends AppCompatActivity{
 
             SavedProfileActivity activity = weakActivity.get();
 
-            if(matchList != null) {
+            /*if(matchList != null) {
                 for (int i = 0; i < matchList.length; i++) {
                     Match match = matchList[i];
                     if(match != null) {
@@ -188,7 +190,7 @@ public class SavedProfileActivity extends AppCompatActivity{
             }else{
                 Toast.makeText(activity, "A problem ocurred", Toast.LENGTH_SHORT)
                         .show();
-            }
+            }*/
         }
     }
 

@@ -20,7 +20,8 @@ import static androidx.room.ForeignKey.CASCADE;
         onDelete = CASCADE), indices = {@Index("summonerId")})
 public class MatchStatsEntry {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private long matchId;
     private int summonerId;
     private int kills;
@@ -305,6 +306,14 @@ public class MatchStatsEntry {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getGameDurationInMinutesAndSeconds(){
