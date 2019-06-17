@@ -21,7 +21,7 @@ public class NetworkUtils {
     */
 
     //KEY DE LA API - CAMBIAR CADA 24H HASTA TENER MODELO DE PRODUCCIÓN
-    private final static String RIOT_API_KEY = "RGAPI-31327657-e148-49de-b97e-86097db1a766";
+    private final static String RIOT_API_KEY = "RGAPI-5de98e0d-3f7c-4229-ae48-f0b3594bc7c3";
 
     private final static String PARAM_KEY = "api_key";
 
@@ -35,7 +35,7 @@ public class NetworkUtils {
 
     private final static String RIOT_GET_SUMMONER = "/lol/summoner/v4/summoners/by-name";
 
-    private final static String RIOT_GET_LEAGUES_POSITIONS = "/lol/league/v4/positions/by-summoner";
+    private final static String RIOT_GET_LEAGUES_POSITIONS = "/lol/league/v4/entries/by-summoner";
 
     private final static String RIOT_GET_LIVE_GAME = "/lol/spectator/v4/active-games/by-summoner";
 
@@ -60,9 +60,9 @@ public class NetworkUtils {
 
     private final static String DDRAGON_GET_SPLASH_ART = "splash/";
 
-    public final static String CDRAGON_GET_PERKS = "global/default/v1/perks.json";
+    private final static String CDRAGON_GET_PERKS = "global/default/v1/perks.json";
 
-    public final static String CDRAGON_GET_IMAGES_BASE = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/";
+    private final static String CDRAGON_GET_IMAGES_BASE = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/";
 
     public final static int GET_SUMMONER = 0;
 

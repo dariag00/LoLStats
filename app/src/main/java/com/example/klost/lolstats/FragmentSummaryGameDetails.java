@@ -3,6 +3,7 @@ package com.example.klost.lolstats;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -245,18 +246,43 @@ public class FragmentSummaryGameDetails  extends Fragment{
         Rune perk1 = StaticData.getRuneList().getRuneById(currentPlayer.getStatRune0());
         Rune perk2 = StaticData.getRuneList().getRuneById(currentPlayer.getStatRune1());
         Rune perk3 = StaticData.getRuneList().getRuneById(currentPlayer.getStatRune2());
-        Log.d("SUMM", "LLego aqui " + NetworkUtils.buildUrl(perk1.getIconPath(), NetworkUtils.GET_CDRAGON_PERK_IMAGE));
-        perk1.loadImageFromCDragon(perkRuneImage0);
-        perk1.loadImageFromCDragon(perkRuneImage1);
-        perk1.loadImageFromCDragon(perkRuneImage2);
 
-        perk2.loadImageFromCDragon(perkRuneImage3);
-        perk2.loadImageFromCDragon(perkRuneImage4);
-        perk2.loadImageFromCDragon(perkRuneImage5);
 
-        perk3.loadImageFromCDragon(perkRuneImage7);
-        perk3.loadImageFromCDragon(perkRuneImage8);
-        perk3.loadImageFromCDragon(perkRuneImage6);
+        StaticData.getRuneList().getRuneById(5008).loadImageFromCDragon(perkRuneImage0);
+        StaticData.getRuneList().getRuneById(5005).loadImageFromCDragon(perkRuneImage1);
+        StaticData.getRuneList().getRuneById(5007).loadImageFromCDragon(perkRuneImage2);
+
+        if(perk1.getId() == 5008){
+            perkRuneImage0.setBackgroundResource(R.drawable.circle);
+        }else if(perk1.getId() == 5005){
+            perkRuneImage1.setBackgroundResource(R.drawable.circle);
+        }else if(perk1.getId() == 5007){
+            perkRuneImage2.setBackgroundResource(R.drawable.circle);
+        }
+
+        StaticData.getRuneList().getRuneById(5008).loadImageFromCDragon(perkRuneImage3);
+        StaticData.getRuneList().getRuneById(5002).loadImageFromCDragon(perkRuneImage4);
+        StaticData.getRuneList().getRuneById(5003).loadImageFromCDragon(perkRuneImage5);
+
+        if(perk2.getId() == 5008){
+            perkRuneImage3.setBackgroundResource(R.drawable.circle);
+        }else if(perk2.getId() == 5002){
+            perkRuneImage4.setBackgroundResource(R.drawable.circle);
+        }else if(perk2.getId() == 5003){
+            perkRuneImage5.setBackgroundResource(R.drawable.circle);
+        }
+
+        StaticData.getRuneList().getRuneById(5001).loadImageFromCDragon(perkRuneImage6);
+        StaticData.getRuneList().getRuneById(5002).loadImageFromCDragon(perkRuneImage7);
+        StaticData.getRuneList().getRuneById(5003).loadImageFromCDragon(perkRuneImage8);
+
+        if(perk3.getId() == 5001){
+            perkRuneImage6.setBackgroundResource(R.drawable.circle);
+        }else if(perk3.getId() == 5002){
+            perkRuneImage7.setBackgroundResource(R.drawable.circle);
+        }else if(perk3.getId() == 5003){
+            perkRuneImage8.setBackgroundResource(R.drawable.circle);
+        }
 
         return view;
     }

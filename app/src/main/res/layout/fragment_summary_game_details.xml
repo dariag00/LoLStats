@@ -620,18 +620,16 @@
                             android:src="@drawable/bronze_mini"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/circle"
                             android:layout_below="@id/view1"/>
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/cv_rune_stat2"
                             android:layout_width="31dp"
                             android:layout_height="31dp"
-                            android:src="@drawable/bronze_mini"
                             android:layout_below="@id/view1"
+                            android:layout_centerInParent="true"
                             android:layout_marginTop="5dp"
-                            android:layout_toRightOf="@id/cv_rune_stat1"
-                            android:layout_toLeftOf="@id/cv_rune_stat3"/>
+                            android:src="@drawable/bronze_mini" />
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/cv_rune_stat3"
@@ -649,7 +647,6 @@
                             android:layout_width="31dp"
                             android:layout_height="31dp"
                             android:src="@drawable/bronze_mini"
-                            android:background="@drawable/circle"
                             android:layout_marginTop="5dp"
                             android:layout_marginLeft="15dp"
                             android:layout_below="@id/cv_rune_stat1"/>
@@ -658,11 +655,10 @@
                             android:id="@+id/cv_rune_stat5"
                             android:layout_width="31dp"
                             android:layout_height="31dp"
-                            android:src="@drawable/bronze_mini"
                             android:layout_below="@id/cv_rune_stat1"
-                            android:layout_marginTop="5dp"
-                            android:layout_toRightOf="@id/cv_rune_stat1"
-                            android:layout_toLeftOf="@id/cv_rune_stat3"/>
+                            android:layout_marginTop="3dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/bronze_mini" />
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/cv_rune_stat6"
@@ -681,7 +677,6 @@
                             android:layout_height="31dp"
                             android:src="@drawable/bronze_mini"
                             android:layout_marginLeft="15dp"
-                            android:background="@drawable/circle"
                             android:layout_marginTop="5dp"
                             android:layout_below="@id/cv_rune_stat4"/>
 
@@ -691,9 +686,8 @@
                             android:layout_height="31dp"
                             android:src="@drawable/bronze_mini"
                             android:layout_below="@id/cv_rune_stat5"
-                            android:layout_toRightOf="@id/cv_rune_stat1"
-                            android:layout_marginTop="5dp"
-                            android:layout_toLeftOf="@id/cv_rune_stat3"/>
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="5dp"/>
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/cv_rune_stat9"

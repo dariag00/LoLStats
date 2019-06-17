@@ -108,6 +108,7 @@ public class GameDetailsActivity extends AppCompatActivity {
                     match = JsonUtils.getMatchFromJSON(matchSearchResults, testMatch);
                     match.setGameId(gameId);
                     match.setGameType("420");
+                    match.setQueue(420);
                     URL getMatchTimelineURL = NetworkUtils.buildUrl(String.valueOf(match.getGameId()), NetworkUtils.GET_MATCH_TIMELINE);
                     if(getMatchTimelineURL != null) {
                         matchTimelineSearchResults = NetworkUtils.getResponseFromHttpUrl(getMatchTimelineURL, throttler);

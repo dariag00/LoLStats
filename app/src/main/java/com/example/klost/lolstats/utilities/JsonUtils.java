@@ -807,10 +807,10 @@ public class JsonUtils {
             int runeId = runeObject.getInt("id");
             Log.d(LOG_TAG, "ID: " + runeId);
             if(!currentList.contains(runeId)){
-                Log.d(LOG_TAG, "NO TENIA Y AÑADO: " + runeId);
                 String name = runeObject.getString("name");
                 String iconPath = runeObject.getString("iconPath");
                 String tooltip = runeObject.getString("tooltip");
+                Log.d(LOG_TAG, "NO TENIA Y AÑADO: " + runeId + " " + name + " " + tooltip);
 
                 Rune rune = new Rune();
                 rune.setId(runeId);

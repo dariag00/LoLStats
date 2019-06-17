@@ -75,7 +75,11 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0-beta01'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'androidx.cardview:cardview:1.0.0-beta01'
-
+    implementation 'com.android.support:support-annotations:25.1.0'
+    implementation 'com.google.firebase:firebase-appindexing:10.0.0'
+    implementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    implementation 'com.android.support.test:rules:1.0.2'
+    implementation 'com.android.support.test:runner:1.0.2'
 
     def lifecycle_version = "2.0.0"
 
@@ -89,6 +93,6 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    implementation 'androidx.test:runner:1.2.0'
+    implementation 'androidx.test.espresso:espresso-intents:3.2.0'
 }

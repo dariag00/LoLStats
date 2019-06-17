@@ -148,7 +148,7 @@ public class LoLStatsUtils {
     public static String getQueueName(int queueId){
         String queueName;
 
-        //TODO añadir mas tipos de game
+        Log.d(LOG_TAG, "TIPO GAME: " + queueId);
         switch(queueId){
             case 400:
                 queueName = "Normal Draft Pick";
